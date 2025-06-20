@@ -1,0 +1,98 @@
+{
+  "COMMON": {
+    "WELCOME": "Bienvenido",
+    "HELLO": "Hola",
+    "GOODBYE": "Adiós",
+    "THANK_YOU": "Gracias",
+    "PLEASE": "Por favor",
+    "YES": "Sí",
+    "NO": "No",
+    "OK": "Aceptar",
+    "CANCEL": "Cancelar",
+    "SAVE": "Guardar",
+    "DELETE": "Eliminar",
+    "EDIT": "Editar",
+    "VIEW": "Ver",
+    "SEARCH": "Buscar",
+    "FILTER": "Filtrar",
+    "LOADING": "Cargando...",
+    "ERROR": "Error",
+    "SUCCESS": "Éxito",
+    "WARNING": "Advertencia",
+    "INFO": "Información"
+  },
+  "NAVIGATION": {
+    "HOME": "Inicio",
+    "PROFILE": "Perfil",
+    "SETTINGS": "Configuración",
+    "LOGOUT": "Cerrar sesión",
+    "LOGIN": "Iniciar sesión"
+  },
+  "FORMS": {
+    "VALIDATION": {
+      "REQUIRED": "Este campo es requerido",
+      "EMAIL": "Ingrese un email válido",
+      "MIN_LENGTH": "Mínimo {{min}} caracteres",
+      "MAX_LENGTH": "Máximo {{max}} caracteres",
+      "PATTERN": "Formato inválido"
+    },
+    "PLACEHOLDERS": {
+      "EMAIL": "Ingrese su email",
+      "PASSWORD": "Ingrese su contraseña",
+      "NAME": "Ingrese su nombre",
+      "PHONE": "Ingrese su teléfono"
+    }
+  },
+  "MESSAGES": {
+    "SAVE_SUCCESS": "Guardado exitosamente",
+    "SAVE_ERROR": "Error al guardar",
+    "DELETE_SUCCESS": "Eliminado exitosamente",
+    "DELETE_ERROR": "Error al eliminar",
+    "DELETE_CONFIRM": "¿Está seguro que desea eliminar este elemento?",
+    "NETWORK_ERROR": "Error de conexión. Verifique su conexión a internet."
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Iniciar Sesión",
+      "SUBTITLE": "Ingrese sus credenciales para acceder",
+      "EMAIL_LABEL": "Correo electrónico",
+      "PASSWORD_LABEL": "Contraseña",
+      "REMEMBER_ME": "Recordarme",
+      "FORGOT_PASSWORD": "¿Olvidó su contraseña?",
+      "LOGIN_BUTTON": "Iniciar Sesión",
+      "NO_ACCOUNT": "¿No tiene cuenta?",
+      "REGISTER_LINK": "Regístrese aquí"
+    },
+    "REGISTER": {
+      "TITLE": "Registrarse",
+      "SUBTITLE": "Cree una nueva cuenta",
+      "FIRST_NAME": "Nombre",
+      "LAST_NAME": "Apellido",
+      "EMAIL": "Correo electrónico",
+      "PASSWORD": "Contraseña",
+      "CONFIRM_PASSWORD": "Confirmar contraseña",
+      "REGISTER_BUTTON": "Registrarse",
+      "HAVE_ACCOUNT": "¿Ya tiene cuenta?",
+      "LOGIN_LINK": "Inicie sesión aquí"
+    },
+    "ERRORS": {
+      "INVALID_CREDENTIALS": "Credenciales inválidas",
+      "EMAIL_ALREADY_EXISTS": "El email ya está registrado",
+      "PASSWORDS_DONT_MATCH": "Las contraseñas no coinciden",
+      "WEAK_PASSWORD": "La contraseña debe tener al menos 8 caracteres"
+    }
+  },
+  "HOJADEVIDA": {
+    "TITLE": "Hoja de Vida",
+    "PERSONAL_INFO": "Información Personal",
+    "EDUCATION": "Educación",
+    "EXPERIENCE": "Experiencia Laboral",
+    "SKILLS": "Habilidades",
+    "LANGUAGES": "Idiomas",
+    "REFERENCES": "Referencias",
+    "DOCUMENTS": "Documentos",
+    "SAVE_PROFILE": "Guardar Perfil",
+    "PREVIEW": "Vista previa",
+    "DOWNLOAD_PDF": "Descargar PDF"
+  }
+}

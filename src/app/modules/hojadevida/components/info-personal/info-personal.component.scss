@@ -1,0 +1,127 @@
+:host {
+  display: block;
+}
+
+.info-personal-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-section {
+  margin-bottom: 32px;
+  
+  h2, h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+    
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 20px;
+    margin-top: 40px;
+    margin-bottom: 24px;
+    color: #555;
+    
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.personal-info-form {
+  .form-row {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    
+    // Para filas con 4 campos (nombres y apellidos)
+    &:nth-child(1) {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    
+    // Para fila de dirección (más ancho)
+    &:has(.address-field) {
+      grid-template-columns: 1fr;
+      
+      .address-field {
+        min-width: 100%;
+      }
+    }
+  }
+  
+  .form-field {
+    width: 100%;
+    
+    &.address-field {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+// Responsive breakpoints
+@media (max-width: 768px) {
+  .info-personal-container {
+    padding: 16px;
+  }
+  
+  .personal-info-form {
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      
+      // En móvil todos los campos ocupan el ancho completo
+      &:nth-child(1) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .personal-info-form {
+    .form-row {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      
+      // Para tablets, nombres en 2 columnas
+      &:nth-child(1) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}
+
+@media (min-width: 1025px) {
+  .personal-info-form {
+    .form-row {
+      // Para desktop, máximo 3 campos por fila excepto nombres
+      grid-template-columns: repeat(3, 1fr);
+      
+      // Para nombres, 4 campos en desktop
+      &:nth-child(1) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      // Para información adicional, 2 campos
+      &:last-child {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}
