@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'pnpm'
+        #cache: 'pnpm'
 
     - name: Install pnpm
       uses: pnpm/action-setup@v2
@@ -29,14 +29,14 @@ jobs:
       run: pnpm install
 
     - name: Build application
-      run: pnpm run build -- --configuration=github-pages
+      run: pnpm run build:github
 
     - name: Copy index.html to 404.html (SPA routing fix)
-      run: cp dist/bipal-front/index.html dist/bipal-front/404.html
+      run: cp dist/bipal-front/browser/index.html dist/bipal-front/browser/404.html
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist/bipal-front
+        publish_dir: ./dist/bipal-front/browser
