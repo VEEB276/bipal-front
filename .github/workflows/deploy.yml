@@ -39,15 +39,10 @@ jobs:
     - name: Copy index.html to 404.html (SPA routing fix)
       run: cp dist/bipal-front/browser/index.html dist/bipal-front/browser/404.html
 
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./dist/bipal-front/browser
-
     - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v4
+      uses: peaceiris/actions-gh-pages@v4
       if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist/bipal-front/browser
