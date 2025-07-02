@@ -1,1 +1,90 @@
-<router-outlet />
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="hasBackdrop()">
+  <mat-sidenav 
+    #drawer 
+    class="sidenav" 
+    [class.collapsed]="isCollapsed() && !isMobile()"
+    [mode]="sidenavMode()"
+    [opened]="sidenavOpened()">
+    
+    <!-- Header -->
+    <div class="sidenav-header">
+      <img 
+        [src]="isCollapsed() && !isMobile() ? '/assets/img/logo.png' : '/assets/img/logo_large.png'"
+        alt="Logo Alcaldía de Bucaramanga"
+        class="logo">
+    </div>
+    
+    <mat-divider></mat-divider>
+    
+    <!-- Menú principal -->
+    <div class="menu-content">
+      <h3 class="section-title" *ngIf="!isCollapsed() || isMobile()">
+        Hojas de vida
+      </h3>
+      
+      <mat-nav-list>
+        <mat-list-item 
+          *ngFor="let item of menuItems"
+          class="menu-item primary-button"
+          [routerLink]="item.route"
+          (click)="item.action && item.action()">
+          <mat-icon matListItemIcon class="menu-icon">{{ item.icon }}</mat-icon>
+          <span matListItemTitle *ngIf="!isCollapsed() || isMobile()">
+            {{ item.label }}
+          </span>
+        </mat-list-item>
+      </mat-nav-list>
+      
+      <mat-divider></mat-divider>
+      
+      <!-- Sección Cuenta -->
+      <h3 class="section-title" *ngIf="!isCollapsed() || isMobile()">
+        Cuenta
+      </h3>
+      
+      <mat-nav-list>
+        <mat-list-item 
+          *ngFor="let item of accountMenuItems"
+          class="menu-item"
+          (click)="item.action && item.action()">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle *ngIf="!isCollapsed() || isMobile()">
+            {{ item.label }}
+          </span>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+    
+    <!-- Footer -->
+    <div class="sidenav-footer">
+      <div class="footer-content" *ngIf="!isCollapsed() || isMobile()">
+        <p class="version">Versión 2025.04.30</p>
+        <p class="support">
+          Reporte de errores y soporte: 
+          <a href="mailto:secretaria-administrativa&#64;bucaramanga.gov.co">
+            secretaria-administrativa&#64;bucaramanga.gov.co
+          </a>
+        </p>
+      </div>
+      <mat-icon class="footer-icon" *ngIf="isCollapsed() && !isMobile()">info</mat-icon>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <!-- Toolbar -->
+    <mat-toolbar color="primary">
+      <button 
+        mat-icon-button 
+        (click)="isMobile() ? drawer.toggle() : toggleSidenav()">
+        <mat-icon>{{ isMobile() ? 'menu' : (isCollapsed() ? 'menu' : 'menu_open') }}</mat-icon>
+      </button>
+      
+      <img src="/assets/img/banner.png" alt="Logo" class="toolbar-logo">
+    </mat-toolbar>
+    
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
