@@ -9,7 +9,7 @@
     <!-- Header -->
     <div class="sidenav-header">
       <img 
-        [src]="isCollapsed() && !isMobile() ? '/assets/img/logo.png' : '/assets/img/logo_large.png'"
+        [src]="isCollapsed() && !isMobile() ? 'assets/img/logo.png' : 'assets/img/logo_large.png'"
         alt="Logo Alcaldía de Bucaramanga"
         class="logo">
     </div>
@@ -80,7 +80,7 @@
         <mat-icon>{{ isMobile() ? 'menu' : (isCollapsed() ? 'menu' : 'menu_open') }}</mat-icon>
       </button>
       
-      <img src="/assets/img/banner.png" alt="Logo" class="toolbar-logo">
+      <img src="assets/img/banner.png" alt="Logo" class="toolbar-logo">
     </mat-toolbar>
     
     <!-- Contenido principal -->
