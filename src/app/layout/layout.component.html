@@ -74,7 +74,8 @@
     <!-- Toolbar -->
     <mat-toolbar color="primary">
       <button 
-        mat-icon-button 
+        mat-icon-button
+        color="primary"
         (click)="isMobile() ? drawer.toggle() : toggleSidenav()">
         <mat-icon>{{ isMobile() ? 'menu' : (isCollapsed() ? 'menu' : 'menu_open') }}</mat-icon>
       </button>

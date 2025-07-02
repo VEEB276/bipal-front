@@ -40,8 +40,9 @@
       border-radius: 8px;
 
       &.primary-button {
-        background-color: #1976d2;
-        color: white;
+        background-color: var(--primary-color);
+        --mdc-list-list-item-label-text-color: white;
+        --mdc-list-list-item-hover-label-text-color: var(--surface); 
 
         mat-icon.menu-icon {
           color: white;

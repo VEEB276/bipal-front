@@ -1,0 +1,58 @@
+@use "sass:map";
+@use "./theme-colors" as theme;
+
+:root {
+    // Primary colors
+    --primary-color: #{map.get(theme.$primary-palette, 40)};
+    --primary-container: #{map.get(theme.$primary-palette, 90)};
+    --on-primary: #{map.get(theme.$primary-palette, 100)};
+    --on-primary-container: #{map.get(theme.$primary-palette, 10)};
+    
+    // Secondary colors
+    --secondary-color: #{map.get(theme.$primary-palette, secondary, 40)};
+    --secondary-container: #{map.get(theme.$primary-palette, secondary, 90)};
+    --on-secondary: #{map.get(theme.$primary-palette, secondary, 100)};
+    --on-secondary-container: #{map.get(theme.$primary-palette, secondary, 10)};
+    
+    // Tertiary colors
+    --tertiary-color: #{map.get(theme.$tertiary-palette, 40)};
+    --tertiary-container: #{map.get(theme.$tertiary-palette, 90)};
+    --on-tertiary: #{map.get(theme.$tertiary-palette, 100)};
+    --on-tertiary-container: #{map.get(theme.$tertiary-palette, 10)};
+    
+    // Surface colors
+    --background-color: #{map.get(theme.$primary-palette, neutral, 99)};
+    --surface: #{map.get(theme.$primary-palette, neutral, 99)};
+    --surface-dim: #{map.get(theme.$primary-palette, neutral, 87)};
+    --surface-bright: #{map.get(theme.$primary-palette, neutral, 98)};
+    --surface-container: #{map.get(theme.$primary-palette, neutral, 94)};
+    --surface-container-low: #{map.get(theme.$primary-palette, neutral, 96)};
+    --surface-container-high: #{map.get(theme.$primary-palette, neutral, 92)};
+    --surface-container-highest: #{map.get(theme.$primary-palette, neutral, 90)};
+    --surface-variant: #{map.get(theme.$primary-palette, neutral-variant, 90)};
+    
+    // Text colors
+    --text-color: #{map.get(theme.$primary-palette, neutral, 10)};
+    --on-surface: #{map.get(theme.$primary-palette, neutral, 10)};
+    --on-surface-variant: #{map.get(theme.$primary-palette, neutral-variant, 30)};
+    
+    // Error colors
+    --error-color: #{map.get(theme.$primary-palette, error, 40)};
+    --error-container: #{map.get(theme.$primary-palette, error, 90)};
+    --on-error: #{map.get(theme.$primary-palette, error, 100)};
+    --on-error-container: #{map.get(theme.$primary-palette, error, 10)};
+    
+    // Outline colors
+    --outline: #{map.get(theme.$primary-palette, neutral-variant, 50)};
+    --outline-variant: #{map.get(theme.$primary-palette, neutral-variant, 80)};
+    
+    // Additional semantic colors using your palette
+    --success-color: #{map.get(theme.$primary-palette, 60)}; // Green from primary
+    --warning-color: #{map.get(theme.$tertiary-palette, 50)}; // Purple from tertiary
+    --info-color: #{map.get(theme.$primary-palette, secondary, 60)}; // Blue-ish from secondary
+    
+    // Shadow and scrim
+    --shadow: #{map.get(theme.$primary-palette, neutral, 0)};
+    --scrim: #{map.get(theme.$primary-palette, neutral, 0)};
+    --surface-tint: #{map.get(theme.$primary-palette, 40)};
+}
