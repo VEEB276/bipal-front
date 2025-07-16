@@ -1,0 +1,116 @@
+// Sobrescritura de temas para Angular Material M3
+@use "@angular/material" as mat;
+@use "sass:map";
+
+// Importamos las paletas de colores
+@use "./theme-colors" as colors;
+
+// Error buttons
+.mat-mdc-raised-button.mat-error,
+.mat-mdc-unelevated-button.mat-error {
+  --mdc-protected-button-container-color: var(--mat-error-color);
+  --mdc-protected-button-label-text-color: var(--mat-error-on-container-color);
+}
+
+.mat-mdc-outlined-button.mat-error,
+.mat-mdc-stroked-button.mat-error {
+  --mdc-outlined-button-label-text-color: var(--mat-error-color);
+  --mdc-outlined-button-outline-color: var(--mat-error-color);
+
+  &:hover {
+    background-color: rgba(var(--mat-error-color-rgb), 0.08);
+  }
+}
+
+.mat-mdc-button.mat-error,
+.mat-mdc-text-button.mat-error {
+  --mdc-text-button-label-text-color: var(--mat-error-color);
+
+  &:hover {
+    background-color: rgba(var(--mat-error-color-rgb), 0.08);
+  }
+}
+
+// Secondary buttons
+.mat-mdc-raised-button.mat-secondary,
+.mat-mdc-unelevated-button.mat-secondary,
+.mat-mdc-flat-button.mat-secondary {
+  --mdc-protected-button-container-color: var(--mat-secondary-color);
+  --mdc-protected-button-label-text-color: var(--mat-on-secondary-color);
+}
+
+.mat-mdc-outlined-button.mat-secondary,
+.mat-mdc-stroked-button.mat-secondary {
+  --mdc-outlined-button-label-text-color: var(--mat-secondary-color);
+  --mdc-outlined-button-outline-color: var(--mat-secondary-color);
+
+  &:hover {
+    background-color: rgba(var(--mat-secondary-color-rgb), 0.08);
+  }
+}
+
+.mat-mdc-button.mat-secondary,
+.mat-mdc-text-button.mat-secondary {
+  --mdc-text-button-label-text-color: var(--mat-secondary-color);
+
+  &:hover {
+    background-color: rgba(var(--mat-secondary-color-rgb), 0.08);
+  }
+}
+
+// Override existing warn buttons to match the new style
+.mat-mdc-raised-button.mat-warn,
+.mat-mdc-unelevated-button.mat-warn {
+  --mdc-protected-button-container-color: var(--mat-warn-color);
+  --mdc-protected-button-label-text-color: var(--mat-on-warn-color);
+}
+
+.mat-mdc-outlined-button.mat-warn,
+.mat-mdc-stroked-button.mat-warn {
+  --mdc-outlined-button-label-text-color: var(--mat-warn-color);
+  --mdc-outlined-button-outline-color: var(--mat-warn-color);
+
+  &:hover {
+    background-color: rgba(var(--mat-warn-color-rgb), 0.08);
+  }
+}
+
+.mat-mdc-button.mat-warn,
+.mat-mdc-text-button.mat-warn {
+  --mdc-text-button-label-text-color: var(--mat-warn-color);
+
+  &:hover {
+    background-color: rgba(var(--mat-warn-color-rgb), 0.08);
+  }
+}
+
+// CSS variables para usar en componentes
+// Vamos a usar las variables definidas en _variables.scss
+// en lugar de crear nuevas paletas
+
+:root {
+  // Primary
+  --mat-primary-color: var(--primary-color);
+  --mat-primary-color-rgb: 30, 108, 43; // Valor RGB de primary-color (tone 40)
+  --mat-on-primary-color: var(--on-primary);
+
+  // Accent (usando tertiary como accent)
+  --mat-accent-color: var(--tertiary-color);
+  --mat-accent-color-rgb: 127, 74, 137; // Valor RGB de tertiary-color (tone 40)
+  --mat-on-accent-color: var(--on-tertiary);
+
+  // Warn (usando warning-color)
+  --mat-warn-color: var(--warning-color);
+  --mat-warn-color-rgb: 154, 99, 164; // Valor RGB de warning-color (tertiary tone 50)
+  --mat-on-warn-color: var(--on-tertiary);
+
+  // Error (usando error-color)
+  --mat-error-color: var(--error-color);
+  --mat-error-color-rgb: 186, 26, 26; // Valor RGB de error-color (tone 40)
+  --mat-error-on-container-color: var(--on-error);
+
+  // Secondary
+  --mat-secondary-color: var(--secondary-color);
+  --mat-secondary-color-rgb: 93, 93, 112; // Valor RGB de secondary-color (tone 40)
+  --mat-on-secondary-color: var(--on-secondary);
+}

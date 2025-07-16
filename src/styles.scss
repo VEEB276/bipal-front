@@ -1,9 +1,10 @@
 
 // Custom Theming for Angular Material
-// For more information: https://material.angular.dev/guide/theming
+// For more information: https://v19.material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 @use './app/styles/theme-colors' as theme;
 @use './app/styles/_variables' as vars;
+@use './app/styles/_theme_overrides' as overrides;
 
 html {
   color-scheme: light;

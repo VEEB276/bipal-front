@@ -9,10 +9,10 @@
     --on-primary-container: #{map.get(theme.$primary-palette, 10)};
     
     // Secondary colors
-    --secondary-color: #{map.get(theme.$primary-palette, secondary, 40)};
-    --secondary-container: #{map.get(theme.$primary-palette, secondary, 90)};
-    --on-secondary: #{map.get(theme.$primary-palette, secondary, 100)};
-    --on-secondary-container: #{map.get(theme.$primary-palette, secondary, 10)};
+    --secondary-color: #{map.get(theme.$secondary-palette, 40)};
+    --secondary-container: #{map.get(theme.$secondary-palette, 90)};
+    --on-secondary: #{map.get(theme.$secondary-palette, 100)};
+    --on-secondary-container: #{map.get(theme.$secondary-palette, 10)};
     
     // Tertiary colors
     --tertiary-color: #{map.get(theme.$tertiary-palette, 40)};
@@ -48,8 +48,8 @@
     
     // Additional semantic colors using your palette
     --success-color: #{map.get(theme.$primary-palette, 60)}; // Green from primary
-    --warning-color: #{map.get(theme.$tertiary-palette, 50)}; // Purple from tertiary
-    --info-color: #{map.get(theme.$primary-palette, secondary, 60)}; // Blue-ish from secondary
+    --warning-color: #f6be0f;
+    --info-color: #016398;
     
     // Shadow and scrim
     --shadow: #{map.get(theme.$primary-palette, neutral, 0)};
