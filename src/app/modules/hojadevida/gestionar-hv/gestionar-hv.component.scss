@@ -7,3 +7,25 @@
   height: auto;
   margin-bottom: -50px;
 }
+
+// .mat-expansion-panel {
+//   .title-section{
+//     transition: all 0,5s ease-in-out;
+//     //position: inherit;
+//     left: 0;
+//     top: 0;
+//   }
+// }
+// .mat-expanded {
+//   .title-section {
+//     position: absolute;
+//     left: 90px;
+//     top: 90px;
+//   }   
+// }
+
+.title-section {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}

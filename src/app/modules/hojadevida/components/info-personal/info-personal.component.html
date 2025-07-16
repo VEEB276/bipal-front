@@ -1,12 +1,4 @@
 <div class="info-personal-container">
-  <!-- Header Section -->
-  <div class="header-section">
-    <h2>
-      <mat-icon>person</mat-icon>
-      Datos Personales
-    </h2>
-  </div>
-
   <!-- Form Content -->
   <form [formGroup]="personaForm" (ngSubmit)="onSubmit()" class="personal-info-form">
     
@@ -217,7 +209,7 @@
     <!-- Contacto de Emergencia Row -->
     <div class="form-row">
       <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Nombre del Contacto</mat-label>
+        <mat-label>Nombre de Contacto</mat-label>
         <input matInput formControlName="nombreContacto" placeholder="Nombre completo del contacto">
         <mat-icon matPrefix>person</mat-icon>
         <mat-error *ngIf="nombreContacto?.invalid && nombreContacto?.touched">
@@ -227,7 +219,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Teléfono del Contacto</mat-label>
+        <mat-label>Celular de Contacto</mat-label>
         <input matInput formControlName="numeroTelefonoContacto" placeholder="3001234567" type="tel">
         <mat-icon matPrefix>phone</mat-icon>
         <mat-error *ngIf="numeroTelefonoContacto?.invalid && numeroTelefonoContacto?.touched">
@@ -238,7 +230,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Correo del Contacto</mat-label>
+        <mat-label>Correo de Contacto</mat-label>
         <input matInput formControlName="correoElectronicoContacto" placeholder="contacto@correo.com" type="email">
         <mat-icon matPrefix>email</mat-icon>
         <mat-error *ngIf="correoElectronicoContacto?.invalid && correoElectronicoContacto?.touched">

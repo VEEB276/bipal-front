@@ -1,0 +1,264 @@
+.perfil-academico-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.perfil-academico-form {
+  width: 100%;
+}
+
+.header-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 16px 24px;
+}
+
+.header-title-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon {
+  color: #2c5530;
+  font-size: 24px;
+}
+
+.header-title {
+  color: #2c5530;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.titulo-section {
+  margin-bottom: 24px;
+  border-left: 4px solid #2c5530;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .mat-mdc-card-header {
+    padding: 16px;
+    background-color: #f8f9fa;
+  }
+}
+
+.titulo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  .titulo-header-actions {
+    margin-left: auto;
+  }
+}
+
+.titulo-label {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c5530;
+}
+
+.eliminar-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.titulo-form-group {
+  padding: 16px;
+}
+
+.mat-mdc-card-content {
+  padding: 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px;
+  
+  &.full-width {
+    width: 100%;
+  }
+  
+  .mat-mdc-form-field {
+    width: 100%;
+  }
+  
+  .mat-mdc-text-field-wrapper {
+    background: #fff;
+  }
+  
+  .mat-mdc-form-field-outline {
+    color: #e0e0e0;
+  }
+  
+  .mat-mdc-form-field-focus-indicator {
+    background-color: #2c5530;
+  }
+  
+  .mat-mdc-form-field-label {
+    color: #666;
+  }
+  
+  .mat-mdc-form-field-required-marker {
+    color: #f44336;
+  }
+}
+
+.slider-container {
+  flex: 1;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: #fff;
+  
+  .slider-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 16px;
+  }
+  
+  .slider-field {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    
+    .slider-value {
+      min-width: 20px;
+      font-weight: 600;
+      color: #2c5530;
+      font-size: 16px;
+    }
+    
+    .semester-slider {
+      flex: 1;
+      
+      .mat-mdc-slider .mat-mdc-slider-track-fill {
+        background-color: #2c5530;
+      }
+      
+      .mat-mdc-slider .mat-mdc-slider-thumb {
+        background-color: #2c5530;
+        border-color: #2c5530;
+      }
+      
+      .mat-mdc-slider .mat-mdc-slider-thumb:hover {
+        background-color: #1e3a21;
+      }
+    }
+    
+    .slider-max {
+      min-width: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+  }
+  
+  .mat-mdc-form-field-error {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #f44336;
+  }
+}
+
+.titulo-divider {
+  margin: 24px 0;
+  background-color: #e0e0e0;
+}
+
+.agregar-estudios-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  padding: 16px;
+}
+
+.agregar-estudios-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+// Responsividad
+@media (max-width: 768px) {
+  .perfil-academico-container {
+    padding: 12px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .titulo-header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  
+  .eliminar-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    
+    .action-btn {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .slider-field {
+    flex-direction: column;
+    gap: 8px;
+    
+    .semester-slider {
+      width: 100%;
+    }
+  }
+  
+  .agregar-estudios-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

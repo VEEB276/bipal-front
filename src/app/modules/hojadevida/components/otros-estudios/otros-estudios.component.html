@@ -1,0 +1,177 @@
+<div class="otros-estudios-container">
+  <form
+    [formGroup]="estudiosForm"
+    (ngSubmit)="onSubmit()"
+    class="otros-estudios-form"
+  >
+    <div formArrayName="estudios">
+      <mat-card
+        *ngFor="let estudio of estudiosArray.controls; let i = index"
+        class="estudio-section"
+      >
+        <mat-card-header class="estudio-header">
+          <mat-card-title>
+            <h3 class="estudio-label">Estudio {{ i + 1 }}</h3>
+          </mat-card-title>
+          <div class="estudio-header-actions">
+            <button
+              type="button"
+              mat-stroked-button
+              color="error"
+              class="eliminar-btn"
+              (click)="eliminarEstudio(i)"
+            >
+              <mat-icon>delete</mat-icon>
+              Eliminar Estudio {{ i + 1 }}
+            </button>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div [formGroupName]="i" class="estudio-form-group">
+            <!-- Primera Fila: Nombre del Curso -->
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field full-width">
+                <mat-label>Nombre del Curso</mat-label>
+                <input
+                  matInput
+                  formControlName="nombreCurso"
+                  placeholder="Ingrese el nombre del curso"
+                />
+                <mat-icon matPrefix>subject</mat-icon>
+                <mat-error
+                  *ngIf="
+                    getEstudioControl(i, 'nombreCurso')?.invalid &&
+                    getEstudioControl(i, 'nombreCurso')?.touched
+                  "
+                >
+                  <span
+                    *ngIf="getEstudioControl(i, 'nombreCurso')?.errors?.['required']"
+                    >El nombre del curso es requerido</span
+                  >
+                  <span
+                    *ngIf="getEstudioControl(i, 'nombreCurso')?.errors?.['maxlength']"
+                    >Máximo 255 caracteres</span
+                  >
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Segunda Fila: Graduado, Número de Horas, Institución -->
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Graduado</mat-label>
+                <mat-select formControlName="graduado">
+                  <mat-option
+                    *ngFor="let opcion of graduadoOptions"
+                    [value]="opcion.value"
+                  >
+                    {{ opcion.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>assignment_turned_in</mat-icon>
+                <mat-error
+                  *ngIf="
+                    getEstudioControl(i, 'graduado')?.invalid &&
+                    getEstudioControl(i, 'graduado')?.touched
+                  "
+                >
+                  <span
+                    *ngIf="getEstudioControl(i, 'graduado')?.errors?.['required']"
+                    >Seleccione si está graduado</span
+                  >
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Número de Horas del Curso</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="numeroHoras"
+                  min="1"
+                  max="9999"
+                />
+                <mat-icon matPrefix>access_time</mat-icon>
+                <mat-error
+                  *ngIf="
+                    getEstudioControl(i, 'numeroHoras')?.invalid &&
+                    getEstudioControl(i, 'numeroHoras')?.touched
+                  "
+                >
+                  <span
+                    *ngIf="getEstudioControl(i, 'numeroHoras')?.errors?.['required']"
+                    >El número de horas es requerido</span
+                  >
+                  <span
+                    *ngIf="getEstudioControl(i, 'numeroHoras')?.errors?.['min']"
+                    >Mínimo 1 hora</span
+                  >
+                  <span
+                    *ngIf="getEstudioControl(i, 'numeroHoras')?.errors?.['max']"
+                    >Máximo 9999 horas</span
+                  >
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Institución Educativa donde Cursó sus estudios</mat-label>
+                <input
+                  matInput
+                  formControlName="institucionEducativa"
+                  placeholder="Nombre de la institución"
+                />
+                <mat-icon matPrefix>location_city</mat-icon>
+                <mat-error
+                  *ngIf="
+                    getEstudioControl(i, 'institucionEducativa')?.invalid &&
+                    getEstudioControl(i, 'institucionEducativa')?.touched
+                  "
+                >
+                  <span
+                    *ngIf="getEstudioControl(i, 'institucionEducativa')?.errors?.['required']"
+                    >La institución educativa es requerida</span
+                  >
+                  <span
+                    *ngIf="getEstudioControl(i, 'institucionEducativa')?.errors?.['maxlength']"
+                    >Máximo 255 caracteres</span
+                  >
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Botón Agregar Otros Estudios -->
+    <div class="agregar-estudios-container">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        class="agregar-estudios-btn"
+        (click)="agregarEstudio()"
+      >
+        <mat-icon>add</mat-icon>
+        Agregar otros estudios
+      </button>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="form-actions">
+      <button type="button" mat-stroked-button color="error">
+        <mat-icon>cancel</mat-icon>
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        mat-flat-button
+        color="primary"
+      >
+        <mat-icon>save</mat-icon>
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>

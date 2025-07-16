@@ -4,4 +4,57 @@
   class="image-banner"
 />
 
-<app-info-personal></app-info-personal>
+<mat-accordion class="accordion" multi>
+  <!-- Sección de Información Personal -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="title-section">
+        <mat-icon>person</mat-icon>
+        Datos Personales
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-info-personal></app-info-personal>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="title-section">
+        <mat-icon>school</mat-icon>
+        Perfiles academicos
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <ng-template matExpansionPanelContent>
+      <app-perfil-academico></app-perfil-academico>
+    </ng-template>
+  </mat-expansion-panel>
+
+
+  <!-- Sección de Otros Estudios -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="title-section">
+        <mat-icon>menu_book</mat-icon>
+        Otros Estudios
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <ng-template matExpansionPanelContent>
+      <app-otros-estudios></app-otros-estudios>
+    </ng-template>
+  </mat-expansion-panel>
+
+  <!-- Sección de Experiencia -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="title-section">
+        <mat-icon>work</mat-icon>
+        Experiencia
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <ng-template matExpansionPanelContent>
+      <app-experiencia></app-experiencia>
+    </ng-template>
+  </mat-expansion-panel>
+</mat-accordion>
