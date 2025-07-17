@@ -1,0 +1,58 @@
+:host {
+  display: block;
+}
+
+.title{
+  display: flex;
+  margin:0;
+  padding: 5vh 20vw 0 20vw ;
+  text-align: center;
+  color:#5b5d61;
+}
+.title-container{
+  display: flex;
+  width: 100vw;
+}
+.background-img{
+  background-image: url('/assets/img/background-auth.jpg');
+  height: 100vh;
+  width: 100vw;
+  background-size:contain;
+}
+.info-container{
+  background-color: rgba($color: #cfd2d2, $alpha: 0.5);
+  display: flex; 
+  justify-content: center;
+  padding: 2rem 3rem;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 4vh;
+}
+h2{
+  color: #000;
+}
+.auth-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+span{
+  padding: 1rem;
+}
+.full-container{
+    display: flex;
+    flex-direction: row;
+    padding-top: 2rem;
+    justify-content: center;
+}
+.left-container{
+  width: 40vw;
+  background-color: #2D5F00;
+  color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+.img-perfiles{
+  width: 100%;
+}

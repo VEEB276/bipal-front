@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { LayoutComponent } from "./layout/layout.component";
+import { AuthenticationComponent } from "./modules/auth/authentication/authentication.component";
 
 export const routes: Routes = [
   {
@@ -7,10 +8,10 @@ export const routes: Routes = [
     redirectTo: "auth",
     pathMatch: "full",
   },
-  // {
-  //   path: "auth",
-  //   component: AuthLoginComponent,
-  // },
+  {
+    path: "auth",
+    component: AuthenticationComponent,
+  },
   {
     path: "hoja-de-vida",
     component: LayoutComponent,

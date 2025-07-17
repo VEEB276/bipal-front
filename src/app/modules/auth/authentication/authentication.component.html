@@ -1,0 +1,73 @@
+<div class="background-img">
+  <div class="title-container">
+    <h1 class="title">
+      Banco de información de perfiles académicos y laborales - BIPAL.
+    </h1>
+  </div>
+  <div class="full-container">
+    <div class="left-container">
+      <img
+        src="../../../../assets/img/banco_info_perfiles.svg"
+        class="img-perfiles"
+      />
+
+      <span>
+        Sistema Hoja de Vida para el Talento Local Este sistema tiene como
+        objetivo ampliar las oportunidades laborales para los profesionales de
+        la región mediante la recopilación de información en una base de datos
+        centralizada. Al registrarse en la plataforma y completar el formulario,
+        su perfil quedará disponible para consulta cuando la alcaldía requiera
+        cubrir una vacante en una profesión específica. En ese momento, se
+        revisará la información registrada en la base de datos y se
+        seleccionarán candidatos para participar en un proceso deselección esta
+        iniciativa, buscamos reunir y organizar las ofertas laborales en un
+        único espacio, facilitando la conexión entre talento local y
+        oportunidades de empleo.
+      </span>
+    </div>
+
+    <!------------------------------------------------------------------------------------------------------------------  -->
+    <div class="info-container">
+      <form class="auth-form">
+        <h2>Iniciar sesión</h2>
+        <!-- ---------------------------------------------------------- -->
+        <mat-form-field class="example-full-width">
+          <mat-label>Correo</mat-label>
+          <input matInput placeholder="ejemplo@gmail.com" />
+          <button matSuffix mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <!-- ----------------------------------------------------------- -->
+        <mat-form-field class="example-full-width">
+          <mat-label>Constraseña</mat-label>
+          <input matInput placeholder=" . . . " />
+          <button matSuffix mat-icon-button>
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </mat-form-field>
+        <!-- ------------------------------------------------------------ -->
+        <mat-divider></mat-divider>
+        <span>
+          Declaro que he leído y aceptado los términos
+          <br />
+          y condiciones aquí establecidos.
+        </span>
+        <!-- ------------------------------------------------------------- -->
+        <div class="example-button-row">
+          <button
+            mat-flat-button
+            [routerLink]="['../hoja-de-vida']"
+            routerLinkActive="router-link-active"
+          >
+            Registrar mi hoja de vida
+          </button>
+          <!-- <button mat-flat-button disabled>Disabled</button> -->
+          <!-- <a mat-flat-button href="https://www.google.com/"></a> -->
+        </div>
+        <!-- ------------------------------------------------------------- -->
+        <mat-divider></mat-divider>
+      </form>
+    </div>
+  </div>
+</div>
