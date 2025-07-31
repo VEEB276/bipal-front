@@ -245,18 +245,6 @@
 
     <!-- Action Buttons -->
     <div class="form-actions">
-      <button mat-raised-button color="primary" type="button" (click)="buscarPorDocumento()" 
-              [disabled]="isLoading || !numeroDocumento?.value" class="action-button">
-        <mat-icon>search</mat-icon>
-        Buscar por Documento
-      </button>
-      
-      <button mat-raised-button color="accent" type="button" (click)="nuevaPersona()" 
-              [disabled]="isLoading" class="action-button">
-        <mat-icon>person_add</mat-icon>
-        Nueva Persona
-      </button>
-      
       <button mat-raised-button color="primary" type="submit" 
               [disabled]="isLoading || personaForm.invalid" class="action-button submit-button">
         <mat-icon>save</mat-icon>
