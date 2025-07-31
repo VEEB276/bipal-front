@@ -77,7 +77,7 @@ console.log('hola');
       if (error) {
         console.error("Error al enviar el código de verificación:", error);
       } else {
-        this.routerBj.navigate(['auth', 'crear-usuario'], { queryParams: { email: this.registerForm.value.email } });
+        this.routerBj.navigate(['auth', 'crear-usuario'], { queryParams: { email: this.registerForm.value.email, documento: this.registerForm.value.documentNumber } });
       }
     });
   }
