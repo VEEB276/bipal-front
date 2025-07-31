@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  h2 {
+    color: #000;
+  }
+}
+// -------------------------------------------------------------------------------------
+.background-img{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('/assets/img/background-auth.jpg');
+  height: 100vh;
+  width: 100vw;
+  background-size:contain;
+}
+span{
+  padding: 1rem ;
+}
+//  -----------------------title----------------------------------------------------------
+.title{
+  display: flex;
+  margin:0;
+  padding: 5vh 20vw 0 20vw ;
+  text-align: center;
+  color:#5b5d61;
+}
+

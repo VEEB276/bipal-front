@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.register-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.wid-100{
+  width: 100%;
+}

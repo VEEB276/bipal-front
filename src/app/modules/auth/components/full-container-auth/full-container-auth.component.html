@@ -1,0 +1,52 @@
+<div class="full-container">
+    <div class="left-container">
+      <img src="assets/img/banco_info_perfiles.svg" class="img-perfiles" />
+      <div class="text-perfiles">
+        <h3>Sistema hoja de vida para el talento local</h3>
+            Este sistema tiene como objetivo ampliar las oportunidades laborales
+            para los profesionales de la región mediante la recopilación de
+            información en una base de datos centralizada. Al registrarse en la
+            plataforma y completar el formulario, su perfil quedará disponible para
+            consulta cuando la alcaldía requiera cubrir una vacante en una profesión
+            específica. En ese momento, se revisará la información registrada en la
+            base de datos y se seleccionarán candidatos para participar en un
+            proceso deselección esta iniciativa, buscamos reunir y organizar las
+            ofertas laborales en un único espacio, facilitando la conexión entre
+            talento local y oportunidades de empleo.
+      </div>
+    </div>
+    <!---------------------------------------------------------------------------------------  -->
+    <div class="right-container">
+      <!-- ------------------------------ iniciar sesion ----------------------- -->
+      <mat-accordion [multi]="false">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Iniciar sesión </mat-panel-title>
+            <mat-panel-description>
+              Acá podrás registrar tu hoja de vida
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <ng-template matExpansionPanelContent> <!--TODO: esto que? por que no esta en el registrarse-->
+
+            <app-iniciar-sesion></app-iniciar-sesion>
+
+          </ng-template>
+         
+        </mat-expansion-panel>
+        <!------------------------------------------------------- -->
+    <!-- ------------------------------- registrarse ------------------------ -->
+        <mat-expansion-panel >
+          <mat-expansion-panel-header>
+            <mat-panel-title> Registarse </mat-panel-title>
+              <mat-panel-description>
+                Acá podrás crear tu usuario para ingresar a BIPAL
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+           <app-registrarse></app-registrarse>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+      <!------------------------------------------------------- -->
+    </div>
+  </div>

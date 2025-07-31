@@ -1,0 +1,35 @@
+<!-- --------------------------------------------form------------------------------------------------------------ -->
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <h2>Iniciar sesión</h2>
+        <!-- ------------------------------------------------ ---------- -->
+        <mat-form-field  required class="example-full-width" class="wid-100">
+          <mat-label> Correo electrónico o número de documento </mat-label> <!--TODO: que me permira numero de documento, desarrollar validators y eso-->
+          <input matInput placeholder="ejemplo@gmail.com" formControlName="email"/>
+          <button matSuffix mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <!-- ----------------------------------------------------------- -->
+        <mat-form-field required class="example-full-width" class="wid-100">
+          <mat-label> Constraseña </mat-label><!--TODO: aqui falta que me permita meter tmb el numero de cel-->
+          <input matInput placeholder=" . . . " formControlName="password">
+          <button matSuffix mat-icon-button>
+            <mat-icon> visibility </mat-icon>
+          </button>
+        </mat-form-field>
+  
+        <!-- ------------------------------------------------------------ -->
+        <div class="example-button-row">
+          <button
+           mat-flat-button 
+           [disabled]="!loginForm.valid"
+              [routerLink]="['/hoja-de-vida']">
+              Iniciar sesión
+            </button>
+          </div>
+        <!-- ------------------------------------------------------------- -->
+        <mat-divider></mat-divider>
+</form>
+<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+
+
