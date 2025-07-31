@@ -9,16 +9,18 @@ import {
 } from "@supabase/supabase-js";
 import { environment } from "../../../environments/environment";
 import { Router } from "@angular/router";
+import { LoadingService } from "../services/loading.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private supabase: SupabaseClient;
+  private readonly supabase: SupabaseClient;
   _session: AuthSession | null = null;
 
   //inyeccion de depdencias
   private readonly router = inject(Router);
+  private readonly loadingService = inject(LoadingService);
 
   constructor() {
     this.supabase = createClient(
@@ -42,11 +44,15 @@ export class AuthService {
     email: string,
     password: string
   ): Promise<{ user: User | null; error: Error | null }> {
+    this.loadingService.show();
     return this.supabase.auth
       .signInWithPassword({ email, password })
       .then(({ data, error }) => {
         this._session = data.session;
         return { user: data.user, error };
+      })
+      .finally(() => {
+        this.loadingService.hide();
       });
   }
 
@@ -62,6 +68,7 @@ export class AuthService {
    * @returns Promise con el resultado de la operación (error si falla)
    */
   sendCodeVerification(email: string): Promise<{ error: Error | null }> {
+    this.loadingService.show();
     return this.supabase.auth
       .signInWithOtp({
         email,
@@ -71,6 +78,9 @@ export class AuthService {
       })
       .then(({ error }) => {
         return { error };
+      })
+      .finally(() => {
+        this.loadingService.hide();
       });
   }
 
@@ -87,6 +97,7 @@ export class AuthService {
     email: string,
     token: string
   ): Promise<{ error: Error, verified: boolean }> {
+    this.loadingService.show();
     return this.supabase.auth
       .verifyOtp({
         email,
@@ -101,6 +112,9 @@ export class AuthService {
         // Guardar sesión temporal para el siguiente paso
         this._session = data.session;
         return { error, verified: true };
+      })
+      .finally(() => {
+        this.loadingService.hide();
       });
   }
 
@@ -119,6 +133,7 @@ export class AuthService {
     email: string,
     password: string
   ): Promise<{ user: User | null; error: Error | null }> {
+    this.loadingService.show();
     return this.supabase.auth
       .signUp({
         email,
@@ -135,6 +150,9 @@ export class AuthService {
           this._session = data.session;
         }
         return { user: data.user, error };
+      })
+      .finally(() => {
+        this.loadingService.hide();
       });
   }
 
@@ -173,10 +191,14 @@ export class AuthService {
    * @returns Promise con el resultado de la operación
    */
   signOut(): Promise<{ error: Error | null }> {
+    this.loadingService.show();
     return this.supabase.auth.signOut().then(({ error }) => {
       this._session = null;
       this.router.navigate(['/auth']); // Redirigir al login después de cerrar sesión
       return { error };
+    })
+    .finally(() => {
+      this.loadingService.hide();
     });
   }
 }
