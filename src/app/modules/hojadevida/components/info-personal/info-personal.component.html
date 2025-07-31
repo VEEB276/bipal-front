@@ -2,12 +2,12 @@
   <!-- Form Content -->
   <form [formGroup]="personaForm" (ngSubmit)="onSubmit()" class="personal-info-form">
     
-    <!-- Nombres Row -->
+    <!-- Nombres Row --------------------------------------------------------------------------------------->
     <div class="form-row">
       <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Primer Nombre</mat-label>
+        <mat-label> Primer Nombre </mat-label>
         <input matInput formControlName="primerNombre" placeholder="Primer Nombre">
-        <mat-icon matPrefix>person</mat-icon>
+        <mat-icon matPrefix> person </mat-icon>
         <mat-error *ngIf="primerNombre?.invalid && primerNombre?.touched">
           <span *ngIf="primerNombre?.errors?.['required']">El primer nombre es requerido</span>
           <span *ngIf="primerNombre?.errors?.['maxlength']">Máximo 255 caracteres</span>
@@ -43,7 +43,7 @@
       </mat-form-field>
     </div>
 
-    <!-- Documento Row -->
+    <!-- Documento Row ----------------------------------------------------------------------------------->
     <div class="form-row">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Tipo de Documento</mat-label>

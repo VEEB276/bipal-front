@@ -4,8 +4,8 @@ export const HOJA_DE_VIDA_ROUTES: Routes = [
   {
     path: "",
     loadComponent: () =>
-      import("./gestionar-hv/gestionar-hv.component").then(
-        (m) => m.GestionarHvComponent
+      import("./section-container-hv/section-container-hv.component").then(
+        (c) => c.SectionContainerHvComponent
       ),
   },
 ];

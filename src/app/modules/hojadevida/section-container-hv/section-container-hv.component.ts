@@ -13,9 +13,9 @@ import { OtrosEstudiosComponent } from "../components/otros-estudios";
 import { ExperienciaComponent } from "../components/experiencia";
 
 @Component({
-  selector: "app-gestionar-hv",
-  templateUrl: "./gestionar-hv.component.html",
-  styleUrl: "./gestionar-hv.component.scss",
+  selector: 'app-section-container-hv',
+  templateUrl: './section-container-hv.component.html',
+  styleUrl: './section-container-hv.component.scss',
   imports: [
     InfoPersonalComponent,
     MatIcon,
@@ -30,4 +30,4 @@ import { ExperienciaComponent } from "../components/experiencia";
 ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GestionarHvComponent {}
+export class SectionContainerHvComponent {}
