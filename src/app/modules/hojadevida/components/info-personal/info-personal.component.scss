@@ -89,3 +89,76 @@
     }
   }
 }
+
+// Action buttons styling
+.form-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 32px;
+  padding: 20px 0;
+  border-top: 1px solid #e0e0e0;
+  
+  .action-button {
+    min-width: 150px;
+    height: 48px;
+    font-weight: 500;
+    
+    mat-icon {
+      margin-right: 8px;
+    }
+    
+    &.submit-button {
+      min-width: 180px;
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+}
+
+// Loading state
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+// Header section styling
+.header-section {
+  margin: 32px 0 16px 0;
+  
+  h3 {
+    display: flex;
+    align-items: center;
+    color: #3f51b5;
+    font-weight: 500;
+    margin: 0;
+    
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+// Responsive for action buttons
+@media (max-width: 768px) {
+  .form-actions {
+    flex-direction: column;
+    align-items: center;
+    
+    .action-button {
+      min-width: 200px;
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+}
