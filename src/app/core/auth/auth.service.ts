@@ -10,6 +10,7 @@ import {
 import { environment } from "../../../environments/environment";
 import { Router } from "@angular/router";
 import { LoadingService } from "../services/loading.service";
+import { NotificationService } from "../services/notification.service";
 
 @Injectable({
   providedIn: "root",
@@ -21,6 +22,7 @@ export class AuthService {
   //inyeccion de depdencias
   private readonly router = inject(Router);
   private readonly loadingService = inject(LoadingService);
+  private readonly notificationService = inject(NotificationService);
 
   constructor() {
     this.supabase = createClient(
@@ -49,6 +51,14 @@ export class AuthService {
       .signInWithPassword({ email, password })
       .then(({ data, error }) => {
         this._session = data.session;
+        
+        // Mostrar mensaje de error si existe
+        if (error) {
+          this.notificationService.showError(`Error al iniciar sesión: ${error.message}`);
+        } else {
+          this.notificationService.showSuccess('Inicio de sesión exitoso');
+        }
+        
         return { user: data.user, error };
       })
       .finally(() => {
@@ -106,11 +116,13 @@ export class AuthService {
       })
       .then(({ data, error }) => {
         if (error) {
+          this.notificationService.showError(`Error al verificar el código: ${error.message}`);
           return { error, verified: false };
         }
 
         // Guardar sesión temporal para el siguiente paso
         this._session = data.session;
+        this.notificationService.showSuccess('Código verificado exitosamente');
         return { error, verified: true };
       })
       .finally(() => {
@@ -149,6 +161,14 @@ export class AuthService {
         if (data.session) {
           this._session = data.session;
         }
+        
+        // Mostrar mensaje de error o éxito
+        if (error) {
+          this.notificationService.showError(`Error al crear la cuenta: ${error.message}`);
+        } else {
+          this.notificationService.showSuccess('Cuenta creada exitosamente');
+        }
+        
         return { user: data.user, error };
       })
       .finally(() => {

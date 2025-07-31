@@ -43,10 +43,10 @@ export class CrearClaveComponent {
         '',
         [
           Validators.required,
-          Validators.pattern(/^ [a-zA-Z0-9._%+*-]+\ $/), //TODO: revisar este regex
-          PasswordValidators.UpperCaseCheck(),
-          PasswordValidators.lenghtCheck(6), // TODO: es necesario el parametro?
-          PasswordValidators.numberCheck()
+          // Validators.pattern(/^ [a-zA-Z0-9._%+*-]+\ $/), //TODO: revisar este regex
+          // PasswordValidators.UpperCaseCheck(),
+          // //PasswordValidators.lenghtCheck(6), // TODO: es necesario el parametro?
+          // PasswordValidators.numberCheck()
         ]
       ],
       confirmPassword: [

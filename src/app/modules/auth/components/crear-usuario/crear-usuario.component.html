@@ -6,6 +6,9 @@
             <!-- contenido aqui, ojito con el height porque esta a la
             <br> fuerza y no depende del tamaño de los componentes que van a qui adentro xd -->
             @if (comprobarCodigoP) {
+                <button mat-button (click)="volver()">
+                    <mat-icon>arrow_back</mat-icon>
+                    volver</button>
                 <app-comprobar-codigo [email]="emailUser()"  (next)="verificarCodigoValido($event)"> </app-comprobar-codigo>
 
             }
