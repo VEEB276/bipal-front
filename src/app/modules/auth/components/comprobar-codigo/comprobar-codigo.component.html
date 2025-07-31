@@ -9,6 +9,10 @@
           maxlength="1"
           [formControl]="toFormControl(control_i)"
           style="text-align: center"
+          (input)="onInputChange($event, $index)"
+          (keydown)="onKeyDown($event, $index)"
+          (paste)="onPaste($event)"
+          [id]="'input' + $index"
         />
 
         <!-- condicionales para acaparar los errores de los matformFields --------------------------------------------------------
