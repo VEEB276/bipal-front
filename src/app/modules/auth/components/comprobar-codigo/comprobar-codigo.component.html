@@ -1,0 +1,51 @@
+<mat-card class="card-container">
+  <h3>Código de verificación</h3>
+  <div class="container-code">
+    <div class="squares-for-code">
+      @for(control_i of digitGroup.controls; track $index){
+      <mat-form-field appearance="outline" style="width: 50px">
+        <input
+          matInput
+          maxlength="1"
+          [formControl]="prueba(control_i)"
+          style="text-align: center"
+        />
+
+        <!-- condicionales para acaparar los errores de los matformFields --------------------------------------------------------
+              se accede por medio del get digitGrouo debido a que molesta si se accede a los controls directamente por problema de
+              tipado de que si se accede directamente lo toma como AbstractControl -->
+        <!-- <div class="ayuda">
+              
+              @if (digitGroup.controls[$index].hasError('required')) {
+                  <mat-error> El campo es <strong>obligatorio</strong></mat-error>
+              }
+              Si el usuario entra al input y se sale del mismo a otro campo o fuera del input 
+              @else if (digitGroup.controls[$index].hasError('pattern')) {
+                  <mat-error>Ingresa un número de documento válido </mat-error>
+              } 
+          </div> -->
+      </mat-form-field>
+      } 
+     </div>
+      @if(formCode.invalid && formCode.touched){
+      <div>
+        <mat-error>El campo numérico es obligatorio </mat-error>
+      </div>
+    }
+    <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
+    <br />
+  </div>
+  {{ digitGroup.value.join("") }}
+
+  <span
+    >Ingresa el código de verificación que enviamos a tu correo electrónico para
+    poder continuar con el registro.
+  </span>
+  <button
+    mat-flat-button
+    (click)="verificarCodigo()"
+    [disabled]="formCode.invalid"
+  >
+    comprobar código
+  </button>
+</mat-card>

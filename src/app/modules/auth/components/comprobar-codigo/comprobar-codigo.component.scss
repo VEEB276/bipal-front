@@ -1,0 +1,18 @@
+:host{
+    display: flex;
+    align-items: center;
+}
+.card-container{
+    display: flex;   
+    align-items: center;
+    width: 80vw;
+}
+.squares-for-code{
+    display: flex;   
+    // width: 40%;
+    gap: 12px
+}
+.container-code{
+    display: flex;
+    flex-direction: column;
+}

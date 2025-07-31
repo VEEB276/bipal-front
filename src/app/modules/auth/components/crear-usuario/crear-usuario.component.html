@@ -1,0 +1,17 @@
+<div>
+    <mat-card class="mat-card-container">
+        <img src="/assets/img/banco_info_perfiles.svg" class="img-perfiles" />
+        <div>
+            <br>
+            <!-- contenido aqui, ojito con el height porque esta a la
+            <br> fuerza y no depende del tamaño de los componentes que van a qui adentro xd -->
+            @if (comprobarCodigoP) {
+                <app-comprobar-codigo (next)="verificarCodigoValido($event)"> </app-comprobar-codigo>
+
+            }
+            @else{
+                <app-crear-clave></app-crear-clave>
+            }
+        </div>
+    </mat-card>
+</div>

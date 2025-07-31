@@ -1,0 +1,20 @@
+:host{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.key-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.wid-100{
+  width: 70%;
+}
+.mat-card-edited{
+  background-color: rgba($color: #eeeeee, $alpha: 0);
+  box-shadow: none;
+  width:60%;
+  padding: 0.5rem;
+}

@@ -1,0 +1,25 @@
+<!-- @if () {} if pendiente para que aparezca cuando el input esta siendo tocado -->
+<mat-card class="mat-card-edited" appearance="outlined">
+
+   <form [formGroup]="codeForm" class="key-form">
+      <h2>Crear contraseña</h2>
+   <mat-form-field class="wid-100">
+      <mat-label> Contraseña</mat-label>
+      <input matInput placeholder="Ingresa la clave que quieres vincular a tu cuenta." formControlName="password">
+       @if(codeForm.invalid && codeForm.touched){
+        <mat-error>La contraseña debe contener al menos 1 mayuscula, 1 minuscula  </mat-error>
+       }
+   </mat-form-field>
+   <mat-form-field class="wid-100">
+      <mat-label> Confirmar contraseña</mat-label>
+      <!-- TODO:faltaria el metodo que compruebe que son iguales -->
+      <input matInput placeholder="Verifica la clave que quieres vincular a tu cuenta." formControlName="password">
+   </mat-form-field>
+
+   <button
+   mat-flat-button
+   (click)="crearUsuario()">
+   Crear usuario
+</button>
+</form>
+</mat-card>
