@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { MatInputModule } from "@angular/material/input";
 import { MatDivider } from "@angular/material/divider";
 import { RouterModule } from "@angular/router";
@@ -13,6 +13,7 @@ import {
 import { MatCheckbox } from "@angular/material/checkbox";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
+import { AuthService } from "../../../../core/auth/auth.service";
 
 @Component({
   selector: "app-registrarse",
@@ -30,6 +31,10 @@ import { HttpClient } from "@angular/common/http";
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrarseComponent {
+  //injectamos las depdencias
+  private readonly authService = inject(AuthService);
+
+
 BorrarData() {
 console.log('hola');
 
@@ -66,20 +71,24 @@ console.log('hola');
    * al usuario por medio de la API de supabase y se proceda a cargar la vista de llenado del codigo 
    */
   consultarEstadoCodigo():void {
-    const estadoEnviado: boolean = true;
-    //Aqui se llama al API de supabase
-    // this.httpBj.post("https://developer.marvel.com/",{})
-    if(estadoEnviado===true){
-      this.routerBj.navigate(['auth','crear-usuario'])
-    }
+    this.authService.sendCodeVerification(
+      this.registerForm.value.email
+    ).then(({ error }) => {
+      if (error) {
+        console.error("Error al enviar el código de verificación:", error);
+      } else {
+        this.routerBj.navigate(['auth', 'crear-usuario'], { queryParams: { email: this.registerForm.value.email } });
+      }
+    });
   }
 
   onSubmit() {
-    //this.registerForm.markAllAsTouched();
+    this.registerForm.markAllAsTouched();
     if (this.registerForm.invalid) return;
 
     if (this.clickOnCheckbox && this.registerForm.valid) {
       console.info("la información del formulario es:", this.registerForm.value);
+      this.consultarEstadoCodigo();
     }
   }
 }

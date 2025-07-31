@@ -1,4 +1,4 @@
-<mat-card class="card-container">
+<mat-card class="card-container" appearance="outlined">
   <h3>Código de verificación</h3>
   <div class="container-code">
     <div class="squares-for-code">
@@ -7,7 +7,7 @@
         <input
           matInput
           maxlength="1"
-          [formControl]="prueba(control_i)"
+          [formControl]="toFormControl(control_i)"
           style="text-align: center"
         />
 

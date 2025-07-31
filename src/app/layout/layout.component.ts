@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+import { AuthService } from "../core/auth/auth.service";
 
 interface MenuItem {
   label: string;
@@ -36,6 +37,7 @@ interface MenuItem {
 })
 export class LayoutComponent implements OnDestroy {
   private breakpointObserver = inject(BreakpointObserver);
+  private readonly authService = inject(AuthService);
   
   isCollapsed = signal(false);
   isMobile = signal(false);
@@ -101,6 +103,13 @@ export class LayoutComponent implements OnDestroy {
   }
   
   private cerrarSesion() {
-    console.log('Cerrar sesión');
+    this.authService.signOut().then(({ error }) => {
+      if (error) {
+        console.error("Error al cerrar sesión:", error);
+      } else {
+        console.log("Sesión cerrada correctamente");
+        // Redirigir al login o realizar otra acción
+      }
+    });
   }
 }

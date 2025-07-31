@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCard } from "@angular/material/card";
 import { PasswordValidators } from '../../Validators/passwordValidators';
@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-crear-clave',
@@ -24,8 +25,15 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './crear-clave.component.scss'
 })
 export class CrearClaveComponent {
+  private readonly authService = inject(AuthService);
+
   codeForm:FormGroup;
-  
+
+  //parametros de entrada
+  email = input<string>();
+  numeroDocumento = input<number>();
+
+
   constructor(
     private fb: FormBuilder,
     private router: Router
@@ -40,12 +48,29 @@ export class CrearClaveComponent {
           PasswordValidators.lenghtCheck(6), // TODO: es necesario el parametro?
           PasswordValidators.numberCheck()
         ]
+      ],
+      confirmPassword: [
+        '',
+        [
+          Validators.required,
+          PasswordValidators.matchPassword('password')]
       ]
     })
   }
   crearUsuario() {
-    // this.router.navigate(['../../'])
-    this.router.navigate(['/auth'], { replaceUrl: true })
+    this.authService.createUserAccount(
+      this.numeroDocumento(),
+      this.email(),
+      this.codeForm.value.password
+    ).then(() => {
+      console.log("Usuario creado exitosamente");
+      // Redirigir al usuario a la página de inicio de sesión o a donde sea necesario
+      this.router.navigate(['/hoja-de-vida'], { replaceUrl: true });
+    }).catch(error => {
+      console.error("Error al crear el usuario:", error);
+      // Manejar el error, mostrar un mensaje al usuario, etc.
+    });
+
   }
   
 }

@@ -8,7 +8,17 @@ import { AbstractControl, MinLengthValidator, ValidationErrors, ValidatorFn } fr
  *              🧱 Definir validators reutilizables y estáticos en clases
  */
 
-export class PasswordValidators{ 
+export class PasswordValidators{
+    static matchPassword(controlName: string): any | string {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const password = control.get(controlName);
+            const confirmPassword = control.get('confirmPassword');
+            if (password?.value !== confirmPassword?.value) {
+                return { passwordMismatch: true };
+            }
+            return null;
+        };
+    } 
 
     static UpperCaseCheck():ValidatorFn{ // validatorFn dice: "Esta función va a devolver un validador que Angular acepte."
         return(control: AbstractControl): ValidationErrors| null=>{ //el objeto control es el asignado al input  
