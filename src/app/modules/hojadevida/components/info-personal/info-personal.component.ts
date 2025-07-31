@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,9 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PersonaDto, PersonaCreateDto, PersonaUpdateDto } from '../../models';
 import { InformacionPersonalService } from '../../services';
+import { NotificationService } from '../../../../core/services';
 
 @Component({
   selector: 'app-info-personal',
@@ -37,11 +38,9 @@ export class InfoPersonalComponent implements OnInit {
   isEditMode = false;
   personaId?: number;
 
-  constructor(
-    private fb: FormBuilder,
-    private informacionPersonalService: InformacionPersonalService,
-    private snackBar: MatSnackBar
-  ) {}
+  private fb = inject(FormBuilder);
+  private informacionPersonalService = inject(InformacionPersonalService);
+  private notificationService = inject(NotificationService);
 
   ngOnInit(): void {
     this.initializeForm();
@@ -94,7 +93,7 @@ export class InfoPersonalComponent implements OnInit {
     } else {
       console.log('Form is invalid');
       this.personaForm.markAllAsTouched();
-      this.showMessage('Por favor, complete todos los campos requeridos correctamente.');
+      this.notificationService.showError('Por favor, complete todos los campos requeridos correctamente.');
     }
   }
 
@@ -111,12 +110,12 @@ export class InfoPersonalComponent implements OnInit {
           this.personaId = persona.id;
           this.isEditMode = true;
           this.isLoading = false;
-          this.showMessage('Información personal guardada exitosamente.');
+          this.notificationService.showSuccess('Información personal guardada exitosamente.');
         },
         error: (error) => {
           console.error('Error al crear persona:', error);
           this.isLoading = false;
-          this.showMessage(error.message || 'Error al guardar la información personal.');
+          this.notificationService.showError(error.message || 'Error al guardar la información personal.');
         }
       });
   }
@@ -135,12 +134,12 @@ export class InfoPersonalComponent implements OnInit {
         next: (persona: PersonaDto) => {
           console.log('Persona actualizada:', persona);
           this.isLoading = false;
-          this.showMessage('Información personal actualizada exitosamente.');
+          this.notificationService.showSuccess('Información personal actualizada exitosamente.');
         },
         error: (error) => {
           console.error('Error al actualizar persona:', error);
           this.isLoading = false;
-          this.showMessage(error.message || 'Error al actualizar la información personal.');
+          this.notificationService.showError(error.message || 'Error al actualizar la información personal.');
         }
       });
   }
@@ -164,7 +163,7 @@ export class InfoPersonalComponent implements OnInit {
         error: (error) => {
           console.error('Error al cargar persona:', error);
           this.isLoading = false;
-          this.showMessage(error.message || 'Error al cargar la información personal.');
+          this.notificationService.showError(error.message || 'Error al cargar la información personal.');
         }
       });
   }
@@ -176,7 +175,7 @@ export class InfoPersonalComponent implements OnInit {
     const numeroDocumento = this.numeroDocumento?.value;
     
     if (!numeroDocumento) {
-      this.showMessage('Por favor, ingrese un número de documento.');
+      this.notificationService.showWarning('Por favor, ingrese un número de documento.');
       return;
     }
 
@@ -189,12 +188,12 @@ export class InfoPersonalComponent implements OnInit {
           this.personaId = persona.id;
           this.isEditMode = true;
           this.isLoading = false;
-          this.showMessage('Información personal encontrada y cargada.');
+          this.notificationService.showSuccess('Información personal encontrada y cargada.');
         },
         error: (error) => {
           console.error('Error al buscar persona:', error);
           this.isLoading = false;
-          this.showMessage(error.message || 'No se encontró información para este documento.');
+          this.notificationService.showError(error.message || 'No se encontró información para este documento.');
         }
       });
   }
@@ -211,7 +210,7 @@ export class InfoPersonalComponent implements OnInit {
           next: (existe: boolean) => {
             if (existe) {
               this.numeroDocumento?.setErrors({ documentoExistente: true });
-              this.showMessage('Este número de documento ya está registrado.');
+              this.notificationService.showWarning('Este número de documento ya está registrado.');
             }
           },
           error: (error) => {
@@ -233,7 +232,7 @@ export class InfoPersonalComponent implements OnInit {
           next: (existe: boolean) => {
             if (existe) {
               this.correoElectronico?.setErrors({ correoExistente: true });
-              this.showMessage('Este correo electrónico ya está registrado.');
+              this.notificationService.showWarning('Este correo electrónico ya está registrado.');
             }
           },
           error: (error) => {
@@ -253,17 +252,6 @@ export class InfoPersonalComponent implements OnInit {
     this.initializeForm();
   }
 
-  /**
-   * Muestra un mensaje al usuario
-   * @param message Mensaje a mostrar
-   */
-  private showMessage(message: string): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 5000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top'
-    });
-  }
   // Getters para facilitar el acceso a los controles en el template
   get primerNombre() { return this.personaForm.get('primerNombre'); }
   get segundoNombre() { return this.personaForm.get('segundoNombre'); }
