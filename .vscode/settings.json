@@ -3,6 +3,10 @@
         "angular-*": {
             "style": "scss",
             "externalTemplate": true
+        },
+        "angular-component": {
+            "skipChangeDetectionOnPush": true,
+            "skipDisplayBlock": true
         }
     }
 }
