@@ -1,0 +1,65 @@
+/* Estilos para SnackBars personalizados */
+
+/* SnackBar de Error */
+.error-snackbar {
+  --mdc-snackbar-container-color: #f44336 !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-snack-bar-button-color: white !important;
+}
+
+.error-snackbar .mat-mdc-snack-bar-container {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.error-snackbar .mat-mdc-snack-bar-action {
+  color: white !important;
+}
+
+/* SnackBar de Éxito */
+.success-snackbar {
+  --mdc-snackbar-container-color: #4caf50 !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-snack-bar-button-color: white !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-container {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-action {
+  color: white !important;
+}
+
+/* SnackBar de Información */
+.info-snackbar {
+  --mdc-snackbar-container-color: #2196f3 !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-snack-bar-button-color: white !important;
+}
+
+.info-snackbar .mat-mdc-snack-bar-container {
+  background-color: #2196f3 !important;
+  color: white !important;
+}
+
+.info-snackbar .mat-mdc-snack-bar-action {
+  color: white !important;
+}
+
+/* SnackBar de Advertencia */
+.warning-snackbar {
+  --mdc-snackbar-container-color: #ff9800 !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-snack-bar-button-color: white !important;
+}
+
+.warning-snackbar .mat-mdc-snack-bar-container {
+  background-color: #ff9800 !important;
+  color: white !important;
+}
+
+.warning-snackbar .mat-mdc-snack-bar-action {
+  color: white !important;
+}

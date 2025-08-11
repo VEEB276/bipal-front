@@ -1,4 +1,4 @@
-<mat-card class="card-container">
+<mat-card class="card-container" appearance="outlined">
   <h3>Código de verificación</h3>
   <div class="container-code">
     <div class="squares-for-code">
@@ -7,8 +7,12 @@
         <input
           matInput
           maxlength="1"
-          [formControl]="prueba(control_i)"
+          [formControl]="toFormControl(control_i)"
           style="text-align: center"
+          (input)="onInputChange($event, $index)"
+          (keydown)="onKeyDown($event, $index)"
+          (paste)="onPaste($event)"
+          [id]="'input' + $index"
         />
 
         <!-- condicionales para acaparar los errores de los matformFields --------------------------------------------------------
@@ -35,8 +39,6 @@
     <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
     <br />
   </div>
-  {{ digitGroup.value.join("") }}
-
   <span
     >Ingresa el código de verificación que enviamos a tu correo electrónico para
     poder continuar con el registro.
