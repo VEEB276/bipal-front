@@ -23,6 +23,9 @@ import { PersonaDto, PersonaCreateDto, PersonaUpdateDto } from "../../models";
 import { InformacionPersonalService } from "../../services";
 import { NotificationService } from "../../../../core/services";
 import { AuthService } from "../../../../core/auth/auth.service";
+import { Store } from "@ngrx/store";
+import { HojavidaActions, selectPersona } from "../../store";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-info-personal",
@@ -45,20 +48,29 @@ import { AuthService } from "../../../../core/auth/auth.service";
 export class InfoPersonalComponent implements OnInit {
   personaForm!: FormGroup;
   isLoading = false;
-  isEditMode = false;
+  get isEditMode() {
+    return this.personaId !== undefined;
+  }
   personaId?: number;
 
-  private fb = inject(FormBuilder);
-  private informacionPersonalService = inject(InformacionPersonalService);
-  private notificationService = inject(NotificationService);
-  private auth = inject(AuthService);
+  private readonly fb = inject(FormBuilder);
+  private readonly informacionPersonalService = inject(
+    InformacionPersonalService
+  );
+  private readonly notificationService = inject(NotificationService);
+  private readonly auth = inject(AuthService);
+  private readonly store = inject(Store);
 
   ngOnInit(): void {
     // Primero construimos el formulario para garantizar que exista antes de patchValue
     this.buildForm();
     this.personaId = this.auth.session?.user.user_metadata.idPersona;
     if (this.personaId) {
-      this.cargarPersona();
+      // Intentar obtener desde store primero
+      this.store.select(selectPersona).subscribe((p) => {
+        console.log(p);
+        this.personaForm.patchValue(p);
+      });
     }
   }
 
@@ -134,7 +146,7 @@ export class InfoPersonalComponent implements OnInit {
     if (this.personaForm.valid) {
       this.isLoading = true;
 
-      if (this.isEditMode && this.personaId) {
+      if (this.isEditMode) {
         this.actualizarPersona();
       } else {
         this.crearPersona();
@@ -158,10 +170,12 @@ export class InfoPersonalComponent implements OnInit {
         next: (persona: PersonaDto) => {
           console.log("Persona creada:", persona);
           this.personaId = persona.id;
-          this.isEditMode = true;
           this.isLoading = false;
           this.notificationService.showSuccess(
             "Información personal guardada exitosamente."
+          );
+          this.store.dispatch(
+            HojavidaActions.updatePersonaInState({ persona })
           );
         },
         error: (error) => {
@@ -195,6 +209,9 @@ export class InfoPersonalComponent implements OnInit {
           this.notificationService.showSuccess(
             "Información personal actualizada exitosamente."
           );
+          this.store.dispatch(
+            HojavidaActions.updatePersonaInState({ persona })
+          );
         },
         error: (error) => {
           console.error("Error al actualizar persona:", error);
@@ -204,96 +221,6 @@ export class InfoPersonalComponent implements OnInit {
           );
         },
       });
-  }
-
-  /**
-   * Carga la información de una persona por ID
-   * @param id ID de la persona a cargar
-   */
-  cargarPersona(): void {
-    this.isLoading = true;
-
-    this.informacionPersonalService
-      .obtenerInformacionPersonal(this.personaId)
-      .subscribe({
-        next: (persona: PersonaDto) => {
-          this.personaForm.patchValue(persona);
-          this.isEditMode = true;
-          this.isLoading = false;
-          console.log("Persona cargada:", persona);
-        },
-        error: (error) => {
-          console.error("Error al cargar persona:", error);
-          this.isLoading = false;
-          this.notificationService.showError(
-            error.message || "Error al cargar la información personal."
-          );
-        },
-      });
-  }
-
-  /**
-   * Busca una persona por número de documento
-   */
-  buscarPorDocumento(): void {
-    const numeroDocumento = this.control("numeroDocumento")?.value;
-
-    if (!numeroDocumento) {
-      this.notificationService.showWarning(
-        "Por favor, ingrese un número de documento."
-      );
-      return;
-    }
-
-    this.isLoading = true;
-
-    this.informacionPersonalService
-      .buscarPorDocumento(numeroDocumento)
-      .subscribe({
-        next: (persona: PersonaDto) => {
-          this.personaForm.patchValue(persona);
-          this.personaId = persona.id;
-          this.isEditMode = true;
-          this.isLoading = false;
-          this.notificationService.showSuccess(
-            "Información personal encontrada y cargada."
-          );
-        },
-        error: (error) => {
-          console.error("Error al buscar persona:", error);
-          this.isLoading = false;
-          this.notificationService.showError(
-            error.message || "No se encontró información para este documento."
-          );
-        },
-      });
-  }
-
-  /**
-   * Valida si un documento ya existe (para nuevo registro)
-   */
-  onDocumentoChange(): void {
-    const numeroDocumento = this.control("numeroDocumento")?.value;
-
-    if (numeroDocumento && !this.isEditMode) {
-      this.informacionPersonalService
-        .validarDocumentoExistente(numeroDocumento)
-        .subscribe({
-          next: (existe: boolean) => {
-            if (existe) {
-              this.control("numeroDocumento")?.setErrors({
-                documentoExistente: true,
-              });
-              this.notificationService.showWarning(
-                "Este número de documento ya está registrado."
-              );
-            }
-          },
-          error: (error) => {
-            console.error("Error al validar documento:", error);
-          },
-        });
-    }
   }
 
   /**

@@ -38,7 +38,7 @@ export class InformacionPersonalService {
    * Obtiene toda la información personal disponible
    * @returns Observable con lista de personas
    */
-  // NOTE: Endpoint no implementado en backend (listar todas las personas)
+  // TODO: Endpoint no implementado en backend (listar todas las personas)
   obtenerTodasLasPersonas(): Observable<PersonaDto[]> {
     return this.http
       .get<PersonaDto[]>(this.apiUrl)
@@ -91,7 +91,7 @@ export class InformacionPersonalService {
    * @param id ID de la persona a eliminar
    * @returns Observable vacío
    */
-  // NOTE: Endpoint eliminar persona no existe aún en backend
+  // TODO: Endpoint eliminar persona no existe aún en backend
   eliminarInformacionPersonal(id: number): Observable<void> {
     return this.http
       .delete<void>(`${this.apiUrl}/${id}`)
@@ -103,7 +103,7 @@ export class InformacionPersonalService {
    * @param numeroDocumento Número de documento para buscar
    * @returns Observable con la persona encontrada
    */
-  // NOTE: Endpoint buscar por documento no existe aún en backend
+  // TODO: Endpoint buscar por documento no existe aún en backend
   buscarPorDocumento(numeroDocumento: string): Observable<PersonaDto> {
     return this.http
       .get<PersonaDto>(`${this.apiUrl}/find?numero-documento=${numeroDocumento}`)
@@ -115,7 +115,7 @@ export class InformacionPersonalService {
    * @param numeroDocumento Número de documento a validar
    * @returns Observable con booleano indicando si existe
    */
-  // NOTE: Endpoint validar documento no existe aún en backend
+  // TODO: Endpoint validar documento no existe aún en backend
   validarDocumentoExistente(numeroDocumento: string): Observable<boolean> {
     return this.http
       .get<boolean>(`${this.apiUrl}/validar-documento/${numeroDocumento}`)
@@ -127,7 +127,7 @@ export class InformacionPersonalService {
    * @param correoElectronico Correo electrónico a validar
    * @returns Observable con booleano indicando si existe
    */
-  // NOTE: Endpoint validar correo no existe aún en backend
+  // TODO: Endpoint validar correo no existe aún en backend
   validarCorreoExistente(correoElectronico: string): Observable<boolean> {
     return this.http
       .get<boolean>(

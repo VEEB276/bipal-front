@@ -61,7 +61,7 @@
 
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Número de Documento</mat-label>
-        <input matInput formControlName="numeroDocumento" placeholder="Ejm: 1234567890" (blur)="onDocumentoChange()">
+        <input matInput formControlName="numeroDocumento" placeholder="Ejm: 1234567890">
         <mat-icon matPrefix>numbers</mat-icon>
         <mat-error *ngIf="control('numeroDocumento')?.invalid && control('numeroDocumento')?.touched">
           <span *ngIf="control('numeroDocumento')?.errors?.['required']">El número de documento es requerido</span>
