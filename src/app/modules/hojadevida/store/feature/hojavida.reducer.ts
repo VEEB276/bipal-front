@@ -7,7 +7,7 @@ export const HOJAVIDA_FEATURE_KEY = "hojavida";
 export interface HojavidaState {
   persona: PersonaDto | null;
   loadingPersona: boolean;
-  errorPersona: string | null;
+  errorPersona: string;
 }
 
 const initialState: HojavidaState = {

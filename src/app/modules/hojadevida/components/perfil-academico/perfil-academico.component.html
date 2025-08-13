@@ -4,9 +4,9 @@
     (ngSubmit)="onSubmit()"
     class="perfil-academico-form"
   >
-    <div formArrayName="titulos">
+  <div formArrayName="estudios">
       <mat-card
-        *ngFor="let titulo of titulosArray.controls; let i = index"
+  *ngFor="let estudio of estudiosArray.controls; let i = index"
         class="titulo-section"
       >
         <mat-card-header class="titulo-header">
@@ -19,8 +19,8 @@
               mat-stroked-button
               color="error"
               class="eliminar-btn"
-              (click)="eliminarTitulo(i)"
-              [disabled]="titulosArray.length === 1"
+              (click)="eliminarEstudio(i)"
+              [disabled]="estudiosArray.length === 1"
             >
               <mat-icon>delete</mat-icon>
               Eliminar Título {{ i + 1 }}
@@ -30,28 +30,28 @@
 
         <mat-card-content>
           <div [formGroupName]="i" class="titulo-form-group">
-          <!-- Primera Fila: Título Académico -->
+          <!-- Primera Fila: Nombre del Título -->
           <div class="form-row">
             <mat-form-field appearance="outline" class="form-field full-width">
               <mat-label>Título Académico</mat-label>
               <input
                 matInput
-                formControlName="tituloAcademico"
+                formControlName="nombreTitulo"
                 placeholder="Ingrese el título académico"
               />
               <mat-icon matPrefix>school</mat-icon>
               <mat-error
                 *ngIf="
-                  getTituloControl(i, 'tituloAcademico')?.invalid &&
-                  getTituloControl(i, 'tituloAcademico')?.touched
+                  getEstudioControl(i, 'nombreTitulo')?.invalid &&
+                  getEstudioControl(i, 'nombreTitulo')?.touched
                 "
               >
                 <span
-                  *ngIf="getTituloControl(i, 'tituloAcademico')?.errors?.['required']"
+                  *ngIf="getEstudioControl(i, 'nombreTitulo')?.errors?.['required']"
                   >El título académico es requerido</span
                 >
                 <span
-                  *ngIf="getTituloControl(i, 'tituloAcademico')?.errors?.['maxlength']"
+                  *ngIf="getEstudioControl(i, 'nombreTitulo')?.errors?.['maxlength']"
                   >Máximo 255 caracteres</span
                 >
               </mat-error>
@@ -63,22 +63,17 @@
             <mat-form-field appearance="outline" class="form-field">
               <mat-label>Graduado</mat-label>
               <mat-select formControlName="graduado">
-                <mat-option
-                  *ngFor="let opcion of graduadoOptions"
-                  [value]="opcion.value"
-                >
-                  {{ opcion.label }}
-                </mat-option>
+                <mat-option *ngFor="let opcion of graduadoOptions" [value]="opcion.value">{{ opcion.label }}</mat-option>
               </mat-select>
               <mat-icon matPrefix>assignment_turned_in</mat-icon>
               <mat-error
                 *ngIf="
-                  getTituloControl(i, 'graduado')?.invalid &&
-                  getTituloControl(i, 'graduado')?.touched
+                  getEstudioControl(i, 'graduado')?.invalid &&
+                  getEstudioControl(i, 'graduado')?.touched
                 "
               >
                 <span
-                  *ngIf="getTituloControl(i, 'graduado')?.errors?.['required']"
+                  *ngIf="getEstudioControl(i, 'graduado')?.errors?.['required']"
                   >Seleccione si está graduado</span
                 >
               </mat-error>
@@ -86,23 +81,18 @@
 
             <mat-form-field appearance="outline" class="form-field">
               <mat-label>Nivel Educativo</mat-label>
-              <mat-select formControlName="nivelEducativo">
-                <mat-option
-                  *ngFor="let nivel of nivelesEducativos"
-                  [value]="nivel.value"
-                >
-                  {{ nivel.label }}
-                </mat-option>
+              <mat-select formControlName="idNivelEducativo">
+                <mat-option *ngFor="let nivel of nivelesEducativos" [value]="nivel.id">{{ nivel.nombre }}</mat-option>
               </mat-select>
               <mat-icon matPrefix>grade</mat-icon>
               <mat-error
                 *ngIf="
-                  getTituloControl(i, 'nivelEducativo')?.invalid &&
-                  getTituloControl(i, 'nivelEducativo')?.touched
+                  getEstudioControl(i, 'idNivelEducativo')?.invalid &&
+                  getEstudioControl(i, 'idNivelEducativo')?.touched
                 "
               >
                 <span
-                  *ngIf="getTituloControl(i, 'nivelEducativo')?.errors?.['required']"
+                  *ngIf="getEstudioControl(i, 'idNivelEducativo')?.errors?.['required']"
                   >Seleccione el nivel educativo</span
                 >
               </mat-error>
@@ -114,22 +104,22 @@
               >
               <input
                 matInput
-                formControlName="institucionEducativa"
+                formControlName="nombreInstitucion"
                 placeholder="Nombre de la institución"
               />
               <mat-icon matPrefix>location_city</mat-icon>
               <mat-error
                 *ngIf="
-                  getTituloControl(i, 'institucionEducativa')?.invalid &&
-                  getTituloControl(i, 'institucionEducativa')?.touched
+                  getEstudioControl(i, 'nombreInstitucion')?.invalid &&
+                  getEstudioControl(i, 'nombreInstitucion')?.touched
                 "
               >
                 <span
-                  *ngIf="getTituloControl(i, 'institucionEducativa')?.errors?.['required']"
+                  *ngIf="getEstudioControl(i, 'nombreInstitucion')?.errors?.['required']"
                   >La institución educativa es requerida</span
                 >
                 <span
-                  *ngIf="getTituloControl(i, 'institucionEducativa')?.errors?.['maxlength']"
+                  *ngIf="getEstudioControl(i, 'nombreInstitucion')?.errors?.['maxlength']"
                   >Máximo 255 caracteres</span
                 >
               </mat-error>
@@ -144,7 +134,7 @@
               >
               <div class="slider-field">
                 <span class="slider-value">{{
-                  getTituloControl(i, "semestresAprobados")?.value || 0
+                  getEstudioControl(i, "semestresAprobados")?.value || 0
                 }}</span>
                 <mat-slider
                   class="semester-slider"
@@ -158,20 +148,20 @@
               </div>
               <mat-error
                 *ngIf="
-                  getTituloControl(i, 'semestresAprobados')?.invalid &&
-                  getTituloControl(i, 'semestresAprobados')?.touched
+                  getEstudioControl(i, 'semestresAprobados')?.invalid &&
+                  getEstudioControl(i, 'semestresAprobados')?.touched
                 "
               >
                 <span
-                  *ngIf="getTituloControl(i, 'semestresAprobados')?.errors?.['required']"
+                  *ngIf="getEstudioControl(i, 'semestresAprobados')?.errors?.['required']"
                   >El número de semestres es requerido</span
                 >
                 <span
-                  *ngIf="getTituloControl(i, 'semestresAprobados')?.errors?.['min']"
+                  *ngIf="getEstudioControl(i, 'semestresAprobados')?.errors?.['min']"
                   >Mínimo 0 semestres</span
                 >
                 <span
-                  *ngIf="getTituloControl(i, 'semestresAprobados')?.errors?.['max']"
+                  *ngIf="getEstudioControl(i, 'semestresAprobados')?.errors?.['max']"
                   >Máximo 16 semestres</span
                 >
               </mat-error>
@@ -191,10 +181,10 @@
         mat-raised-button
         color="primary"
         class="agregar-estudios-btn"
-        (click)="agregarTitulo()"
+  (click)="agregarEstudio()"
       >
         <mat-icon>add</mat-icon>
-        Agregar estudios
+  Agregar estudio
       </button>
     </div>
 

@@ -1,18 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
-import { PerfilAcademico, NivelEducativo, GraduadoOption } from './interfaces/perfil-academico.interface';
+import { Component, OnInit, inject } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  Validators,
+} from "@angular/forms";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatSliderModule } from "@angular/material/slider";
+import { MatCardModule } from "@angular/material/card";
+import { MatDividerModule } from "@angular/material/divider";
+import {
+  EstudioHvCreateDto,
+  NivelEducativoDto,
+} from "./interfaces/perfil-academico.interface";
+import { EstudiosHvService } from "./services";
+import { AuthService } from "../../../../core/auth/auth.service";
+import { Store } from "@ngrx/store";
+import { selectPersona } from "../../store";
 
 @Component({
-  selector: 'app-perfil-academico',
+  selector: "app-perfil-academico",
   standalone: true,
   imports: [
     CommonModule,
@@ -24,78 +37,133 @@ import { PerfilAcademico, NivelEducativo, GraduadoOption } from './interfaces/pe
     MatIconModule,
     MatSliderModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
   ],
-  templateUrl: './perfil-academico.component.html',
-  styleUrls: ['./perfil-academico.component.scss']
+  templateUrl: "./perfil-academico.component.html",
+  styleUrls: ["./perfil-academico.component.scss"],
 })
 export class PerfilAcademicoComponent implements OnInit {
   perfilForm: FormGroup;
+  nivelesEducativos: NivelEducativoDto[] = [];
 
-  nivelesEducativos: NivelEducativo[] = [
-    { value: 'tecnico', label: 'Técnico' },
-    { value: 'tecnologo', label: 'Tecnólogo' },
-    { value: 'profesional', label: 'Profesional' },
-    { value: 'especializacion', label: 'Especialización' },
-    { value: 'maestria', label: 'Maestría' },
-    { value: 'doctorado', label: 'Doctorado' },
-    { value: 'bachiller', label: 'Bachiller' }
+  idHojaVida: number | undefined;
+
+  // Opciones de graduado boolean -> UI
+  graduadoOptions = [
+    { value: true, label: "Sí" },
+    { value: false, label: "No" },
   ];
 
-  graduadoOptions: GraduadoOption[] = [
-    { value: 'si', label: 'Sí' },
-    { value: 'no', label: 'No' }
-  ];
+  private readonly estudiosService = inject(EstudiosHvService);
+  private readonly auth = inject(AuthService);
+  private readonly store = inject(Store);
 
-  constructor(private fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder) {
     this.perfilForm = this.fb.group({
-      titulos: this.fb.array([this.createTituloFormGroup()])
+      estudios: this.fb.array([this.createEstudioFormGroup()]),
     });
   }
 
-  ngOnInit(): void {}
-
-  get titulosArray(): FormArray {
-    return this.perfilForm.get('titulos') as FormArray;
+  ngOnInit(): void {
+    this.idHojaVida = this.store.selectSignal(selectPersona)().idHojaVida;
+    this.cargarNivelesEducativos();
+    this.estudiosService
+      .obtenerEstudiosPorPersona(this.idHojaVida)
+      .subscribe((estudios) => {
+        //console.log(estudios);
+        this.cargarEstudios(estudios);
+      });
   }
 
-  createTituloFormGroup(): FormGroup {
+  get estudiosArray(): FormArray {
+    return this.perfilForm.get("estudios") as FormArray;
+  }
+
+  createEstudioFormGroup(): FormGroup {
     return this.fb.group({
-      tituloAcademico: ['', [Validators.required, Validators.maxLength(255)]],
-      graduado: ['', Validators.required],
-      nivelEducativo: ['', Validators.required],
-      institucionEducativa: ['', [Validators.required, Validators.maxLength(255)]],
-      semestresAprobados: [0, [Validators.required, Validators.min(0), Validators.max(16)]]
+      nombreTitulo: ["", [Validators.required, Validators.maxLength(255)]],
+      graduado: [false, Validators.required],
+      idNivelEducativo: [null, Validators.required],
+      nombreInstitucion: ["", [Validators.required, Validators.maxLength(255)]],
+      semestresAprobados: [
+        0,
+        [Validators.required, Validators.min(0), Validators.max(16)],
+      ],
     });
   }
 
-  agregarTitulo(): void {
-    this.titulosArray.push(this.createTituloFormGroup());
+  cargarEstudios(estudios: any[]) {
+    this.estudiosArray.clear(); // Limpiar el array antes de cargar nuevos estudios
+    estudios.forEach((estudio) => {
+      this.estudiosArray.push(
+        this.fb.group({
+          nombreTitulo: [
+            estudio.nombreTitulo,
+            [Validators.required, Validators.maxLength(255)],
+          ],
+          graduado: [estudio.graduado, Validators.required],
+          idNivelEducativo: [estudio.idNivelEducativo, Validators.required],
+          nombreInstitucion: [
+            estudio.nombreInstitucion,
+            [Validators.required, Validators.maxLength(255)],
+          ],
+          semestresAprobados: [
+            estudio.semestresAprobados,
+            [Validators.required, Validators.min(0), Validators.max(16)],
+          ],
+        })
+      );
+    });
   }
 
-  eliminarTitulo(index: number): void {
-    if (this.titulosArray.length > 1) {
-      this.titulosArray.removeAt(index);
+  agregarEstudio(): void {
+    this.estudiosArray.push(this.createEstudioFormGroup());
+  }
+
+  eliminarEstudio(index: number): void {
+    if (this.estudiosArray.length > 1) {
+      this.estudiosArray.removeAt(index);
     }
+  }
+
+  private cargarNivelesEducativos(): void {
+    this.estudiosService.obtenerNivelesEducativos().subscribe({
+      next: (niveles) => (this.nivelesEducativos = niveles || []),
+      error: (err) => console.error("Error cargando niveles educativos", err),
+    });
   }
 
   onSubmit(): void {
-    if (this.perfilForm.valid) {
-      console.log('Perfil Académico:', this.perfilForm.value);
-      // Aquí puedes agregar la lógica para enviar los datos
-    } else {
-      console.log('Formulario inválido');
+    if (!this.perfilForm.valid) {
       this.markFormGroupTouched(this.perfilForm);
+      return;
     }
+    const payload: EstudioHvCreateDto[] = this.estudiosArray.controls.map(
+      (ctrl) => ({
+        idHojaVida: this.idHojaVida,
+        nombreTitulo: ctrl.get("nombreTitulo")?.value,
+        graduado: ctrl.get("graduado")?.value,
+        idNivelEducativo: ctrl.get("idNivelEducativo")?.value,
+        nombreInstitucion: ctrl.get("nombreInstitucion")?.value,
+        semestresAprobados: ctrl.get("semestresAprobados")?.value,
+      })
+    );
+    console.log("Payload Estudios HV", payload);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // TODO: lógica update vs create (si backend soporta actualizar lote) – por ahora siempre create
+    this.estudiosService.crearEstudios(payload).subscribe({
+      next: (resp) => console.log("Estudios guardados", resp),
+      error: (err) => console.error("Error guardando estudios", err),
+    });
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {
-    Object.keys(formGroup.controls).forEach(key => {
+    Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
       if (control instanceof FormGroup) {
         this.markFormGroupTouched(control);
       } else if (control instanceof FormArray) {
-        control.controls.forEach(arrayControl => {
+        control.controls.forEach((arrayControl) => {
           if (arrayControl instanceof FormGroup) {
             this.markFormGroupTouched(arrayControl);
           } else {
@@ -109,7 +177,7 @@ export class PerfilAcademicoComponent implements OnInit {
   }
 
   // Métodos auxiliares para obtener controles específicos
-  getTituloControl(index: number, field: string) {
-    return this.titulosArray.at(index).get(field);
+  getEstudioControl(index: number, field: string) {
+    return this.estudiosArray.at(index).get(field);
   }
 }
