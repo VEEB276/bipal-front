@@ -9,7 +9,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('./assets/img/background-auth.jpg');
+  /* Ruta relativa (sube 3 niveles) para que Angular resuelva y copie el asset, compatible con baseHref en /bipal-front/ */
+  background-image: url('../../../assets/img/background-auth.jpg');
   height: 100vh;
   width: 100vw;
   background-size:contain;
