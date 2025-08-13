@@ -9,6 +9,7 @@
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
     "noPropertyAccessFromIndexSignature": false,
+    "noImplicitAny": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
