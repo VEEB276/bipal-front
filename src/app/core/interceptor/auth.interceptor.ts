@@ -19,7 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   // Solo aplicar loading para peticiones POST
-  if (req.method === 'POST') {
+  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
     // Mostrar loading antes de enviar la petición
     loadingService.show();
     
