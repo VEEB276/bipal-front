@@ -183,7 +183,7 @@ export class InfoPersonalComponent implements OnInit {
     }
     const formData: PersonaUpdateDto = {
       id: this.personaId,
-      ...this.personaForm.value,
+      ...this.personaForm.getRawValue(),
     };
 
     this.informacionPersonalService

@@ -104,7 +104,7 @@ describe('InformacionPersonalService', () => {
         expect(persona).toEqual(mockPersona);
       });
 
-      const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/buscar/documento/${numeroDocumento}`);
+      const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/find?numero-documento=${numeroDocumento}`);
       expect(req.request.method).toBe('GET');
       req.flush(mockPersona);
     });

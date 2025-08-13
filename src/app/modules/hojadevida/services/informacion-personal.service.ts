@@ -99,14 +99,14 @@ export class InformacionPersonalService {
   }
 
   /**
-   * Busca personas por criterios específicos
+   * Busca personas por numero de documento.
    * @param numeroDocumento Número de documento para buscar
    * @returns Observable con la persona encontrada
    */
   // NOTE: Endpoint buscar por documento no existe aún en backend
   buscarPorDocumento(numeroDocumento: string): Observable<PersonaDto> {
     return this.http
-      .get<PersonaDto>(`${this.apiUrl}/buscar/documento/${numeroDocumento}`)
+      .get<PersonaDto>(`${this.apiUrl}/find?numero-documento=${numeroDocumento}`)
       .pipe(catchError(this.handleError));
   }
 
