@@ -2,6 +2,7 @@ import type { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { LoadingService } from '../services/loading.service';
 import { finalize } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 /**
  * Interceptor que maneja el loading automático para peticiones POST
@@ -9,7 +10,14 @@ import { finalize } from 'rxjs/operators';
  */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const loadingService = inject(LoadingService);
-  
+  const auth = inject(AuthService);
+
+  // Si existe sesión de Supabase agregamos header user-id
+  const userId = auth.session?.user?.id;
+  if (userId) {
+    req = req.clone({ setHeaders: { 'user-id': userId } });
+  }
+
   // Solo aplicar loading para peticiones POST
   if (req.method === 'POST') {
     // Mostrar loading antes de enviar la petición

@@ -72,7 +72,8 @@ console.log('hola');
    */
   consultarEstadoCodigo():void {
     this.authService.sendCodeVerification(
-      this.registerForm.value.email
+      this.registerForm.value.email,
+      this.registerForm.value.documentNumber
     ).then(({ error }) => {
       if (error) {
         console.error("Error al enviar el código de verificación:", error);

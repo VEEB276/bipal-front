@@ -17,10 +17,19 @@ html {
     typography: 'Ubuntu, sans-serif',
     density: 0,
   ));
-}/* You can add global styles to this file, and also import other style files */
+
+  a {
+    color: var(--primary-color);
+  }
+}
 body {
     margin: 0;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: 'Ubuntu', sans-serif; color: #31333fcc }
-
+body { 
+  margin: 0; 
+  color: #31333f; 
+}
+* {
+  font-family: 'Ubuntu', sans-serif; 
+}

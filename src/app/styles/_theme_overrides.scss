@@ -114,3 +114,34 @@
   --mat-secondary-color-rgb: 93, 93, 112; // Valor RGB de secondary-color (tone 40)
   --mat-on-secondary-color: var(--on-secondary);
 }
+
+// Snackbar overrides for notification types
+.snackbar-success {
+  --mat-snack-bar-button-color: white;
+  --mdc-snackbar-container-color: var(--success-color);
+  --mdc-snackbar-supporting-text-color: var(--on-primary);
+  
+  .mat-mdc-snack-bar-action {
+    --mdc-snackbar-action-label-text-color: var(--on-primary);
+  }
+}
+
+.snackbar-error {
+  --mat-snack-bar-button-color: white;
+  --mdc-snackbar-container-color: var(--error-color);
+  --mdc-snackbar-supporting-text-color: var(--on-error);
+  
+  .mat-mdc-snack-bar-action {
+    --mdc-snackbar-action-label-text-color: var(--on-error);
+  }
+}
+
+.snackbar-warning {
+  --mat-snack-bar-button-color: white;
+  --mdc-snackbar-container-color: var(--warning-color);
+  --mdc-snackbar-supporting-text-color: var(--text-color);
+  
+  .mat-mdc-snack-bar-action {
+    --mdc-snackbar-action-label-text-color: var(--text-color);
+  }
+}

@@ -1,13 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject, signal, computed, OnDestroy } from "@angular/core";
-import { RouterOutlet, RouterModule } from "@angular/router";
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatDividerModule } from '@angular/material/divider';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  inject,
+  signal,
+  computed,
+} from "@angular/core";
+import { RouterOutlet, RouterModule, Router } from "@angular/router";
+import { BreakpointObserver } from "@angular/cdk/layout";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatListModule } from "@angular/material/list";
+import { MatDividerModule } from "@angular/material/divider";
+import { CommonModule } from "@angular/common";
 import { AuthService } from "../core/auth/auth.service";
 
 interface MenuItem {
@@ -29,87 +34,80 @@ interface MenuItem {
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
   ],
   templateUrl: "./layout.component.html",
   styleUrls: ["./layout.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent implements OnDestroy {
+export class LayoutComponent {
   private breakpointObserver = inject(BreakpointObserver);
-  private readonly authService = inject(AuthService);
-  
+  private route = inject(Router);
+  private auth = inject(AuthService);
+
   isCollapsed = signal(false);
   isMobile = signal(false);
-  
+
   constructor() {
     // Detectar móvil y actualizar signals
-    this.breakpointObserver.observe(['(max-width: 768px)']).subscribe(result => {
-      this.isMobile.set(result.matches);
-      if (result.matches) {
-        this.isCollapsed.set(false);
-      }
-    });
+    this.breakpointObserver
+      .observe(["(max-width: 768px)"])
+      .subscribe((result) => {
+        this.isMobile.set(result.matches);
+        if (result.matches) {
+          this.isCollapsed.set(false);
+        }
+      });
   }
-  
-  ngOnDestroy() {
-    // Angular se encarga del cleanup automáticamente
-  }
-  
+
   // Computed signals simplificados
-  sidenavMode = computed(() => this.isMobile() ? 'over' : 'side');
+  sidenavMode = computed(() => (this.isMobile() ? "over" : "side"));
   sidenavOpened = computed(() => !this.isMobile());
   hasBackdrop = computed(() => this.isMobile());
-  
+
   // Menús principales
   menuItems: MenuItem[] = [
     {
-      label: 'Gestionar',
-      icon: 'folder_managed',
-      route: '/hojadevida'
-    }
+      label: "Mi hoja de vida",
+      icon: "folder_managed",
+      route: "/hoja-de-vida/personal", // Ruta a la hoja de vida
+    },
   ];
-  
+
   // Menús de cuenta
   accountMenuItems: MenuItem[] = [
     {
-      label: 'Eliminar mis datos',
-      icon: 'delete_forever',
-      action: () => this.eliminarDatos()
+      label: "Eliminar mis datos",
+      icon: "delete_forever",
+      action: () => this.eliminarDatos(),
     },
     {
-      label: 'Términos y condiciones',
-      icon: 'description',
-      action: () => this.verTerminos()
+      label: "Términos y condiciones",
+      icon: "description",
+      action: () => this.verTerminos(),
     },
     {
-      label: 'Cerrar sesión',
-      icon: 'logout',
-      action: () => this.cerrarSesion()
-    }
+      label: "Cerrar sesión",
+      icon: "logout",
+      action: () => this.cerrarSesion(),
+    },
   ];
-  
+
   toggleSidenav() {
-    this.isCollapsed.update(collapsed => !collapsed);
+    this.isCollapsed.update((collapsed) => !collapsed);
   }
-  
+
   // Métodos de acción simplificados
   private eliminarDatos() {
-    console.log('Eliminar datos');
+    console.log("Eliminar datos");
   }
-  
+
   private verTerminos() {
-    console.log('Ver términos y condiciones');
+    this.route.navigate(["/hoja-de-vida/terminos-condiciones"]);
   }
-  
+
   private cerrarSesion() {
-    this.authService.signOut().then(({ error }) => {
-      if (error) {
-        console.error("Error al cerrar sesión:", error);
-      } else {
-        console.log("Sesión cerrada correctamente");
-        // Redirigir al login o realizar otra acción
-      }
+    this.auth.signOut().then(() => {
+      this.route.navigate(["/auth"]);
     });
   }
 }

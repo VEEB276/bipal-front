@@ -8,7 +8,7 @@
     "noImplicitOverride": true,
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
-    "noPropertyAccessFromIndexSignature": true,
+    "noPropertyAccessFromIndexSignature": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,

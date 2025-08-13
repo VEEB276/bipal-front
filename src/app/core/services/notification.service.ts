@@ -1,65 +1,60 @@
-import { Injectable, inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Injectable } from '@angular/core';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+
+export type NotificationType = 'success' | 'error' | 'warning';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
-  private readonly snackBar = inject(MatSnackBar);
+
+  constructor(private snackBar: MatSnackBar) {}
 
   /**
-   * Muestra un mensaje de error en un SnackBar
-   * @param message - Mensaje de error a mostrar
-   * @param duration - Duración en milisegundos (por defecto 5 segundos)
+   * Shows a notification message with specified type
+   * @param message The message to display
+   * @param type The type of notification (success, error, warning)
+   * @param duration Duration in milliseconds (default: 5000)
+   */
+  showMessage(
+    message: string, 
+    type: NotificationType = 'success', 
+    duration: number = 5000
+  ): void {
+    const config: MatSnackBarConfig = {
+      duration,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: [`snackbar-${type}`]
+    };
+
+    this.snackBar.open(message, 'Cerrar', config);
+  }
+
+  /**
+   * Shows a success notification
+   * @param message The message to display
+   * @param duration Duration in milliseconds (default: 5000)
+   */
+  showSuccess(message: string, duration: number = 5000): void {
+    this.showMessage(message, 'success', duration);
+  }
+
+  /**
+   * Shows an error notification
+   * @param message The message to display
+   * @param duration Duration in milliseconds (default: 5000)
    */
   showError(message: string, duration: number = 5000): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration,
-      panelClass: ['error-snackbar'],
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
+    this.showMessage(message, 'error', duration);
   }
 
   /**
-   * Muestra un mensaje de éxito en un SnackBar
-   * @param message - Mensaje de éxito a mostrar
-   * @param duration - Duración en milisegundos (por defecto 3 segundos)
+   * Shows a warning notification
+   * @param message The message to display
+   * @param duration Duration in milliseconds (default: 5000)
    */
-  showSuccess(message: string, duration: number = 3000): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration,
-      panelClass: ['success-snackbar'],
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
-  }
-
-  /**
-   * Muestra un mensaje informativo en un SnackBar
-   * @param message - Mensaje informativo a mostrar
-   * @param duration - Duración en milisegundos (por defecto 3 segundos)
-   */
-  showInfo(message: string, duration: number = 3000): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration,
-      panelClass: ['info-snackbar'],
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
-  }
-
-  /**
-   * Muestra un mensaje de advertencia en un SnackBar
-   * @param message - Mensaje de advertencia a mostrar
-   * @param duration - Duración en milisegundos (por defecto 4 segundos)
-   */
-  showWarning(message: string, duration: number = 4000): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration,
-      panelClass: ['warning-snackbar'],
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
+  showWarning(message: string, duration: number = 5000): void {
+    this.showMessage(message, 'warning', duration);
   }
 }
