@@ -1,21 +1,24 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
-import { PersonaDto, PersonaCreateDto, PersonaUpdateDto } from '../models';
+import { inject, Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Observable, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import { environment } from "../../../../environments/environment";
+import { PersonaDto, PersonaCreateDto, PersonaUpdateDto } from "../models";
+import { AuthService } from "../../../core/auth/auth.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class InformacionPersonalService {
   private readonly apiUrl = `${environment.hojaDeVidaApiUrl}/persona`;
-  
+
   private readonly httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
+      "Content-Type": "application/json",
+    }),
   };
+
+  private readonly auth = inject(AuthService);
 
   constructor(private readonly http: HttpClient) {}
 
@@ -26,10 +29,9 @@ export class InformacionPersonalService {
    */
   obtenerInformacionPersonal(id: number): Observable<PersonaDto> {
     // Endpoint backend: GET /api/persona/find-by-id-persona/{id}
-    return this.http.get<PersonaDto>(`${this.apiUrl}/find-by-id-persona/${id}`)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http
+      .get<PersonaDto>(`${this.apiUrl}/find-by-id-persona/${id}`)
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -38,10 +40,9 @@ export class InformacionPersonalService {
    */
   // NOTE: Endpoint no implementado en backend (listar todas las personas)
   obtenerTodasLasPersonas(): Observable<PersonaDto[]> {
-    return this.http.get<PersonaDto[]>(this.apiUrl)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http
+      .get<PersonaDto[]>(this.apiUrl)
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -51,8 +52,18 @@ export class InformacionPersonalService {
    */
   crearInformacionPersonal(persona: PersonaCreateDto): Observable<PersonaDto> {
     // Endpoint backend: POST /api/persona/create-persona
-    return this.http.post<PersonaDto>(`${this.apiUrl}/create-persona`, persona, this.httpOptions)
+    return this.http
+      .post<PersonaDto>(
+        `${this.apiUrl}/create-persona`,
+        persona,
+        this.httpOptions
+      )
       .pipe(
+        tap((resp) => {
+          //TODO: esto deberia hacerlo el backend
+          // aqui solo se deberia actualizar el id de la persona en la sesion getSession()
+          this.auth.updatePersonaId(resp.id).then(() => this.auth.getSession());
+        }),
         catchError(this.handleError)
       );
   }
@@ -62,12 +73,17 @@ export class InformacionPersonalService {
    * @param persona Datos actualizados de la persona
    * @returns Observable con la persona actualizada
    */
-  actualizarInformacionPersonal(persona: PersonaUpdateDto): Observable<PersonaDto> {
+  actualizarInformacionPersonal(
+    persona: PersonaUpdateDto
+  ): Observable<PersonaDto> {
     // Endpoint backend: PUT /api/persona/actualizar-persona (id enviado en el body)
-    return this.http.put<PersonaDto>(`${this.apiUrl}/actualizar-persona`, persona, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http
+      .put<PersonaDto>(
+        `${this.apiUrl}/actualizar-persona`,
+        persona,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -77,10 +93,9 @@ export class InformacionPersonalService {
    */
   // NOTE: Endpoint eliminar persona no existe aún en backend
   eliminarInformacionPersonal(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http
+      .delete<void>(`${this.apiUrl}/${id}`)
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -90,10 +105,9 @@ export class InformacionPersonalService {
    */
   // NOTE: Endpoint buscar por documento no existe aún en backend
   buscarPorDocumento(numeroDocumento: string): Observable<PersonaDto> {
-    return this.http.get<PersonaDto>(`${this.apiUrl}/buscar/documento/${numeroDocumento}`)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http
+      .get<PersonaDto>(`${this.apiUrl}/buscar/documento/${numeroDocumento}`)
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -103,10 +117,9 @@ export class InformacionPersonalService {
    */
   // NOTE: Endpoint validar documento no existe aún en backend
   validarDocumentoExistente(numeroDocumento: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/validar-documento/${numeroDocumento}`)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http
+      .get<boolean>(`${this.apiUrl}/validar-documento/${numeroDocumento}`)
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -116,10 +129,11 @@ export class InformacionPersonalService {
    */
   // NOTE: Endpoint validar correo no existe aún en backend
   validarCorreoExistente(correoElectronico: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/validar-correo/${encodeURIComponent(correoElectronico)}`)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http
+      .get<boolean>(
+        `${this.apiUrl}/validar-correo/${encodeURIComponent(correoElectronico)}`
+      )
+      .pipe(catchError(this.handleError));
   }
 
   // Métodos agregados según endpoints existentes en PersonaController
@@ -129,7 +143,8 @@ export class InformacionPersonalService {
    * Endpoint backend: GET /api/persona/search-all-tipo-documento
    */
   obtenerTiposDocumento(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/search-all-tipo-documento`)
+    return this.http
+      .get<any[]>(`${this.apiUrl}/search-all-tipo-documento`)
       .pipe(catchError(this.handleError));
   }
 
@@ -138,7 +153,8 @@ export class InformacionPersonalService {
    * Endpoint backend: GET /api/persona/search-all-sexo
    */
   obtenerGeneros(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/search-all-sexo`)
+    return this.http
+      .get<any[]>(`${this.apiUrl}/search-all-sexo`)
       .pipe(catchError(this.handleError));
   }
 
@@ -147,7 +163,8 @@ export class InformacionPersonalService {
    * Endpoint backend: GET /api/persona/search-all-enfoque-diferencial
    */
   obtenerEnfoquesDiferenciales(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/search-all-enfoque-diferencial`)
+    return this.http
+      .get<any[]>(`${this.apiUrl}/search-all-enfoque-diferencial`)
       .pipe(catchError(this.handleError));
   }
 
@@ -159,9 +176,12 @@ export class InformacionPersonalService {
   buscarDepartamentosMunicipios(query?: string): Observable<any[]> {
     let params = new HttpParams();
     if (query) {
-      params = params.set('query', query);
+      params = params.set("query", query);
     }
-    return this.http.get<any[]>(`${this.apiUrl}/search-all-departamento-municipio`, { params })
+    return this.http
+      .get<any[]>(`${this.apiUrl}/search-all-departamento-municipio`, {
+        params,
+      })
       .pipe(catchError(this.handleError));
   }
 
@@ -171,8 +191,8 @@ export class InformacionPersonalService {
    * @returns Observable con error formateado
    */
   private handleError(error: any): Observable<never> {
-    let errorMessage = 'Ha ocurrido un error inesperado';
-    
+    let errorMessage = "Ha ocurrido un error inesperado";
+
     if (error.error instanceof ErrorEvent) {
       // Error del lado del cliente
       errorMessage = `Error: ${error.error.message}`;
@@ -180,26 +200,27 @@ export class InformacionPersonalService {
       // Error del lado del servidor
       switch (error.status) {
         case 400:
-          errorMessage = 'Datos inválidos. Por favor, revise la información ingresada.';
+          errorMessage =
+            "Datos inválidos. Por favor, revise la información ingresada.";
           break;
         case 401:
-          errorMessage = 'No tiene autorización para realizar esta acción.';
+          errorMessage = "No tiene autorización para realizar esta acción.";
           break;
         case 404:
-          errorMessage = 'La información solicitada no fue encontrada.';
+          errorMessage = "La información solicitada no fue encontrada.";
           break;
         case 409:
-          errorMessage = 'Ya existe un registro con estos datos.';
+          errorMessage = "Ya existe un registro con estos datos.";
           break;
         case 500:
-          errorMessage = 'Error interno del servidor. Intente más tarde.';
+          errorMessage = "Error interno del servidor. Intente más tarde.";
           break;
         default:
           errorMessage = `Error ${error.status}: ${error.message}`;
       }
     }
-    
-    console.error('Error en InformacionPersonalService:', error);
+
+    console.error("Error en InformacionPersonalService:", error);
     return throwError(() => new Error(errorMessage));
   }
 }
