@@ -72,21 +72,30 @@ export class AuthService {
    * al email proporcionado. El usuario recibirá un código de 6 dígitos.
    * 
    * NOTA: Este método permite crear el usuario temporalmente para poder enviar el OTP,
-   * pero el usuario final se creará posteriormente con createUserAccount()
+   * y no estará disponible hasta que se complete el proceso de verificación.
    *
    * @param email - Dirección de correo electrónico donde se enviará el código
    * @returns Promise con el resultado de la operación (error si falla)
    */
-  sendCodeVerification(email: string): Promise<{ error: Error | null }> {
+  sendCodeVerification(email: string, numeroDocumento: number): Promise<{ error: Error | null }> {
     this.loadingService.show();
     return this.supabase.auth
       .signInWithOtp({
         email,
         options: {
-          shouldCreateUser: true, // Permitir crear usuario temporal para enviar OTP
+          shouldCreateUser: true, // crea el usuario (sin password) si no existe aún
+          data: {
+            onboarding_step: 'otp_sent',
+            numeroDocumento: numeroDocumento
+          },
         },
       })
       .then(({ error }) => {
+        if (error) {
+          this.notificationService.showError(`Error al enviar código: ${error.message}`);
+        } else {
+          this.notificationService.showSuccess('Código enviado al correo');
+        }
         return { error };
       })
       .finally(() => {
@@ -122,8 +131,22 @@ export class AuthService {
 
         // Guardar sesión temporal para el siguiente paso
         this._session = data.session;
-        this.notificationService.showSuccess('Código verificado exitosamente');
-        return { error, verified: true };
+        // Actualizar metadata para reflejar avance del onboarding
+        return this.supabase.auth
+          .updateUser({
+            data: {
+              onboarding_step: 'otp_verified',
+            },
+          })
+          .then(({ error: updateError }) => {
+            if (updateError) {
+              // No es crítico, solo avisamos
+              this.notificationService.showError(`Código verificado pero fallo metadata: ${updateError.message}`);
+            } else {
+              this.notificationService.showSuccess('Código verificado exitosamente');
+            }
+            return { error: updateError ?? error, verified: true };
+          });
       })
       .finally(() => {
         this.loadingService.hide();
@@ -146,30 +169,33 @@ export class AuthService {
     password: string
   ): Promise<{ user: User | null; error: Error | null }> {
     this.loadingService.show();
+    // Debe existir una sesión previa (resultado de verifyEmailCode) para poder
+    // establecer password con updateUser. Si no, retornamos error.
+    if (!this._session) {
+      const err = new Error('Sesión no encontrada. Verifique el código antes de crear la contraseña.');
+      this.notificationService.showError(err.message);
+      this.loadingService.hide();
+      return Promise.resolve({ user: null, error: err });
+    }
+
     return this.supabase.auth
-      .signUp({
-        email,
+      .updateUser({
         password,
-        options: {
-          emailRedirectTo: undefined, // No redirigir, ya verificamos el email
-          data: {
-            numeroDocumento,
-          },
+        data: {
+          numeroDocumento,
+          onboarding_step: 'completed',
         },
       })
       .then(({ data, error }) => {
-        if (data.session) {
-          this._session = data.session;
-        }
-        
-        // Mostrar mensaje de error o éxito
         if (error) {
-          this.notificationService.showError(`Error al crear la cuenta: ${error.message}`);
-        } else {
-          this.notificationService.showSuccess('Cuenta creada exitosamente');
+          this.notificationService.showError(`Error al establecer la contraseña: ${error.message}`);
+          return { user: null as User | null, error: error as Error };
         }
-        
-        return { user: data.user, error };
+
+        if (data?.user) {
+          this.notificationService.showSuccess('Cuenta completada exitosamente');
+        }
+        return { user: data?.user ?? null, error: null };
       })
       .finally(() => {
         this.loadingService.hide();
