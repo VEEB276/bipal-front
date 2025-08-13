@@ -117,6 +117,7 @@
 
 // Snackbar overrides for notification types
 .snackbar-success {
+  --mat-snack-bar-button-color: white;
   --mdc-snackbar-container-color: var(--success-color);
   --mdc-snackbar-supporting-text-color: var(--on-primary);
   
@@ -126,6 +127,7 @@
 }
 
 .snackbar-error {
+  --mat-snack-bar-button-color: white;
   --mdc-snackbar-container-color: var(--error-color);
   --mdc-snackbar-supporting-text-color: var(--on-error);
   
@@ -135,6 +137,7 @@
 }
 
 .snackbar-warning {
+  --mat-snack-bar-button-color: white;
   --mdc-snackbar-container-color: var(--warning-color);
   --mdc-snackbar-supporting-text-color: var(--text-color);
   
