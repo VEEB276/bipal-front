@@ -23,6 +23,7 @@
   padding: 0rem;
   border-radius: 1.7rem 0% 0% 1.7rem;
   margin-left: 2rem;
+  
 }
 .img-perfiles{
   width: 100%;
@@ -30,8 +31,8 @@
   // height: 30%;
 }
 .text-perfiles{
-  h2{
-    padding: 0rem;
+  h3{
+    margin-top: 0rem;
   }
   padding: 2rem;
   // height: 100%;
@@ -46,6 +47,9 @@
   margin-right: 2rem;
   width: 50%;
   border-radius: 0% 1.7rem 1.7rem 0%;
+}
+.mat-expansion-panel-header-description{
+  flex-basis: min-content;
 }
   
 // ---------------------------------------------/container-------------------------------------------------------------------------------

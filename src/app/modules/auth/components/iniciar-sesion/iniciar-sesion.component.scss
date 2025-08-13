@@ -1,13 +1,26 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
 .login-form{
   // width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  // height: 100%;
   
 }
 .wid-100{
  width: 100%;
 }
-input{ // TODO: pasar esto a transversal
-  width: 70%; //como hacerlo mas ancho? xd suppngo que con matformfield
-}
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // height: 100%;
+
+// input{ // TODO: pasar esto a transversal
+//   width: 70%; //como hacerlo mas ancho? xd suppngo que con matformfield
+// }

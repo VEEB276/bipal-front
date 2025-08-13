@@ -5,7 +5,8 @@
         <h3>Sistema hoja de vida para el talento local</h3>
             Este sistema tiene como objetivo ampliar las oportunidades laborales
             para los profesionales de la región mediante la recopilación de
-            información en una base de datos centralizada. Al registrarse en la
+            información en una base de datos centralizada. 
+            <br>Al registrarse en la
             plataforma y completar el formulario, su perfil quedará disponible para
             consulta cuando la alcaldía requiera cubrir una vacante en una profesión
             específica. En ese momento, se revisará la información registrada en la
@@ -26,13 +27,12 @@
               Acá podrás registrar tu hoja de vida
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <ng-template matExpansionPanelContent> <!--TODO: esto que? por que no esta en el registrarse-->
+            <ng-template matExpansionPanelContent> <!--TODO terminar de hacer el lazyloading con el ngtemplate-->
 
-            <app-iniciar-sesion></app-iniciar-sesion>
+              <app-iniciar-sesion></app-iniciar-sesion>
 
-          </ng-template>
-         
-        </mat-expansion-panel>
+            </ng-template>
+          </mat-expansion-panel>
         <!------------------------------------------------------- -->
     <!-- ------------------------------- registrarse ------------------------ -->
         <mat-expansion-panel >
@@ -41,11 +41,11 @@
               <mat-panel-description>
                 Acá podrás crear tu usuario para ingresar a BIPAL
               </mat-panel-description>
-            </mat-expansion-panel-header>
+                </mat-expansion-panel-header>
 
-           <app-registrarse></app-registrarse>
+                  <app-registrarse></app-registrarse>
 
-        </mat-expansion-panel>
+                </mat-expansion-panel>
       </mat-accordion>
       <!------------------------------------------------------- -->
     </div>
