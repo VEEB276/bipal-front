@@ -54,10 +54,15 @@ export class InfoPersonalComponent implements OnInit {
   private auth = inject(AuthService);
 
   ngOnInit(): void {
-    this.initializeForm();
+    // Primero construimos el formulario para garantizar que exista antes de patchValue
+    this.buildForm();
+    this.personaId = this.auth.session?.user.user_metadata.idPersona;
+    if (this.personaId) {
+      this.cargarPersona();
+    }
   }
 
-  private initializeForm(): void {
+  private buildForm(): void {
     this.personaForm = this.fb.group({
       // Información personal básica
       primerNombre: ["", [Validators.required, Validators.maxLength(255)]],
@@ -66,7 +71,7 @@ export class InfoPersonalComponent implements OnInit {
       segundoApellido: ["", [Validators.maxLength(255)]],
 
       // Documento
-      idTipoDocumento: ["", [Validators.required]],
+      idTipoDocumento: [null, [Validators.required]],
       numeroDocumento: [
         {
           value: this.auth.session?.user.user_metadata.numeroDocumento,
@@ -104,8 +109,8 @@ export class InfoPersonalComponent implements OnInit {
       ],
 
       // Información adicional
-      idGenero: ["", [Validators.required]],
-      idEnfoqueDiferencial: ["", [Validators.required]],
+      idGenero: [null, [Validators.required]],
+      idEnfoqueDiferencial: [null, [Validators.required]],
 
       // informacion de Contacto adicional
       nombreContacto: ["", [Validators.required, Validators.maxLength(255)]],
@@ -125,6 +130,7 @@ export class InfoPersonalComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.personaForm.markAllAsTouched();
     if (this.personaForm.valid) {
       this.isLoading = true;
 
@@ -134,8 +140,6 @@ export class InfoPersonalComponent implements OnInit {
         this.crearPersona();
       }
     } else {
-      console.log("Form is invalid");
-      this.personaForm.markAllAsTouched();
       this.notificationService.showError(
         "Por favor, complete todos los campos requeridos correctamente."
       );
@@ -174,8 +178,11 @@ export class InfoPersonalComponent implements OnInit {
    * Actualiza una persona existente
    */
   private actualizarPersona(): void {
+    if (this.personaId == null) {
+      return;
+    }
     const formData: PersonaUpdateDto = {
-      id: this.personaId!,
+      id: this.personaId,
       ...this.personaForm.value,
     };
 
@@ -203,25 +210,26 @@ export class InfoPersonalComponent implements OnInit {
    * Carga la información de una persona por ID
    * @param id ID de la persona a cargar
    */
-  cargarPersona(id: number): void {
+  cargarPersona(): void {
     this.isLoading = true;
 
-    this.informacionPersonalService.obtenerInformacionPersonal(id).subscribe({
-      next: (persona: PersonaDto) => {
-        this.personaForm.patchValue(persona);
-        this.personaId = persona.id;
-        this.isEditMode = true;
-        this.isLoading = false;
-        console.log("Persona cargada:", persona);
-      },
-      error: (error) => {
-        console.error("Error al cargar persona:", error);
-        this.isLoading = false;
-        this.notificationService.showError(
-          error.message || "Error al cargar la información personal."
-        );
-      },
-    });
+    this.informacionPersonalService
+      .obtenerInformacionPersonal(this.personaId)
+      .subscribe({
+        next: (persona: PersonaDto) => {
+          this.personaForm.patchValue(persona);
+          this.isEditMode = true;
+          this.isLoading = false;
+          console.log("Persona cargada:", persona);
+        },
+        error: (error) => {
+          console.error("Error al cargar persona:", error);
+          this.isLoading = false;
+          this.notificationService.showError(
+            error.message || "Error al cargar la información personal."
+          );
+        },
+      });
   }
 
   /**
@@ -311,16 +319,6 @@ export class InfoPersonalComponent implements OnInit {
           },
         });
     }
-  }
-
-  /**
-   * Limpia el formulario para crear una nueva persona
-   */
-  nuevaPersona(): void {
-    this.personaForm.reset();
-    this.personaId = undefined;
-    this.isEditMode = false;
-    this.initializeForm();
   }
 
   // Getters para facilitar el acceso a los controles en el template
