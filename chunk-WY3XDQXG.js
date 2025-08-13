@@ -1,0 +1,1 @@
+import"./chunk-FK42CRUA.js";var t=[{path:"",redirectTo:"personal",pathMatch:"full"},{path:"personal",loadComponent:()=>import("./chunk-B5K24QBN.js").then(o=>o.SectionContainerHvComponent)},{path:"terminos-condiciones",loadComponent:()=>import("./chunk-OJVD3PPB.js").then(o=>o.TerminosCondicionesComponent)},{path:"**",redirectTo:"personal"}];export{t as HOJA_DE_VIDA_ROUTES};
