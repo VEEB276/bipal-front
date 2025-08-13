@@ -295,4 +295,37 @@ export class AuthService {
         this.loadingService.hide();
       });
   }
+
+  /**
+   * TODO: esto es responsabilidad del backend
+   * Actualiza la metadata del usuario autenticado agregando el idPersona
+   * retornado por el backend al crear la información personal.
+   *
+   * @param idPersona ID de la persona creada en el backend
+   * @returns Promise con posible error
+   */
+  updatePersonaId(idPersona: number): Promise<{ error: Error | null }> {
+    this.loadingService.show();
+
+    if (!this._session) {
+      const error = new Error('No hay sesión activa para actualizar metadata.');
+      this.notificationService.showError(error.message);
+      this.loadingService.hide();
+      return Promise.resolve({ error });
+    }
+
+    return this.supabase.auth.updateUser({
+      data: {
+        // Se agrega / sobreescribe idPersona. Supabase hace merge de metadata existente.
+        idPersona,
+      },
+    }).then(({ error }) => {
+      if (error) {
+        this.notificationService.showError(`Error al actualizar metadata: ${error.message}`);
+        return { error };
+      }
+      this.notificationService.showSuccess('Metadata actualizada (idPersona agregado).');
+      return { error: null };
+    }).finally(() => this.loadingService.hide());
+  }
 }
