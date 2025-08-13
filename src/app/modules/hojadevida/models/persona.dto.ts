@@ -2,7 +2,7 @@ export interface PersonaDto {
   id?: number;
   idTipoDocumento: number;
   numeroDocumento: string;
-  fechaExpedicionDocumento: Date;
+  fechaExpedicionDoc: Date; // antes: fechaExpedicionDocumento
   idGenero: number;
   idEnfoqueDiferencial: number;
   primerNombre: string;
@@ -14,15 +14,14 @@ export interface PersonaDto {
   departamentoResidencia: string;
   ciudadResidencia: string;
   direccionResidencia: string;
-  numeroTelefono: string;
-  correoElectronico: string;
+  telefono: string; // antes: numeroTelefono
+  correo: string; // antes: correoElectronico
   nombreContacto: string;
-  numeroTelefonoContacto: string;
-  correoElectronicoContacto: string;
+  telefonoContacto: string; // antes: numeroTelefonoContacto
+  correoContacto: string; // antes: correoElectronicoContacto
+  idHojaVida?: number; // nuevo campo backend
 }
 
 export interface PersonaCreateDto extends Omit<PersonaDto, 'id'> {}
 
-export interface PersonaUpdateDto extends Partial<PersonaCreateDto> {
-  id: number;
-}
+export interface PersonaUpdateDto extends Partial<PersonaCreateDto> { id: number; }

@@ -98,24 +98,6 @@
   margin-top: 32px;
   padding: 20px 0;
   border-top: 1px solid #e0e0e0;
-  
-  .action-button {
-    min-width: 150px;
-    height: 48px;
-    font-weight: 500;
-    
-    mat-icon {
-      margin-right: 8px;
-    }
-    
-    &.submit-button {
-      min-width: 180px;
-    }
-    
-    &:disabled {
-      opacity: 0.6;
-    }
-  }
 }
 
 // Loading state
@@ -154,11 +136,5 @@
   .form-actions {
     flex-direction: column;
     align-items: flex-end;
-    
-    .action-button {
-      min-width: 200px;
-      width: 100%;
-      max-width: 300px;
-    }
   }
 }

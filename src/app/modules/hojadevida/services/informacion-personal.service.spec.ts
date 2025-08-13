@@ -12,7 +12,7 @@ describe('InformacionPersonalService', () => {
     id: 1,
     idTipoDocumento: 1,
     numeroDocumento: '1234567890',
-    fechaExpedicionDocumento: new Date('2020-01-01'),
+    fechaExpedicionDoc: new Date('2020-01-01'),
     idGenero: 1,
     idEnfoqueDiferencial: 1,
     primerNombre: 'Juan',
@@ -24,11 +24,11 @@ describe('InformacionPersonalService', () => {
     departamentoResidencia: 'Antioquia',
     ciudadResidencia: 'Medellín',
     direccionResidencia: 'Calle 123 #45-67',
-    numeroTelefono: '3001234567',
-    correoElectronico: 'juan.perez@email.com',
+    telefono: '3001234567',
+    correo: 'juan.perez@email.com',
     nombreContacto: 'María García',
-    numeroTelefonoContacto: '3009876543',
-    correoElectronicoContacto: 'maria.garcia@email.com'
+    telefonoContacto: '3009876543',
+    correoContacto: 'maria.garcia@email.com'
   };
 
   beforeEach(() => {
@@ -56,7 +56,7 @@ describe('InformacionPersonalService', () => {
         expect(persona).toEqual(mockPersona);
       });
 
-      const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/${personaId}`);
+  const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/find-by-id-persona/${personaId}`);
       expect(req.request.method).toBe('GET');
       req.flush(mockPersona);
     });
@@ -71,7 +71,7 @@ describe('InformacionPersonalService', () => {
         expect(persona).toEqual(mockPersona);
       });
 
-      const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona`);
+  const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/create-persona`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(personaCreate);
       req.flush(mockPersona);
@@ -89,7 +89,7 @@ describe('InformacionPersonalService', () => {
         expect(persona).toEqual(mockPersona);
       });
 
-      const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/${personaUpdate.id}`);
+  const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/actualizar-persona`);
       expect(req.request.method).toBe('PUT');
       expect(req.request.body).toEqual(personaUpdate);
       req.flush(mockPersona);
@@ -149,7 +149,7 @@ describe('InformacionPersonalService', () => {
         }
       });
 
-      const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/${personaId}`);
+  const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/find-by-id-persona/${personaId}`);
       req.flush('Not found', { status: 404, statusText: 'Not Found' });
     });
 
@@ -164,7 +164,7 @@ describe('InformacionPersonalService', () => {
         }
       });
 
-      const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona`);
+  const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/create-persona`);
       req.flush('Conflict', { status: 409, statusText: 'Conflict' });
     });
   });

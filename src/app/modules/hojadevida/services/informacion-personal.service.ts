@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
@@ -17,7 +17,7 @@ export class InformacionPersonalService {
     })
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * Obtiene la información personal de una persona por ID
@@ -25,7 +25,8 @@ export class InformacionPersonalService {
    * @returns Observable con los datos de la persona
    */
   obtenerInformacionPersonal(id: number): Observable<PersonaDto> {
-    return this.http.get<PersonaDto>(`${this.apiUrl}/${id}`)
+    // Endpoint backend: GET /api/persona/find-by-id-persona/{id}
+    return this.http.get<PersonaDto>(`${this.apiUrl}/find-by-id-persona/${id}`)
       .pipe(
         catchError(this.handleError)
       );
@@ -35,6 +36,7 @@ export class InformacionPersonalService {
    * Obtiene toda la información personal disponible
    * @returns Observable con lista de personas
    */
+  // NOTE: Endpoint no implementado en backend (listar todas las personas)
   obtenerTodasLasPersonas(): Observable<PersonaDto[]> {
     return this.http.get<PersonaDto[]>(this.apiUrl)
       .pipe(
@@ -48,7 +50,8 @@ export class InformacionPersonalService {
    * @returns Observable con la persona creada
    */
   crearInformacionPersonal(persona: PersonaCreateDto): Observable<PersonaDto> {
-    return this.http.post<PersonaDto>(this.apiUrl, persona, this.httpOptions)
+    // Endpoint backend: POST /api/persona/create-persona
+    return this.http.post<PersonaDto>(`${this.apiUrl}/create-persona`, persona, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
@@ -60,7 +63,8 @@ export class InformacionPersonalService {
    * @returns Observable con la persona actualizada
    */
   actualizarInformacionPersonal(persona: PersonaUpdateDto): Observable<PersonaDto> {
-    return this.http.put<PersonaDto>(`${this.apiUrl}/${persona.id}`, persona, this.httpOptions)
+    // Endpoint backend: PUT /api/persona/actualizar-persona (id enviado en el body)
+    return this.http.put<PersonaDto>(`${this.apiUrl}/actualizar-persona`, persona, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
@@ -71,6 +75,7 @@ export class InformacionPersonalService {
    * @param id ID de la persona a eliminar
    * @returns Observable vacío
    */
+  // NOTE: Endpoint eliminar persona no existe aún en backend
   eliminarInformacionPersonal(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`)
       .pipe(
@@ -83,6 +88,7 @@ export class InformacionPersonalService {
    * @param numeroDocumento Número de documento para buscar
    * @returns Observable con la persona encontrada
    */
+  // NOTE: Endpoint buscar por documento no existe aún en backend
   buscarPorDocumento(numeroDocumento: string): Observable<PersonaDto> {
     return this.http.get<PersonaDto>(`${this.apiUrl}/buscar/documento/${numeroDocumento}`)
       .pipe(
@@ -95,6 +101,7 @@ export class InformacionPersonalService {
    * @param numeroDocumento Número de documento a validar
    * @returns Observable con booleano indicando si existe
    */
+  // NOTE: Endpoint validar documento no existe aún en backend
   validarDocumentoExistente(numeroDocumento: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/validar-documento/${numeroDocumento}`)
       .pipe(
@@ -107,11 +114,55 @@ export class InformacionPersonalService {
    * @param correoElectronico Correo electrónico a validar
    * @returns Observable con booleano indicando si existe
    */
+  // NOTE: Endpoint validar correo no existe aún en backend
   validarCorreoExistente(correoElectronico: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/validar-correo/${encodeURIComponent(correoElectronico)}`)
       .pipe(
         catchError(this.handleError)
       );
+  }
+
+  // Métodos agregados según endpoints existentes en PersonaController
+
+  /**
+   * Obtiene todos los tipos de documento
+   * Endpoint backend: GET /api/persona/search-all-tipo-documento
+   */
+  obtenerTiposDocumento(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/search-all-tipo-documento`)
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Obtiene todos los géneros
+   * Endpoint backend: GET /api/persona/search-all-sexo
+   */
+  obtenerGeneros(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/search-all-sexo`)
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Obtiene todos los enfoques diferenciales
+   * Endpoint backend: GET /api/persona/search-all-enfoque-diferencial
+   */
+  obtenerEnfoquesDiferenciales(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/search-all-enfoque-diferencial`)
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Busca departamentos y municipios opcionalmente filtrados
+   * Endpoint backend: GET /api/persona/search-all-departamento-municipio?query=...
+   * @param query texto a filtrar (opcional)
+   */
+  buscarDepartamentosMunicipios(query?: string): Observable<any[]> {
+    let params = new HttpParams();
+    if (query) {
+      params = params.set('query', query);
+    }
+    return this.http.get<any[]>(`${this.apiUrl}/search-all-departamento-municipio`, { params })
+      .pipe(catchError(this.handleError));
   }
 
   /**

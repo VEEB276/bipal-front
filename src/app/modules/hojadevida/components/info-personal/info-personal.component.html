@@ -8,9 +8,9 @@
         <mat-label> Primer Nombre </mat-label>
         <input matInput formControlName="primerNombre" placeholder="Primer Nombre">
         <mat-icon matPrefix> person </mat-icon>
-        <mat-error *ngIf="primerNombre?.invalid && primerNombre?.touched">
-          <span *ngIf="primerNombre?.errors?.['required']">El primer nombre es requerido</span>
-          <span *ngIf="primerNombre?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        <mat-error *ngIf="control('primerNombre')?.invalid && control('primerNombre')?.touched">
+          <span *ngIf="control('primerNombre')?.errors?.['required']">El primer nombre es requerido</span>
+          <span *ngIf="control('primerNombre')?.errors?.['maxlength']">Máximo 255 caracteres</span>
         </mat-error>
       </mat-form-field>
 
@@ -18,8 +18,8 @@
         <mat-label>Segundo Nombre</mat-label>
         <input matInput formControlName="segundoNombre" placeholder="Segundo Nombre">
         <mat-icon matPrefix>person</mat-icon>
-        <mat-error *ngIf="segundoNombre?.invalid && segundoNombre?.touched">
-          <span *ngIf="segundoNombre?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        <mat-error *ngIf="control('segundoNombre')?.invalid && control('segundoNombre')?.touched">
+          <span *ngIf="control('segundoNombre')?.errors?.['maxlength']">Máximo 255 caracteres</span>
         </mat-error>
       </mat-form-field>
 
@@ -27,9 +27,9 @@
         <mat-label>Primer Apellido</mat-label>
         <input matInput formControlName="primerApellido" placeholder="Primer Apellido">
         <mat-icon matPrefix>person</mat-icon>
-        <mat-error *ngIf="primerApellido?.invalid && primerApellido?.touched">
-          <span *ngIf="primerApellido?.errors?.['required']">El primer apellido es requerido</span>
-          <span *ngIf="primerApellido?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        <mat-error *ngIf="control('primerApellido')?.invalid && control('primerApellido')?.touched">
+          <span *ngIf="control('primerApellido')?.errors?.['required']">El primer apellido es requerido</span>
+          <span *ngIf="control('primerApellido')?.errors?.['maxlength']">Máximo 255 caracteres</span>
         </mat-error>
       </mat-form-field>
 
@@ -37,8 +37,8 @@
         <mat-label>Segundo Apellido</mat-label>
         <input matInput formControlName="segundoApellido" placeholder="Segundo Apellido">
         <mat-icon matPrefix>person</mat-icon>
-        <mat-error *ngIf="segundoApellido?.invalid && segundoApellido?.touched">
-          <span *ngIf="segundoApellido?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        <mat-error *ngIf="control('segundoApellido')?.invalid && control('segundoApellido')?.touched">
+          <span *ngIf="control('segundoApellido')?.errors?.['maxlength']">Máximo 255 caracteres</span>
         </mat-error>
       </mat-form-field>
     </div>
@@ -54,8 +54,8 @@
           <mat-option value="4">Pasaporte</mat-option>
         </mat-select>
         <mat-icon matPrefix>credit_card</mat-icon>
-        <mat-error *ngIf="idTipoDocumento?.invalid && idTipoDocumento?.touched">
-          <span *ngIf="idTipoDocumento?.errors?.['required']">Seleccione el tipo de documento</span>
+        <mat-error *ngIf="control('idTipoDocumento')?.invalid && control('idTipoDocumento')?.touched">
+          <span *ngIf="control('idTipoDocumento')?.errors?.['required']">Seleccione el tipo de documento</span>
         </mat-error>
       </mat-form-field>
 
@@ -63,21 +63,21 @@
         <mat-label>Número de Documento</mat-label>
         <input matInput formControlName="numeroDocumento" placeholder="Ejm: 1234567890" (blur)="onDocumentoChange()">
         <mat-icon matPrefix>numbers</mat-icon>
-        <mat-error *ngIf="numeroDocumento?.invalid && numeroDocumento?.touched">
-          <span *ngIf="numeroDocumento?.errors?.['required']">El número de documento es requerido</span>
-          <span *ngIf="numeroDocumento?.errors?.['maxlength']">Máximo 128 caracteres</span>
-          <span *ngIf="numeroDocumento?.errors?.['documentoExistente']">Este documento ya está registrado</span>
+        <mat-error *ngIf="control('numeroDocumento')?.invalid && control('numeroDocumento')?.touched">
+          <span *ngIf="control('numeroDocumento')?.errors?.['required']">El número de documento es requerido</span>
+          <span *ngIf="control('numeroDocumento')?.errors?.['maxlength']">Máximo 128 caracteres</span>
+          <span *ngIf="control('numeroDocumento')?.errors?.['documentoExistente']">Este documento ya está registrado</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Fecha de Expedición del Documento</mat-label>
-        <input matInput [matDatepicker]="expedicionPicker" formControlName="fechaExpedicionDocumento" placeholder="2025/06/18">
+  <input matInput [matDatepicker]="expedicionPicker" formControlName="fechaExpedicionDoc" placeholder="2025/06/18">
         <mat-datepicker-toggle matSuffix [for]="expedicionPicker"></mat-datepicker-toggle>
         <mat-datepicker #expedicionPicker></mat-datepicker>
         <mat-icon matPrefix>date_range</mat-icon>
-        <mat-error *ngIf="fechaExpedicionDocumento?.invalid && fechaExpedicionDocumento?.touched">
-          <span *ngIf="fechaExpedicionDocumento?.errors?.['required']">La fecha de expedición es requerida</span>
+        <mat-error *ngIf="control('fechaExpedicionDoc')?.invalid && control('fechaExpedicionDoc')?.touched">
+          <span *ngIf="control('fechaExpedicionDoc')?.errors?.['required']">La fecha de expedición es requerida</span>
         </mat-error>
       </mat-form-field>
     </div>
@@ -90,8 +90,8 @@
         <mat-datepicker-toggle matSuffix [for]="nacimientoPicker"></mat-datepicker-toggle>
         <mat-datepicker #nacimientoPicker></mat-datepicker>
         <mat-icon matPrefix>cake</mat-icon>
-        <mat-error *ngIf="fechaNacimiento?.invalid && fechaNacimiento?.touched">
-          <span *ngIf="fechaNacimiento?.errors?.['required']">La fecha de nacimiento es requerida</span>
+        <mat-error *ngIf="control('fechaNacimiento')?.invalid && control('fechaNacimiento')?.touched">
+          <span *ngIf="control('fechaNacimiento')?.errors?.['required']">La fecha de nacimiento es requerida</span>
         </mat-error>
       </mat-form-field>
 
@@ -99,9 +99,9 @@
         <mat-label>Lugar de Nacimiento</mat-label>
         <input matInput formControlName="lugarNacimiento" placeholder="Antioquia, Medellín">
         <mat-icon matPrefix>place</mat-icon>
-        <mat-error *ngIf="lugarNacimiento?.invalid && lugarNacimiento?.touched">
-          <span *ngIf="lugarNacimiento?.errors?.['required']">El lugar de nacimiento es requerido</span>
-          <span *ngIf="lugarNacimiento?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        <mat-error *ngIf="control('lugarNacimiento')?.invalid && control('lugarNacimiento')?.touched">
+          <span *ngIf="control('lugarNacimiento')?.errors?.['required']">El lugar de nacimiento es requerido</span>
+          <span *ngIf="control('lugarNacimiento')?.errors?.['maxlength']">Máximo 255 caracteres</span>
         </mat-error>
       </mat-form-field>
     </div>
@@ -112,9 +112,9 @@
         <mat-label>Departamento de Residencia</mat-label>
         <input matInput formControlName="departamentoResidencia" placeholder="Antioquia">
         <mat-icon matPrefix>location_city</mat-icon>
-        <mat-error *ngIf="departamentoResidencia?.invalid && departamentoResidencia?.touched">
-          <span *ngIf="departamentoResidencia?.errors?.['required']">El departamento es requerido</span>
-          <span *ngIf="departamentoResidencia?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        <mat-error *ngIf="control('departamentoResidencia')?.invalid && control('departamentoResidencia')?.touched">
+          <span *ngIf="control('departamentoResidencia')?.errors?.['required']">El departamento es requerido</span>
+          <span *ngIf="control('departamentoResidencia')?.errors?.['maxlength']">Máximo 255 caracteres</span>
         </mat-error>
       </mat-form-field>
 
@@ -122,9 +122,9 @@
         <mat-label>Ciudad de Residencia</mat-label>
         <input matInput formControlName="ciudadResidencia" placeholder="Medellín">
         <mat-icon matPrefix>home</mat-icon>
-        <mat-error *ngIf="ciudadResidencia?.invalid && ciudadResidencia?.touched">
-          <span *ngIf="ciudadResidencia?.errors?.['required']">La ciudad es requerida</span>
-          <span *ngIf="ciudadResidencia?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        <mat-error *ngIf="control('ciudadResidencia')?.invalid && control('ciudadResidencia')?.touched">
+          <span *ngIf="control('ciudadResidencia')?.errors?.['required']">La ciudad es requerida</span>
+          <span *ngIf="control('ciudadResidencia')?.errors?.['maxlength']">Máximo 255 caracteres</span>
         </mat-error>
       </mat-form-field>
     </div>
@@ -135,9 +135,9 @@
         <mat-label>Dirección de Residencia</mat-label>
         <input matInput formControlName="direccionResidencia" placeholder="Dirección completa">
         <mat-icon matPrefix>location_on</mat-icon>
-        <mat-error *ngIf="direccionResidencia?.invalid && direccionResidencia?.touched">
-          <span *ngIf="direccionResidencia?.errors?.['required']">La dirección es requerida</span>
-          <span *ngIf="direccionResidencia?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        <mat-error *ngIf="control('direccionResidencia')?.invalid && control('direccionResidencia')?.touched">
+          <span *ngIf="control('direccionResidencia')?.errors?.['required']">La dirección es requerida</span>
+          <span *ngIf="control('direccionResidencia')?.errors?.['maxlength']">Máximo 255 caracteres</span>
         </mat-error>
       </mat-form-field>
     </div>
@@ -146,24 +146,24 @@
     <div class="form-row">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Número de Teléfono Celular (10 dígitos)</mat-label>
-        <input matInput formControlName="numeroTelefono" placeholder="3001234567" type="tel">
+  <input matInput formControlName="telefono" placeholder="3001234567" type="tel">
         <mat-icon matPrefix>phone</mat-icon>
-        <mat-error *ngIf="numeroTelefono?.invalid && numeroTelefono?.touched">
-          <span *ngIf="numeroTelefono?.errors?.['required']">El número de teléfono es requerido</span>
-          <span *ngIf="numeroTelefono?.errors?.['pattern']">Debe tener exactamente 10 dígitos</span>
-          <span *ngIf="numeroTelefono?.errors?.['maxlength']">Máximo 63 caracteres</span>
+        <mat-error *ngIf="control('telefono')?.invalid && control('telefono')?.touched">
+          <span *ngIf="control('telefono')?.errors?.['required']">El número de teléfono es requerido</span>
+          <span *ngIf="control('telefono')?.errors?.['pattern']">Debe tener exactamente 10 dígitos</span>
+          <span *ngIf="control('telefono')?.errors?.['maxlength']">Máximo 63 caracteres</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Correo Electrónico</mat-label>
-        <input matInput formControlName="correoElectronico" placeholder="ejemplo@correo.com" type="email" (blur)="onCorreoChange()">
+  <input matInput formControlName="correo" placeholder="ejemplo@correo.com" type="email" (blur)="onCorreoChange()">
         <mat-icon matPrefix>email</mat-icon>
-        <mat-error *ngIf="correoElectronico?.invalid && correoElectronico?.touched">
-          <span *ngIf="correoElectronico?.errors?.['required']">El correo electrónico es requerido</span>
-          <span *ngIf="correoElectronico?.errors?.['email']">Ingrese un correo válido</span>
-          <span *ngIf="correoElectronico?.errors?.['maxlength']">Máximo 127 caracteres</span>
-          <span *ngIf="correoElectronico?.errors?.['correoExistente']">Este correo ya está registrado</span>
+        <mat-error *ngIf="control('correo')?.invalid && control('correo')?.touched">
+          <span *ngIf="control('correo')?.errors?.['required']">El correo electrónico es requerido</span>
+          <span *ngIf="control('correo')?.errors?.['email']">Ingrese un correo válido</span>
+          <span *ngIf="control('correo')?.errors?.['maxlength']">Máximo 127 caracteres</span>
+          <span *ngIf="control('correo')?.errors?.['correoExistente']">Este correo ya está registrado</span>
         </mat-error>
       </mat-form-field>
     </div>
@@ -178,8 +178,8 @@
           <mat-option value="3">Otro</mat-option>
         </mat-select>
         <mat-icon matPrefix>wc</mat-icon>
-        <mat-error *ngIf="idGenero?.invalid && idGenero?.touched">
-          <span *ngIf="idGenero?.errors?.['required']">Seleccione el género</span>
+        <mat-error *ngIf="control('idGenero')?.invalid && control('idGenero')?.touched">
+          <span *ngIf="control('idGenero')?.errors?.['required']">Seleccione el género</span>
         </mat-error>
       </mat-form-field>
 
@@ -194,8 +194,8 @@
           <mat-option value="6">Persona con Discapacidad</mat-option>
         </mat-select>
         <mat-icon matPrefix>diversity_3</mat-icon>
-        <mat-error *ngIf="idEnfoqueDiferencial?.invalid && idEnfoqueDiferencial?.touched">
-          <span *ngIf="idEnfoqueDiferencial?.errors?.['required']">Seleccione el enfoque diferencial</span>
+        <mat-error *ngIf="control('idEnfoqueDiferencial')?.invalid && control('idEnfoqueDiferencial')?.touched">
+          <span *ngIf="control('idEnfoqueDiferencial')?.errors?.['required']">Seleccione el enfoque diferencial</span>
         </mat-error>
       </mat-form-field>
     </div>
@@ -214,39 +214,39 @@
         <mat-label>Nombre de Contacto</mat-label>
         <input matInput formControlName="nombreContacto" placeholder="Nombre completo del contacto">
         <mat-icon matPrefix>person</mat-icon>
-        <mat-error *ngIf="nombreContacto?.invalid && nombreContacto?.touched">
-          <span *ngIf="nombreContacto?.errors?.['required']">El nombre del contacto es requerido</span>
-          <span *ngIf="nombreContacto?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        <mat-error *ngIf="control('nombreContacto')?.invalid && control('nombreContacto')?.touched">
+          <span *ngIf="control('nombreContacto')?.errors?.['required']">El nombre del contacto es requerido</span>
+          <span *ngIf="control('nombreContacto')?.errors?.['maxlength']">Máximo 255 caracteres</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Celular de Contacto</mat-label>
-        <input matInput formControlName="numeroTelefonoContacto" placeholder="3001234567" type="tel">
+  <input matInput formControlName="telefonoContacto" placeholder="3001234567" type="tel">
         <mat-icon matPrefix>phone</mat-icon>
-        <mat-error *ngIf="numeroTelefonoContacto?.invalid && numeroTelefonoContacto?.touched">
-          <span *ngIf="numeroTelefonoContacto?.errors?.['required']">El teléfono del contacto es requerido</span>
-          <span *ngIf="numeroTelefonoContacto?.errors?.['pattern']">Debe tener exactamente 10 dígitos</span>
-          <span *ngIf="numeroTelefonoContacto?.errors?.['maxlength']">Máximo 63 caracteres</span>
+        <mat-error *ngIf="control('telefonoContacto')?.invalid && control('telefonoContacto')?.touched">
+          <span *ngIf="control('telefonoContacto')?.errors?.['required']">El teléfono del contacto es requerido</span>
+          <span *ngIf="control('telefonoContacto')?.errors?.['pattern']">Debe tener exactamente 10 dígitos</span>
+          <span *ngIf="control('telefonoContacto')?.errors?.['maxlength']">Máximo 63 caracteres</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Correo de Contacto</mat-label>
-        <input matInput formControlName="correoElectronicoContacto" placeholder="contacto@correo.com" type="email">
+  <input matInput formControlName="correoContacto" placeholder="contacto@correo.com" type="email">
         <mat-icon matPrefix>email</mat-icon>
-        <mat-error *ngIf="correoElectronicoContacto?.invalid && correoElectronicoContacto?.touched">
-          <span *ngIf="correoElectronicoContacto?.errors?.['required']">El correo del contacto es requerido</span>
-          <span *ngIf="correoElectronicoContacto?.errors?.['email']">Ingrese un correo válido</span>
-          <span *ngIf="correoElectronicoContacto?.errors?.['maxlength']">Máximo 127 caracteres</span>
+        <mat-error *ngIf="control('correoContacto')?.invalid && control('correoContacto')?.touched">
+          <span *ngIf="control('correoContacto')?.errors?.['required']">El correo del contacto es requerido</span>
+          <span *ngIf="control('correoContacto')?.errors?.['email']">Ingrese un correo válido</span>
+          <span *ngIf="control('correoContacto')?.errors?.['maxlength']">Máximo 127 caracteres</span>
         </mat-error>
       </mat-form-field>
     </div>
 
     <!-- Action Buttons -->
     <div class="form-actions">
-      <button mat-raised-button color="primary" type="submit" 
-              [disabled]="isLoading || personaForm.invalid" class="action-button submit-button">
+      <button mat-flat-button color="primary" type="submit" 
+             >
         <mat-icon>save</mat-icon>
         {{ isEditMode ? 'Actualizar' : 'Guardar' }}
       </button>
