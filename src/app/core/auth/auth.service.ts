@@ -1,4 +1,4 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, OnInit } from "@angular/core";
 import {
   AuthChangeEvent,
   AuthSession,
@@ -18,11 +18,16 @@ import { NotificationService } from "../services/notification.service";
 export class AuthService {
   private readonly supabase: SupabaseClient;
   _session: AuthSession | null = null;
+  private _sessionLoadingPromise: Promise<AuthSession | null> | null = null;
 
   //inyeccion de depdencias
   private readonly router = inject(Router);
   private readonly loadingService = inject(LoadingService);
   private readonly notificationService = inject(NotificationService);
+
+  get session() {
+    return this._session;
+  }
 
   constructor() {
     this.supabase = createClient(
@@ -31,11 +36,33 @@ export class AuthService {
     );
   }
 
-  get session() {
-    this.supabase.auth.getSession().then(({ data }) => {
+  getSession() {
+    return this.supabase.auth.getSession().then(({ data }) => {
       this._session = data.session;
     });
-    return this._session;
+  }
+
+  /**
+   * Carga la sesión sólo si aún no está cargada.
+   * Usa una promesa en caché para evitar llamadas simultáneas duplicadas.
+   */
+  ensureSessionLoaded(): Promise<AuthSession | null> {
+    if (this._session) {
+      return Promise.resolve(this._session);
+    }
+    if (this._sessionLoadingPromise !== null) {
+      return this._sessionLoadingPromise;
+    }
+    this._sessionLoadingPromise = this.supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        this._session = data.session;
+        return this._session;
+      })
+      .finally(() => {
+        this._sessionLoadingPromise = null;
+      });
+    return this._sessionLoadingPromise;
   }
 
   profile() {
@@ -51,14 +78,16 @@ export class AuthService {
       .signInWithPassword({ email, password })
       .then(({ data, error }) => {
         this._session = data.session;
-        
+
         // Mostrar mensaje de error si existe
         if (error) {
-          this.notificationService.showError(`Error al iniciar sesión: ${error.message}`);
+          this.notificationService.showError(
+            `Error al iniciar sesión: ${error.message}`
+          );
         } else {
-          this.notificationService.showSuccess('Inicio de sesión exitoso');
+          this.notificationService.showSuccess("Inicio de sesión exitoso");
         }
-        
+
         return { user: data.user, error };
       })
       .finally(() => {
@@ -70,14 +99,17 @@ export class AuthService {
    * Envía un código de verificación al correo electrónico del usuario
    * Este método inicia el proceso de registro enviando un OTP (One Time Password)
    * al email proporcionado. El usuario recibirá un código de 6 dígitos.
-   * 
+   *
    * NOTA: Este método permite crear el usuario temporalmente para poder enviar el OTP,
    * y no estará disponible hasta que se complete el proceso de verificación.
    *
    * @param email - Dirección de correo electrónico donde se enviará el código
    * @returns Promise con el resultado de la operación (error si falla)
    */
-  sendCodeVerification(email: string, numeroDocumento: number): Promise<{ error: Error | null }> {
+  sendCodeVerification(
+    email: string,
+    numeroDocumento: number
+  ): Promise<{ error: Error | null }> {
     this.loadingService.show();
     return this.supabase.auth
       .signInWithOtp({
@@ -85,16 +117,18 @@ export class AuthService {
         options: {
           shouldCreateUser: true, // crea el usuario (sin password) si no existe aún
           data: {
-            onboarding_step: 'otp_sent',
-            numeroDocumento: numeroDocumento
+            onboarding_step: "otp_sent",
+            numeroDocumento: numeroDocumento,
           },
         },
       })
       .then(({ error }) => {
         if (error) {
-          this.notificationService.showError(`Error al enviar código: ${error.message}`);
+          this.notificationService.showError(
+            `Error al enviar código: ${error.message}`
+          );
         } else {
-          this.notificationService.showSuccess('Código enviado al correo');
+          this.notificationService.showSuccess("Código enviado al correo");
         }
         return { error };
       })
@@ -115,7 +149,7 @@ export class AuthService {
   verifyEmailCode(
     email: string,
     token: string
-  ): Promise<{ error: Error, verified: boolean }> {
+  ): Promise<{ error: Error; verified: boolean }> {
     this.loadingService.show();
     return this.supabase.auth
       .verifyOtp({
@@ -125,7 +159,9 @@ export class AuthService {
       })
       .then(({ data, error }) => {
         if (error) {
-          this.notificationService.showError(`Error al verificar el código: ${error.message}`);
+          this.notificationService.showError(
+            `Error al verificar el código: ${error.message}`
+          );
           return { error, verified: false };
         }
 
@@ -135,15 +171,19 @@ export class AuthService {
         return this.supabase.auth
           .updateUser({
             data: {
-              onboarding_step: 'otp_verified',
+              onboarding_step: "otp_verified",
             },
           })
           .then(({ error: updateError }) => {
             if (updateError) {
               // No es crítico, solo avisamos
-              this.notificationService.showError(`Código verificado pero fallo metadata: ${updateError.message}`);
+              this.notificationService.showError(
+                `Código verificado pero fallo metadata: ${updateError.message}`
+              );
             } else {
-              this.notificationService.showSuccess('Código verificado exitosamente');
+              this.notificationService.showSuccess(
+                "Código verificado exitosamente"
+              );
             }
             return { error: updateError ?? error, verified: true };
           });
@@ -172,7 +212,9 @@ export class AuthService {
     // Debe existir una sesión previa (resultado de verifyEmailCode) para poder
     // establecer password con updateUser. Si no, retornamos error.
     if (!this._session) {
-      const err = new Error('Sesión no encontrada. Verifique el código antes de crear la contraseña.');
+      const err = new Error(
+        "Sesión no encontrada. Verifique el código antes de crear la contraseña."
+      );
       this.notificationService.showError(err.message);
       this.loadingService.hide();
       return Promise.resolve({ user: null, error: err });
@@ -183,17 +225,21 @@ export class AuthService {
         password,
         data: {
           numeroDocumento,
-          onboarding_step: 'completed',
+          onboarding_step: "completed",
         },
       })
       .then(({ data, error }) => {
         if (error) {
-          this.notificationService.showError(`Error al establecer la contraseña: ${error.message}`);
+          this.notificationService.showError(
+            `Error al establecer la contraseña: ${error.message}`
+          );
           return { user: null as User | null, error: error as Error };
         }
 
         if (data?.user) {
-          this.notificationService.showSuccess('Cuenta completada exitosamente');
+          this.notificationService.showSuccess(
+            "Cuenta completada exitosamente"
+          );
         }
         return { user: data?.user ?? null, error: null };
       })
@@ -238,13 +284,15 @@ export class AuthService {
    */
   signOut(): Promise<{ error: Error | null }> {
     this.loadingService.show();
-    return this.supabase.auth.signOut().then(({ error }) => {
-      this._session = null;
-      this.router.navigate(['/auth']); // Redirigir al login después de cerrar sesión
-      return { error };
-    })
-    .finally(() => {
-      this.loadingService.hide();
-    });
+    return this.supabase.auth
+      .signOut()
+      .then(({ error }) => {
+        this._session = null;
+        this.router.navigate(["/auth"]); // Redirigir al login después de cerrar sesión
+        return { error };
+      })
+      .finally(() => {
+        this.loadingService.hide();
+      });
   }
 }
