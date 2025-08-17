@@ -1,0 +1,26 @@
+<div class="modal-dialog" [ngClass]="[config.type, config.widthClass || '']">
+  <header class="modal-dialog__header">
+    <h2 class="modal-dialog__title" id="modal-dialog-title">{{ config.title }}</h2>
+    <button type="button" class="modal-dialog__close" (click)="close(false)" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+  <div class="modal-dialog__divider"></div>
+  <section class="modal-dialog__content" aria-describedby="modal-dialog-content">
+    @if (config.message && !config.templateRef && !config.component) {
+      <p id="modal-dialog-content">{{ config.message }}</p>
+    }
+    @if (config.templateRef) {
+      <ng-container [ngTemplateOutlet]="config.templateRef" [ngTemplateOutletContext]="{ data: config.data }" />
+    }
+    @if (config.component) {
+      <ng-container *ngComponentOutlet="config.component; inputs: config.componentInputs"></ng-container>
+    }
+  </section>
+  <footer class="modal-dialog__actions">
+    @if (config.secondaryText) {
+      <button mat-button type="button" (click)="close(false)" [attr.cdkFocusInitial]="config.autoFocus==='secondary'?'' : null">{{ config.secondaryText }}</button>
+    }
+    <button mat-flat-button type="button" (click)="close(true)" [ngClass]="primaryBtnClass" [attr.cdkFocusInitial]="config.autoFocus!=='secondary' && config.autoFocus!=='none' ? '' : null">{{ config.primaryText }}</button>
+  </footer>
+</div>
