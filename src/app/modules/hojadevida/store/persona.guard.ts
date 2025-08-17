@@ -16,9 +16,8 @@ export const personaPrefetchGuard: CanActivateFn = () => {
 
   // Verificar si ya está en store
   let alreadyLoaded = false;
-  store.select(selectPersona).pipe(take(1)).subscribe(p => {
-    alreadyLoaded = !!p && p.id === idPersona;
-  });
+  const person = store.selectSignal(selectPersona)();
+  alreadyLoaded = !!person && person.id === idPersona;
   if (alreadyLoaded) return true;
 
   // Dispatch de inicio

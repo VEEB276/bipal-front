@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from "@ngrx/store";
+import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
 import { HojavidaActions } from "./hojavida.actions";
 import { PersonaDto } from "../../models";
 
@@ -16,7 +16,7 @@ const initialState: HojavidaState = {
   errorPersona: null,
 };
 
-const reducer = createReducer(
+const reducer = createReducer<HojavidaState>(
   initialState,
   on(HojavidaActions.loadPersona, (state) => ({
     ...state,
@@ -44,6 +44,16 @@ export const hojavidaFeature = createFeature({
   name: HOJAVIDA_FEATURE_KEY,
   reducer,
 });
+
+export const selectIdPersona = createSelector(
+  hojavidaFeature.selectHojavidaState,
+  (state) => state.persona?.id
+);
+
+export const selectIdHojaVida = createSelector(
+  hojavidaFeature.selectHojavidaState,
+  (state) => state.persona?.idHojaVida
+);
 
 export const {
   name: hojavidaFeatureKey,
