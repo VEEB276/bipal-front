@@ -1,11 +1,13 @@
-export interface OtroEstudio {
-  nombreCurso: string;
-  graduado: string;
+export interface OtroEstudioHvDto {
+  id: number;
+  idHojaVida: number;
   numeroHoras: number;
-  institucionEducativa: string;
+  graduado: boolean;
+  nombreCurso: string;
+  nombreInstitucion: string;
 }
 
-export interface GraduadoOption {
-  value: string;
-  label: string;
-}
+export type OtroEstudioHvCreateDto = Omit<OtroEstudioHvDto, 'id'>;
+export type OtroEstudioHvUpdateDto = Partial<OtroEstudioHvCreateDto> & { id: number };
+
+export interface GraduadoOption { value: boolean; label: string; }
