@@ -1,14 +1,15 @@
 <div class="perfil-academico-container">
+  @if (loading()) {
+    <app-skeleton-banner></app-skeleton-banner>
+  } @else {
   <form
     [formGroup]="perfilForm"
     (ngSubmit)="onSubmit()"
     class="perfil-academico-form"
   >
   <div formArrayName="estudios">
-      <mat-card
-  *ngFor="let estudio of estudiosArray.controls; let i = index"
-        class="titulo-section"
-      >
+      @for (estudio of estudiosArray.controls; track trackEstudio(estudio, $index); let i = $index) {
+      <mat-card class="titulo-section">
         <mat-card-header class="titulo-header">
           <mat-card-title>
             <h3 class="titulo-label">Título {{ i + 1 }}</h3>
@@ -98,7 +99,7 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="form-field">
+            <mat-form-field appearance="outline" class="form-field" [style.flex]="3">
               <mat-label
                 >Institución Educativa donde Cursó sus estudios</mat-label
               >
@@ -172,6 +173,7 @@
         </div>
         </mat-card-content>
       </mat-card>
+      }
     </div>
 
     <!-- Botón Agregar Estudios -->
@@ -190,10 +192,6 @@
 
     <!-- Botones de Acción -->
     <div class="form-actions">
-      <button type="button" mat-stroked-button color="error">
-        <mat-icon>cancel</mat-icon>
-        Cancelar
-      </button>
       <button
         type="submit"
         mat-flat-button
@@ -204,4 +202,5 @@
       </button>
     </div>
   </form>
+  }
 </div>

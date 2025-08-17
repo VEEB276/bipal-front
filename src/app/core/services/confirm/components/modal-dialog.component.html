@@ -8,7 +8,7 @@
   <div class="modal-dialog__divider"></div>
   <section class="modal-dialog__content" aria-describedby="modal-dialog-content">
     @if (config.message && !config.templateRef && !config.component) {
-      <p id="modal-dialog-content">{{ config.message }}</p>
+      <p id="modal-dialog-content" [innerHTML]="config.message"></p>
     }
     @if (config.templateRef) {
       <ng-container [ngTemplateOutlet]="config.templateRef" [ngTemplateOutletContext]="{ data: config.data }" />

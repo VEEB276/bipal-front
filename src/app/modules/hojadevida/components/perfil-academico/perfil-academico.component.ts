@@ -1,4 +1,11 @@
-import { Component, OnInit, inject } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Signal,
+  inject,
+  ChangeDetectorRef,
+  signal,
+} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
   ReactiveFormsModule,
@@ -22,11 +29,13 @@ import {
 import { EstudiosHvService } from "./services";
 import { AuthService } from "../../../../core/auth/auth.service";
 import { Store } from "@ngrx/store";
-import { selectPersona } from "../../store";
+import { selectIdHojaVida, selectIdPersona } from "../../store";
+import { forkJoin, tap } from "rxjs";
+import { ConfirmDialogService } from "../../../../core/services";
+import { SkeletonBannerComponent } from "../../../../core/components";
 
 @Component({
   selector: "app-perfil-academico",
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -38,6 +47,7 @@ import { selectPersona } from "../../store";
     MatSliderModule,
     MatCardModule,
     MatDividerModule,
+    SkeletonBannerComponent,
   ],
   templateUrl: "./perfil-academico.component.html",
   styleUrls: ["./perfil-academico.component.scss"],
@@ -46,7 +56,8 @@ export class PerfilAcademicoComponent implements OnInit {
   perfilForm: FormGroup;
   nivelesEducativos: NivelEducativoDto[] = [];
 
-  idHojaVida: number | undefined;
+  idHojaVida: Signal<number>;
+  idPersona: Signal<number>;
 
   // Opciones de graduado boolean -> UI
   graduadoOptions = [
@@ -54,25 +65,35 @@ export class PerfilAcademicoComponent implements OnInit {
     { value: false, label: "No" },
   ];
 
+  //inject dependencies
   private readonly estudiosService = inject(EstudiosHvService);
   private readonly auth = inject(AuthService);
   private readonly store = inject(Store);
+  private readonly confirm = inject(ConfirmDialogService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   constructor(private readonly fb: FormBuilder) {
+    this.idPersona = this.store.selectSignal(selectIdPersona);
+    this.idHojaVida = this.store.selectSignal(selectIdHojaVida);
     this.perfilForm = this.fb.group({
       estudios: this.fb.array([this.createEstudioFormGroup()]),
     });
+    console.log("hv", this.idHojaVida);
   }
 
+  loading = signal(true);
+
   ngOnInit(): void {
-    this.idHojaVida = this.store.selectSignal(selectPersona)().idHojaVida;
-    this.cargarNivelesEducativos();
-    this.estudiosService
-      .obtenerEstudiosPorPersona(this.idHojaVida)
-      .subscribe((estudios) => {
-        //console.log(estudios);
-        this.cargarEstudios(estudios);
-      });
+    // Indicamos cargando mientras se obtienen niveles y estudios
+    forkJoin({
+      niveles: this.cargarNivelesEducativos(),
+      estudios: this.estudiosService.obtenerEstudiosPorPersona(
+        this.idPersona()
+      ),
+    }).subscribe(({ estudios }) => {
+      this.patchFormEstudios(estudios);
+      this.loading.set(false);
+    });
   }
 
   get estudiosArray(): FormArray {
@@ -81,6 +102,8 @@ export class PerfilAcademicoComponent implements OnInit {
 
   createEstudioFormGroup(): FormGroup {
     return this.fb.group({
+      id: [null],
+      idHojaVida: [this.idHojaVida()],
       nombreTitulo: ["", [Validators.required, Validators.maxLength(255)]],
       graduado: [false, Validators.required],
       idNivelEducativo: [null, Validators.required],
@@ -92,11 +115,13 @@ export class PerfilAcademicoComponent implements OnInit {
     });
   }
 
-  cargarEstudios(estudios: any[]) {
+  patchFormEstudios(estudios: any[]) {
     this.estudiosArray.clear(); // Limpiar el array antes de cargar nuevos estudios
     estudios.forEach((estudio) => {
       this.estudiosArray.push(
         this.fb.group({
+          id: [estudio.id],
+          idHojaVida: [this.idHojaVida()],
           nombreTitulo: [
             estudio.nombreTitulo,
             [Validators.required, Validators.maxLength(255)],
@@ -121,16 +146,44 @@ export class PerfilAcademicoComponent implements OnInit {
   }
 
   eliminarEstudio(index: number): void {
-    if (this.estudiosArray.length > 1) {
-      this.estudiosArray.removeAt(index);
-    }
+    // Si la UI evita eliminar el único registro, hacemos early return defensivo
+    if (this.estudiosArray.length <= 1) return;
+
+    const grupo = this.estudiosArray.at(index) as FormGroup;
+    const id = grupo?.get("id")?.value;
+
+    this.confirm
+      .open({
+        title: "Confirmar eliminación",
+        message: `¿Estás seguro de que deseas eliminar el estudio <strong>${grupo?.get("nombreTitulo")?.value}</strong>?`,
+        type: "delete",
+      })
+      .subscribe((action) => {
+        //si se cancelo la accion de eliminar
+        if (!action) return;
+        const removeLocal = () => {
+          this.estudiosArray.removeAt(index);
+          // Forzar CD si algún control queda con estado sucio que no dispara automáticamente
+          this.cdr.markForCheck();
+        };
+        if (id) {
+          this.estudiosService
+            .eliminarEstudio(id)
+            .subscribe(() => removeLocal());
+        } else {
+          removeLocal();
+        }
+      });
   }
 
-  private cargarNivelesEducativos(): void {
-    this.estudiosService.obtenerNivelesEducativos().subscribe({
-      next: (niveles) => (this.nivelesEducativos = niveles || []),
-      error: (err) => console.error("Error cargando niveles educativos", err),
-    });
+  trackEstudio(group: any, index: number) {
+    return group?.get("id")?.value ?? index;
+  }
+
+  private cargarNivelesEducativos() {
+    return this.estudiosService
+      .obtenerNivelesEducativos()
+      .pipe(tap((niveles) => (this.nivelesEducativos = niveles || [])));
   }
 
   onSubmit(): void {
@@ -139,18 +192,10 @@ export class PerfilAcademicoComponent implements OnInit {
       return;
     }
     const payload: EstudioHvCreateDto[] = this.estudiosArray.controls.map(
-      (ctrl) => ({
-        idHojaVida: this.idHojaVida,
-        nombreTitulo: ctrl.get("nombreTitulo")?.value,
-        graduado: ctrl.get("graduado")?.value,
-        idNivelEducativo: ctrl.get("idNivelEducativo")?.value,
-        nombreInstitucion: ctrl.get("nombreInstitucion")?.value,
-        semestresAprobados: ctrl.get("semestresAprobados")?.value,
-      })
+      (ctrl) => ctrl.value
     );
     console.log("Payload Estudios HV", payload);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // TODO: lógica update vs create (si backend soporta actualizar lote) – por ahora siempre create
+    // pendiente: cuando backend exponga actualización por lote, aquí decidir create vs update
     this.estudiosService.crearEstudios(payload).subscribe({
       next: (resp) => console.log("Estudios guardados", resp),
       error: (err) => console.error("Error guardando estudios", err),

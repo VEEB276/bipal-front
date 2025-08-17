@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../../../../../environments/environment';
 import { EstudioHvDto, EstudioHvCreateDto, EstudioHvUpdateDto, NivelEducativoDto } from '../interfaces/perfil-academico.interface';
+import { NotificationService } from '../../../../../core/services/notification.service';
 
 /**
  * Servicio para gestionar los estudios (EstudioHV) asociados a la hoja de vida de una persona.
@@ -19,6 +20,7 @@ import { EstudioHvDto, EstudioHvCreateDto, EstudioHvUpdateDto, NivelEducativoDto
 export class EstudiosHvService {
   private readonly apiUrl = `${environment.hojaDeVidaApiUrl}/estudio-hv`;
   private readonly http = inject(HttpClient);
+  private readonly notification = inject(NotificationService);
 
   private readonly httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -30,7 +32,10 @@ export class EstudiosHvService {
   crearEstudios(estudios: EstudioHvCreateDto[]): Observable<EstudioHvDto[]> {
     return this.http
       .post<EstudioHvDto[]>(`${this.apiUrl}/create-estudios`, estudios, this.httpOptions)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        tap(() => this.notification.showSuccess('Se ha creado los estudios exitosamente.')),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -39,7 +44,10 @@ export class EstudiosHvService {
   actualizarEstudios(estudios: EstudioHvUpdateDto[]): Observable<EstudioHvDto[]> {
     return this.http
       .put<EstudioHvDto[]>(`${this.apiUrl}/actualizar-estudio`, estudios, this.httpOptions)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        tap(() => this.notification.showSuccess('Se ha actualizado los estudios con éxito.')),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -57,7 +65,10 @@ export class EstudiosHvService {
   eliminarEstudio(id: number): Observable<boolean> {
     return this.http
       .delete<boolean>(`${this.apiUrl}/eliminar-estudio-hv/${id}`)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        tap((ok) => { if (ok) this.notification.showSuccess('Se ha borrado satisfactoriamente el estudio.'); }),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -103,7 +114,7 @@ export class EstudiosHvService {
           errorMessage = `Error ${error.status}: ${error.message}`;
       }
     }
-    console.error('Error en EstudiosHvService:', error);
+    this.notification.showError(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
 }

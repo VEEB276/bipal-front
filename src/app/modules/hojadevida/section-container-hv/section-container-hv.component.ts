@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { InfoPersonalComponent } from "../components/info-personal/info-personal.component";
 import {
   MatAccordion,
@@ -11,6 +11,9 @@ import { MatIcon } from "@angular/material/icon";
 import { PerfilAcademicoComponent } from "../components/perfil-academico";
 import { OtrosEstudiosComponent } from "../components/otros-estudios";
 import { ExperienciaComponent } from "../components/experiencia";
+import { selectIdHojaVida } from "../store";
+import { Store } from "@ngrx/store";
+import { SkeletonBannerComponent } from "../../../core/components/skeleton/skeleton-banner.component";
 
 @Component({
   selector: 'app-section-container-hv',
@@ -26,8 +29,13 @@ import { ExperienciaComponent } from "../components/experiencia";
     MatExpansionPanelTitle,
     PerfilAcademicoComponent,
     OtrosEstudiosComponent,
-    ExperienciaComponent
+    ExperienciaComponent,
+    SkeletonBannerComponent
 ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SectionContainerHvComponent {}
+export class SectionContainerHvComponent {
+  //esto es para asegurarse que no se muestre el formulario hasta que haya cargado
+  //la infromacion del usuario.
+  idHojaVida = inject(Store).selectSignal(selectIdHojaVida);
+}

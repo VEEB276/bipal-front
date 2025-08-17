@@ -4,6 +4,7 @@
   class="image-banner"
 />
 
+@if(idHojaVida()){
 <mat-accordion class="accordion" multi>
   <!-- Sección de Información Personal ------------------------------------------------------------------------------->
   <mat-expansion-panel>
@@ -58,3 +59,6 @@
     </ng-template>
   </mat-expansion-panel>
 </mat-accordion>
+} @else {
+  <app-skeleton-banner></app-skeleton-banner>
+}
