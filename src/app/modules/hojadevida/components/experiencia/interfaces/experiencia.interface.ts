@@ -1,20 +1,25 @@
-export interface Experiencia {
-  perfilProfesional: string;
-  tipoExperiencia: string;
+export interface ExperienciaHvDto {
+  id: number | null;
+  idHojaVida: number | null;
+  idTipoExperiencia: number | null;
+  descripcionPerfil: string;
   nombreEmpresa: string;
   nombreCargo: string;
-  dependencia: string;
-  esTrabajoActual: string;
-  fechaInicio: string;
-  fechaRetiro: string;
+  dependenciaCargo: string;
+  fechaDesde: Date | string | null; // Mantener Date en front; serializar al enviar
+  fechaHasta: Date | string | null;
+}
+
+export type UpsertExperienciaHvDto = ExperienciaHvDto; // backend usa misma lista para create/update
+
+export interface TipoExperienciaDto {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  habilitado: boolean;
 }
 
 export interface TipoExperienciaOption {
-  value: string;
-  label: string;
-}
-
-export interface TrabajoActualOption {
-  value: string;
+  value: number;
   label: string;
 }

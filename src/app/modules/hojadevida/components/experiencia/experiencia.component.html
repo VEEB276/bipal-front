@@ -1,14 +1,11 @@
 <div class="experiencia-container">
-  <form
-    [formGroup]="experienciaForm"
-    (ngSubmit)="onSubmit()"
-    class="experiencia-form"
-  >
+  @if (loading()) {
+    <app-skeleton-banner />
+  } @else {
+  <form [formGroup]="experienciaForm" (ngSubmit)="onSubmit()" class="experiencia-form" scrollFirstInvalid>
     <div formArrayName="experiencias">
-      <mat-card
-        *ngFor="let experiencia of experienciasArray.controls; let i = index"
-        class="experiencia-section"
-      >
+  @for (experiencia of experienciasArray.controls; track $index; let i = $index) {
+      <mat-card class="experiencia-section">
         <mat-card-header class="experiencia-header">
           <mat-card-title>
             <h3 class="experiencia-label">Experiencia {{ i + 1 }}</h3>
@@ -29,34 +26,25 @@
 
         <mat-card-content>
           <div [formGroupName]="i" class="experiencia-form-group">
-            <!-- Perfil Profesional -->
+            <!-- Descripción Perfil -->
             <div class="form-row">
               <mat-form-field appearance="outline" class="form-field full-width">
-                <mat-label>Perfil Profesional</mat-label>
+                <mat-label>Descripción Perfil</mat-label>
                 <textarea
                   matInput
-                  formControlName="perfilProfesional"
-                  placeholder="Describe tu perfil profesional"
+                  formControlName="descripcionPerfil"
+                  placeholder="Describe el perfil / funciones principales"
                   rows="4"
                   maxlength="800"
                 ></textarea>
                 <mat-icon matPrefix>description</mat-icon>
-                <mat-hint align="end">{{ getExperienciaControl(i, 'perfilProfesional')?.value?.length || 0 }}/800</mat-hint>
-                <mat-error
-                  *ngIf="
-                    getExperienciaControl(i, 'perfilProfesional')?.invalid &&
-                    getExperienciaControl(i, 'perfilProfesional')?.touched
-                  "
-                >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'perfilProfesional')?.errors?.['required']"
-                    >El perfil profesional es requerido</span
-                  >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'perfilProfesional')?.errors?.['maxlength']"
-                    >Máximo 800 caracteres</span
-                  >
-                </mat-error>
+                <mat-hint align="end">{{ getExperienciaControl(i, 'descripcionPerfil')?.value?.length || 0 }}/800</mat-hint>
+                @if (getExperienciaControl(i, 'descripcionPerfil')?.invalid && getExperienciaControl(i, 'descripcionPerfil')?.touched) {
+                  <mat-error>
+                    @if (getExperienciaControl(i, 'descripcionPerfil')?.errors?.['required']) {<span>La descripción es requerida</span>}
+                    @if (getExperienciaControl(i, 'descripcionPerfil')?.errors?.['maxlength']) {<span>Máximo 800 caracteres</span>}
+                  </mat-error>
+                }
               </mat-form-field>
             </div>
 
@@ -64,26 +52,17 @@
             <div class="form-row">
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Tipo de Experiencia</mat-label>
-                <mat-select formControlName="tipoExperiencia">
-                  <mat-option
-                    *ngFor="let tipo of tiposExperiencia"
-                    [value]="tipo.value"
-                  >
-                    {{ tipo.label }}
-                  </mat-option>
+                <mat-select formControlName="idTipoExperiencia">
+                  @for (tipo of tiposExperienciaSignal(); track tipo.value) {
+                    <mat-option [value]="tipo.value">{{ tipo.label }}</mat-option>
+                  }
                 </mat-select>
                 <mat-icon matPrefix>work</mat-icon>
-                <mat-error
-                  *ngIf="
-                    getExperienciaControl(i, 'tipoExperiencia')?.invalid &&
-                    getExperienciaControl(i, 'tipoExperiencia')?.touched
-                  "
-                >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'tipoExperiencia')?.errors?.['required']"
-                    >Seleccione el tipo de experiencia</span
-                  >
-                </mat-error>
+                @if (getExperienciaControl(i, 'idTipoExperiencia')?.invalid && getExperienciaControl(i, 'idTipoExperiencia')?.touched) {
+                  <mat-error>
+                    @if (getExperienciaControl(i, 'idTipoExperiencia')?.errors?.['required']) {<span>Seleccione el tipo de experiencia</span>}
+                  </mat-error>
+                }
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="form-field">
@@ -94,21 +73,12 @@
                   placeholder="Ingrese el nombre de la empresa"
                 />
                 <mat-icon matPrefix>business</mat-icon>
-                <mat-error
-                  *ngIf="
-                    getExperienciaControl(i, 'nombreEmpresa')?.invalid &&
-                    getExperienciaControl(i, 'nombreEmpresa')?.touched
-                  "
-                >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'nombreEmpresa')?.errors?.['required']"
-                    >El nombre de la empresa es requerido</span
-                  >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'nombreEmpresa')?.errors?.['maxlength']"
-                    >Máximo 255 caracteres</span
-                  >
-                </mat-error>
+                @if (getExperienciaControl(i, 'nombreEmpresa')?.invalid && getExperienciaControl(i, 'nombreEmpresa')?.touched) {
+                  <mat-error>
+                    @if (getExperienciaControl(i, 'nombreEmpresa')?.errors?.['required']) {<span>El nombre de la empresa es requerido</span>}
+                    @if (getExperienciaControl(i, 'nombreEmpresa')?.errors?.['maxlength']) {<span>Máximo 255 caracteres</span>}
+                  </mat-error>
+                }
               </mat-form-field>
             </div>
 
@@ -122,46 +92,28 @@
                   placeholder="Ingrese el nombre del cargo"
                 />
                 <mat-icon matPrefix>person_outline</mat-icon>
-                <mat-error
-                  *ngIf="
-                    getExperienciaControl(i, 'nombreCargo')?.invalid &&
-                    getExperienciaControl(i, 'nombreCargo')?.touched
-                  "
-                >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'nombreCargo')?.errors?.['required']"
-                    >El nombre del cargo es requerido</span
-                  >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'nombreCargo')?.errors?.['maxlength']"
-                    >Máximo 255 caracteres</span
-                  >
-                </mat-error>
+                @if (getExperienciaControl(i, 'nombreCargo')?.invalid && getExperienciaControl(i, 'nombreCargo')?.touched) {
+                  <mat-error>
+                    @if (getExperienciaControl(i, 'nombreCargo')?.errors?.['required']) {<span>El nombre del cargo es requerido</span>}
+                    @if (getExperienciaControl(i, 'nombreCargo')?.errors?.['maxlength']) {<span>Máximo 255 caracteres</span>}
+                  </mat-error>
+                }
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Dependencia donde Desempeñó el Cargo</mat-label>
                 <input
                   matInput
-                  formControlName="dependencia"
+                  formControlName="dependenciaCargo"
                   placeholder="Ingrese la dependencia"
                 />
                 <mat-icon matPrefix>account_balance</mat-icon>
-                <mat-error
-                  *ngIf="
-                    getExperienciaControl(i, 'dependencia')?.invalid &&
-                    getExperienciaControl(i, 'dependencia')?.touched
-                  "
-                >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'dependencia')?.errors?.['required']"
-                    >La dependencia es requerida</span
-                  >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'dependencia')?.errors?.['maxlength']"
-                    >Máximo 255 caracteres</span
-                  >
-                </mat-error>
+                @if (getExperienciaControl(i, 'dependenciaCargo')?.invalid && getExperienciaControl(i, 'dependenciaCargo')?.touched) {
+                  <mat-error>
+                    @if (getExperienciaControl(i, 'dependenciaCargo')?.errors?.['required']) {<span>La dependencia es requerida</span>}
+                    @if (getExperienciaControl(i, 'dependenciaCargo')?.errors?.['maxlength']) {<span>Máximo 255 caracteres</span>}
+                  </mat-error>
+                }
               </mat-form-field>
             </div>
 
@@ -181,17 +133,11 @@
                   </mat-option>
                 </mat-select>
                 <mat-icon matPrefix>check_circle</mat-icon>
-                <mat-error
-                  *ngIf="
-                    getExperienciaControl(i, 'esTrabajoActual')?.invalid &&
-                    getExperienciaControl(i, 'esTrabajoActual')?.touched
-                  "
-                >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'esTrabajoActual')?.errors?.['required']"
-                    >Debe indicar si es su trabajo actual</span
-                  >
-                </mat-error>
+                @if (getExperienciaControl(i, 'esTrabajoActual')?.invalid && getExperienciaControl(i, 'esTrabajoActual')?.touched) {
+                  <mat-error>
+                    @if (getExperienciaControl(i, 'esTrabajoActual')?.errors?.['required']) {<span>Debe indicar si es su trabajo actual</span>}
+                  </mat-error>
+                }
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="form-field">
@@ -199,7 +145,7 @@
                 <input
                   matInput
                   [matDatepicker]="fechaInicioPicker"
-                  formControlName="fechaInicio"
+                  formControlName="fechaDesde"
                   placeholder="DD/MM/AAAA"
                 />
                 <mat-datepicker-toggle
@@ -208,41 +154,38 @@
                 ></mat-datepicker-toggle>
                 <mat-datepicker #fechaInicioPicker></mat-datepicker>
                 <mat-icon matPrefix>event</mat-icon>
-                <mat-error
-                  *ngIf="
-                    getExperienciaControl(i, 'fechaInicio')?.invalid &&
-                    getExperienciaControl(i, 'fechaInicio')?.touched
-                  "
-                >
-                  <span
-                    *ngIf="getExperienciaControl(i, 'fechaInicio')?.errors?.['required']"
-                    >La fecha de inicio es requerida</span
-                  >
-                </mat-error>
+                @if (getExperienciaControl(i, 'fechaDesde')?.invalid && getExperienciaControl(i, 'fechaDesde')?.touched) {
+                  <mat-error>
+                    @if (getExperienciaControl(i, 'fechaDesde')?.errors?.['required']) {<span>La fecha de inicio es requerida</span>}
+                  </mat-error>
+                }
               </mat-form-field>
 
+              @if (!isRetiroDisabled(i)) {
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Fecha de Retiro del Cargo</mat-label>
                 <input
                   matInput
                   [matDatepicker]="fechaRetiroPicker"
-                  formControlName="fechaRetiro"
+                  formControlName="fechaHasta"
                   placeholder="DD/MM/AAAA"
-                  [disabled]="isRetiroDisabled(i)"
+                  [min]="getExperienciaControl(i,'fechaDesde')?.value"
                 />
-                <mat-datepicker-toggle
-                  matIconSuffix
-                  [for]="fechaRetiroPicker"
-                  [disabled]="isRetiroDisabled(i)"
-                ></mat-datepicker-toggle>
+                <mat-datepicker-toggle matIconSuffix [for]="fechaRetiroPicker"></mat-datepicker-toggle>
                 <mat-datepicker #fechaRetiroPicker></mat-datepicker>
                 <mat-icon matPrefix>event_busy</mat-icon>
-                <mat-hint *ngIf="isRetiroDisabled(i)">No aplica para trabajo actual</mat-hint>
+                @if(getExperienciaControl(i,'fechaHasta')?.errors?.matDatepickerMin){
+                <mat-error>
+                  La fecha de retiro debe ser mayor que la fecha de inicio.
+                </mat-error>
+                }
               </mat-form-field>
+              }
             </div>
           </div>
         </mat-card-content>
       </mat-card>
+      }
     </div>
 
     <!-- Botón Agregar Experiencia -->
@@ -275,4 +218,5 @@
       </button>
     </div>
   </form>
+  }
 </div>
