@@ -1,0 +1,24 @@
+<mat-card class="delete-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>database</mat-icon>
+      Borrar mis datos
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      Si deseas borrar todos los datos de tu cuenta, puedes hacerlo presionando
+      el botón. Esta acción es irreversible y eliminará tu cuenta.
+    </p>
+  </mat-card-content>
+  <mat-card-actions align="end" class="actions">
+    <button
+      mat-flat-button
+      color="error"
+      class="btn-delete"
+      (click)="onClickDeleteAll()"
+    >
+      Borrar todos mis datos
+    </button>
+  </mat-card-actions>
+</mat-card>

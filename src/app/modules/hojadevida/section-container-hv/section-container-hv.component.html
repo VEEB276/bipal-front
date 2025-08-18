@@ -4,7 +4,6 @@
   class="image-banner"
 />
 
-@if(idHojaVida()){
 <mat-accordion class="accordion" multi>
   <!-- Sección de Información Personal ------------------------------------------------------------------------------->
   <mat-expansion-panel>
@@ -17,7 +16,7 @@
     <app-info-personal></app-info-personal>
   </mat-expansion-panel>
 
-  <mat-expansion-panel>
+  <mat-expansion-panel [disabled]="!isCreated()">
     <mat-expansion-panel-header>
       <mat-panel-title class="title-section">
         <mat-icon>school</mat-icon>
@@ -32,7 +31,7 @@
 
 
   <!-- Sección de Otros Estudios -------------------------------------------------------------------------------------->
-  <mat-expansion-panel>
+  <mat-expansion-panel [disabled]="!isCreated()">
     <mat-expansion-panel-header>
       <mat-panel-title class="title-section">
         <mat-icon>menu_book</mat-icon>
@@ -46,7 +45,7 @@
   </mat-expansion-panel>
 
   <!-- Sección de Experiencia --------------------------------------------------------------------------------------->
-  <mat-expansion-panel>
+  <mat-expansion-panel [disabled]="!isCreated()">
     <mat-expansion-panel-header>
       <mat-panel-title class="title-section">
         <mat-icon>work</mat-icon>
@@ -59,6 +58,3 @@
     </ng-template>
   </mat-expansion-panel>
 </mat-accordion>
-} @else {
-  <app-skeleton-banner></app-skeleton-banner>
-}

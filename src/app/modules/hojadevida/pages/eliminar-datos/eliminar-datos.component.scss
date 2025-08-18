@@ -1,0 +1,17 @@
+ .delete-card {
+  margin: 24px auto;
+  max-width: 880px;
+  border: 1px solid var(--outline-variant);
+  box-shadow: none;
+ }
+
+ .actions {
+  padding: 16px 24px 24px;
+  display: flex;
+  justify-content: flex-end;
+ }
+
+ .btn-delete {
+  text-transform: none;
+  font-weight: 600;
+ }

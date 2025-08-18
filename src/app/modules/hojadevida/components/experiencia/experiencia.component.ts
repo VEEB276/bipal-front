@@ -73,8 +73,6 @@ export class ExperienciaComponent implements OnInit {
         this.service.obtenerExperienciasPorPersona(idPersona).subscribe((lista) => {
           if (lista?.length) {
             this.patchForm(lista);
-          } else {
-            this.agregarExperiencia();
           }
           this.loading.set(false);
         });
@@ -148,8 +146,6 @@ export class ExperienciaComponent implements OnInit {
       if (e.esTrabajoActual !== 'si') {
         fechaHasta = e.fechaHasta ? this.toDate(e.fechaHasta) : null;
       }
-      console.log("fechaDesde:", fechaDesde);
-      console.log("fechaHasta:", fechaHasta);
       return {
         id: e.id ?? null,
         idHojaVida: e.idHojaVida ?? idHv,

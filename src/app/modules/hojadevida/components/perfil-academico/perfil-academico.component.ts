@@ -78,7 +78,6 @@ export class PerfilAcademicoComponent implements OnInit {
     this.perfilForm = this.fb.group({
       estudios: this.fb.array([this.createEstudioFormGroup()]),
     });
-    console.log("hv", this.idHojaVida);
   }
 
   loading = signal(true);
@@ -91,7 +90,7 @@ export class PerfilAcademicoComponent implements OnInit {
         this.idPersona()
       ),
     }).subscribe(({ estudios }) => {
-      this.patchFormEstudios(estudios);
+      if (estudios) this.patchFormEstudios(estudios);
       this.loading.set(false);
     });
   }
@@ -155,7 +154,9 @@ export class PerfilAcademicoComponent implements OnInit {
     this.confirm
       .open({
         title: "Confirmar eliminación",
-        message: `¿Estás seguro de que deseas eliminar el estudio <strong>${grupo?.get("nombreTitulo")?.value}</strong>?`,
+        message: `¿Estás seguro de que deseas eliminar el estudio <strong>${
+          grupo?.get("nombreTitulo")?.value
+        }</strong>?`,
         type: "delete",
       })
       .subscribe((action) => {
@@ -194,7 +195,6 @@ export class PerfilAcademicoComponent implements OnInit {
     const payload: EstudioHvCreateDto[] = this.estudiosArray.controls.map(
       (ctrl) => ctrl.value
     );
-    console.log("Payload Estudios HV", payload);
     // pendiente: cuando backend exponga actualización por lote, aquí decidir create vs update
     this.estudiosService.crearEstudios(payload).subscribe({
       next: (resp) => console.log("Estudios guardados", resp),

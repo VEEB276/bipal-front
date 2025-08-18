@@ -5,6 +5,8 @@ import { catchError, tap } from "rxjs/operators";
 import { environment } from "../../../../environments/environment";
 import { PersonaDto, PersonaCreateDto, PersonaUpdateDto } from "../models";
 import { AuthService } from "../../../core/auth/auth.service";
+import { Store } from "@ngrx/store";
+import { HojavidaActions } from "../store";
 
 @Injectable({
   providedIn: "root",
@@ -19,6 +21,7 @@ export class InformacionPersonalService {
   };
 
   private readonly auth = inject(AuthService);
+  private readonly store = inject(Store);
 
   constructor(private readonly http: HttpClient) {}
 
@@ -63,6 +66,7 @@ export class InformacionPersonalService {
           //TODO: esto deberia hacerlo el backend
           // aqui solo se deberia actualizar el id de la persona en la sesion getSession()
           this.auth.updatePersonaId(resp.id).then(() => this.auth.getSession());
+          this.store.dispatch(HojavidaActions.loadPersonaSuccess({ persona: resp }));
         }),
         catchError(this.handleError)
       );

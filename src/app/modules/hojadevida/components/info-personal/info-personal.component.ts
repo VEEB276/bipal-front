@@ -68,7 +68,6 @@ export class InfoPersonalComponent implements OnInit {
     if (this.personaId) {
       // Intentar obtener desde store primero
       this.store.select(selectPersona).subscribe((p) => {
-        console.log(p);
         this.personaForm.patchValue(p);
       });
     }
@@ -144,7 +143,7 @@ export class InfoPersonalComponent implements OnInit {
   onSubmit(): void {
     this.personaForm.markAllAsTouched();
     if (this.personaForm.valid) {
-      this.isLoading = true;
+      //this.isLoading = true;
 
       if (this.isEditMode) {
         this.actualizarPersona();
@@ -168,14 +167,10 @@ export class InfoPersonalComponent implements OnInit {
       .crearInformacionPersonal(formData)
       .subscribe({
         next: (persona: PersonaDto) => {
-          console.log("Persona creada:", persona);
           this.personaId = persona.id;
           this.isLoading = false;
           this.notificationService.showSuccess(
             "Información personal guardada exitosamente."
-          );
-          this.store.dispatch(
-            HojavidaActions.updatePersonaInState({ persona })
           );
         },
         error: (error) => {
@@ -204,7 +199,6 @@ export class InfoPersonalComponent implements OnInit {
       .actualizarInformacionPersonal(formData)
       .subscribe({
         next: (persona: PersonaDto) => {
-          console.log("Persona actualizada:", persona);
           this.isLoading = false;
           this.notificationService.showSuccess(
             "Información personal actualizada exitosamente."

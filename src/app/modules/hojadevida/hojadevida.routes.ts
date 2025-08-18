@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-import { personaPrefetchGuard } from './store';
+import { personaPrefetchGuard } from "./store";
 
 export const HOJA_DE_VIDA_ROUTES: Routes = [
   {
@@ -18,11 +18,17 @@ export const HOJA_DE_VIDA_ROUTES: Routes = [
   {
     path: "terminos-condiciones",
     loadComponent: () =>
-      import("./terminos-condiciones/terminos-condiciones.component").then(
+      import("./pages/terminos-condiciones/terminos-condiciones.component").then(
         (c) => c.TerminosCondicionesComponent
       ),
   },
-
+  {
+    path: "eliminar-datos",
+    loadComponent: () =>
+      import("./pages/eliminar-datos/eliminar-datos.component").then(
+        (c) => c.EliminarDatosComponent
+      ),
+  },
   //tiene que ir de final para ser menos IMPORTANTE
   // Ruta comodín: cualquier ruta no coincidente dentro de este módulo redirige a 'personal'
   {

@@ -1,10 +1,11 @@
-import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
-import { AuthService } from '../../../core/auth/auth.service';
-import { InformacionPersonalService } from '../services';
-import { Store } from '@ngrx/store';
-import { HojavidaActions, selectPersona } from './index';
-import { take } from 'rxjs/operators';
+import { inject } from "@angular/core";
+import { CanActivateFn } from "@angular/router";
+import { AuthService } from "../../../core/auth/auth.service";
+import { InformacionPersonalService } from "../services";
+import { Store } from "@ngrx/store";
+import { HojavidaActions, selectPersona } from "./index";
+import { catchError, map, take, tap } from "rxjs/operators";
+import { of } from "rxjs";
 
 export const personaPrefetchGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
@@ -22,9 +23,18 @@ export const personaPrefetchGuard: CanActivateFn = () => {
 
   // Dispatch de inicio
   store.dispatch(HojavidaActions.loadPersona({ id: idPersona }));
-  servicio.obtenerInformacionPersonal(idPersona).subscribe({
-    next: persona => store.dispatch(HojavidaActions.loadPersonaSuccess({ persona })),
-    error: err => store.dispatch(HojavidaActions.loadPersonaFailure({ error: err.message || 'Error cargando persona' }))
-  });
-  return true;
+  return servicio.obtenerInformacionPersonal(idPersona).pipe(
+    tap({
+      next: (persona) =>
+        store.dispatch(HojavidaActions.loadPersonaSuccess({ persona })),
+      error: (err) =>
+        store.dispatch(
+          HojavidaActions.loadPersonaFailure({
+            error: err.message || "Error cargando persona",
+          })
+        ),
+    }),
+    map(() => true)
+  );
+  // return true;
 };
