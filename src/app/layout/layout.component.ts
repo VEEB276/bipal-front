@@ -65,6 +65,11 @@ export class LayoutComponent {
     });
     // Inicial
     this.currentUrl.set(this.router.url);
+
+    const collapsed = localStorage.getItem('bipal.sidenav-collapsed');
+    if(collapsed) {
+      this.isCollapsed.set(collapsed === 'true');
+    }
   }
 
   // Computed signals simplificados
@@ -126,6 +131,7 @@ export class LayoutComponent {
 
   toggleSidenav() {
     this.isCollapsed.update((collapsed) => !collapsed);
+    localStorage.setItem('bipal.sidenav-collapsed', this.isCollapsed() ? 'true' : 'false');
   }
 
   // Métodos de acción simplificados
