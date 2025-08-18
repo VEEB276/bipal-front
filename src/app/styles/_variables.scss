@@ -50,6 +50,13 @@
     --success-color: #{map.get(theme.$primary-palette, 60)}; // Green from primary
     --warning-color: #f6be0f;
     --info-color: #016398;
+    // Extend semantic colors with on/containers for buttons & surfaces
+    --on-warning: #000000; // high contrast over yellow
+    --warning-container: #fde58a; // lighter variant for backgrounds
+    --on-warning-container: #332800;
+    --info-container: #cde8f4; // light blue container
+    --on-info: #ffffff; // white text over info-color
+    --on-info-container: #002a3d;
     
     // Shadow and scrim
     --shadow: #{map.get(theme.$primary-palette, neutral, 0)};

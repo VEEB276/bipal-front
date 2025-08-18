@@ -1,9 +1,4 @@
-import {
-  Component,
-  inject,
-  signal,
-  computed,
-} from "@angular/core";
+import { Component, inject, signal, computed } from "@angular/core";
 import { RouterOutlet, RouterModule, Router } from "@angular/router";
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { MatSidenavModule } from "@angular/material/sidenav";
@@ -13,14 +8,16 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatDividerModule } from "@angular/material/divider";
 import { CommonModule } from "@angular/common";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { AuthService } from "../core/auth/auth.service";
+import { ConfirmDialogService } from "../core/services";
 
 interface MenuItem {
   label: string;
   icon: string;
-  route?: string;
-  action?: () => void;
-  children?: MenuItem[];
+  url?: string; // ruta de navegación
+  action?: () => void; // acción opcional en lugar de navegar
+  children?: MenuItem[]; // futuro soporte submenús
 }
 
 @Component({
@@ -35,17 +32,21 @@ interface MenuItem {
     MatIconModule,
     MatListModule,
     MatDividerModule,
+    MatTooltipModule,
   ],
   templateUrl: "./layout.component.html",
   styleUrls: ["./layout.component.scss"],
 })
 export class LayoutComponent {
   private breakpointObserver = inject(BreakpointObserver);
-  private route = inject(Router);
+  private router = inject(Router);
   private auth = inject(AuthService);
+  private readonly confirm = inject(ConfirmDialogService);
 
   isCollapsed = signal(false);
   isMobile = signal(false);
+
+  currentUrl = signal<string>("");
 
   constructor() {
     // Detectar móvil y actualizar signals
@@ -57,6 +58,13 @@ export class LayoutComponent {
           this.isCollapsed.set(false);
         }
       });
+
+    // Escuchar cambios de ruta
+    this.router.events.subscribe(() => {
+      this.currentUrl.set(this.router.url);
+    });
+    // Inicial
+    this.currentUrl.set(this.router.url);
   }
 
   // Computed signals simplificados
@@ -69,7 +77,7 @@ export class LayoutComponent {
     {
       label: "Mi hoja de vida",
       icon: "folder_managed",
-      route: "/hoja-de-vida/personal", // Ruta a la hoja de vida
+      url: "/hoja-de-vida/personal",
     },
   ];
 
@@ -78,36 +86,52 @@ export class LayoutComponent {
     {
       label: "Eliminar mis datos",
       icon: "delete_forever",
-      action: () => this.eliminarDatos(),
+      url: "/hoja-de-vida/eliminar-datos",
     },
     {
       label: "Términos y condiciones",
       icon: "description",
-      action: () => this.verTerminos(),
+      url: "/hoja-de-vida/terminos-condiciones",
     },
     {
       label: "Cerrar sesión",
       icon: "logout",
-      action: () => this.cerrarSesion(),
+      action: () => {
+        this.confirm.open({
+          title: "Confirmar cierre de sesión",
+          message: "¿Estás seguro de que deseas cerrar sesión?",
+          type: 'warning',
+          primaryText: "Cerrar sesión",
+          secondaryText: "Cancelar",
+        }).subscribe((ok) => {
+          if (!ok) return;
+          this.cerrarSesion();
+        });
+      },
     },
   ];
+
+  isActive = (item: MenuItem) =>
+    !!item.url && this.currentUrl().startsWith(item.url);
+
+  handleItemClick(item: MenuItem) {
+    if (item.action) {
+      item.action();
+      return;
+    }
+    if (item.url) {
+      this.router.navigate([item.url]);
+    }
+  }
 
   toggleSidenav() {
     this.isCollapsed.update((collapsed) => !collapsed);
   }
 
   // Métodos de acción simplificados
-  private eliminarDatos() {
-    console.log("Eliminar datos");
-  }
-
-  private verTerminos() {
-    this.route.navigate(["/hoja-de-vida/terminos-condiciones"]);
-  }
-
   private cerrarSesion() {
     this.auth.signOut().then(() => {
-      this.route.navigate(["/auth"]);
+      this.router.navigate(["/auth"]);
     });
   }
 }

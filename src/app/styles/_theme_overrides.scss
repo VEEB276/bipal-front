@@ -9,7 +9,32 @@
 .mat-mdc-raised-button.mat-error,
 .mat-mdc-unelevated-button.mat-error {
   --mdc-protected-button-container-color: var(--mat-error-color);
+  --mdc-filled-button-container-color: var(--mat-error-color);
+  --mdc-filled-button-label-text-color: var(--mat-error-on-container-color);
   --mdc-protected-button-label-text-color: var(--mat-error-on-container-color);
+}
+
+// Info buttons
+.mat-mdc-raised-button.mat-info,
+.mat-mdc-unelevated-button.mat-info,
+.mat-mdc-flat-button.mat-info {
+  --mdc-protected-button-container-color: var(--info-color);
+  --mdc-filled-button-container-color: var(--info-color);
+  --mdc-filled-button-label-text-color: var(--on-info);
+  --mdc-protected-button-label-text-color: var(--on-info);
+}
+
+.mat-mdc-outlined-button.mat-info,
+.mat-mdc-stroked-button.mat-info {
+  --mdc-outlined-button-label-text-color: var(--info-color);
+  --mdc-outlined-button-outline-color: var(--info-color);
+  &:hover { background-color: rgba(1,99,152,0.08); }
+}
+
+.mat-mdc-button.mat-info,
+.mat-mdc-text-button.mat-info {
+  --mdc-text-button-label-text-color: var(--info-color);
+  &:hover { background-color: rgba(1,99,152,0.08); }
 }
 
 .mat-mdc-outlined-button.mat-error,
@@ -103,6 +128,11 @@
   --mat-warn-color: var(--warning-color);
   --mat-warn-color-rgb: 154, 99, 164; // Valor RGB de warning-color (tertiary tone 50)
   --mat-on-warn-color: var(--on-tertiary);
+
+    // Info mapping (no estándar en Material, para uso de botones custom)
+    --mat-info-color: var(--info-color);
+    --mat-on-info-color: var(--on-info);
+    --mat-info-color-rgb: 1, 99, 152;
 
   // Error (usando error-color)
   --mat-error-color: var(--error-color);

@@ -25,9 +25,13 @@
       <mat-nav-list>
         <mat-list-item 
           *ngFor="let item of menuItems"
-          class="menu-item primary-button"
-          [routerLink]="item.route"
-          (click)="item.action && item.action()">
+          class="menu-item"
+          [class.active]="isActive(item)"
+          (click)="handleItemClick(item)"
+          [matTooltip]=" isCollapsed() ? item.label : ''"
+          matTooltipPosition="right"
+          (keydown.enter)="handleItemClick(item)"
+          (keydown.space)="handleItemClick(item)">
           <mat-icon matListItemIcon class="menu-icon">{{ item.icon }}</mat-icon>
           <span matListItemTitle *ngIf="!isCollapsed() || isMobile()">
             {{ item.label }}
@@ -46,7 +50,12 @@
         <mat-list-item 
           *ngFor="let item of accountMenuItems"
           class="menu-item"
-          (click)="item.action && item.action()">
+          [class.active]="isActive(item)"
+          (click)="handleItemClick(item)"
+          [matTooltip]=" isCollapsed() ? item.label : ''"
+          matTooltipPosition="right"
+          (keydown.enter)="handleItemClick(item)"
+          (keydown.space)="handleItemClick(item)">
           <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
           <span matListItemTitle *ngIf="!isCollapsed() || isMobile()">
             {{ item.label }}

@@ -12,6 +12,7 @@
 
   &.collapsed {
     width: 64px;
+    --mat-list-list-item-leading-icon-start-space: 12px;
   }
 
   .sidenav-header {
@@ -43,14 +44,20 @@
       margin: 2px 8px;
       border-radius: 8px;
 
-      &.primary-button {
+      &.active {
         background-color: var(--primary-color);
         --mdc-list-list-item-label-text-color: white;
-        --mdc-list-list-item-hover-label-text-color: var(--surface); 
+        --mdc-list-list-item-hover-label-text-color: var(--surface);
 
         mat-icon.menu-icon {
           color: white;
-          margin-left: 12px;
+        }
+      }
+      &.active {
+        background: var(--primary-color);
+        font-weight: 600;
+        .mat-icon {
+          color: white;
         }
       }
     }
