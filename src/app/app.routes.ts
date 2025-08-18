@@ -4,6 +4,7 @@ import { hojaDeVidaCanActivateChild } from "./core/auth/hoja-de-vida-auth.guard"
 import { AuthenticationComponent } from "./modules/auth/authentication.component";
 import { CrearUsuarioComponent } from "./modules/auth/components/crear-usuario/crear-usuario.component";
 import { FullContainerAuthComponent } from "./modules/auth/components/full-container-auth/full-container-auth.component";
+import { userRedirectAutenticated } from "./core/auth/auth-user.guard";
 
 export const routes: Routes = [
   {
@@ -13,6 +14,7 @@ export const routes: Routes = [
   },
   {
     path: "auth",
+    canActivate: [userRedirectAutenticated],
     component: AuthenticationComponent,
     children: [
       {

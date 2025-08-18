@@ -39,6 +39,7 @@ export class AuthService {
   getSession() {
     return this.supabase.auth.getSession().then(({ data }) => {
       this._session = data.session;
+      return this._session;
     });
   }
 
