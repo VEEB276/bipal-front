@@ -2,7 +2,7 @@
 <form [formGroup]="loginForm" class="login-form">
         <h2>Iniciar sesión</h2>
         <!-- ------------------------------------------------ ---------- -->
-        <mat-form-field  required class="example-full-width" class="wid-100">
+        <mat-form-field  required class="wid-100">
           <mat-label> Correo electrónico o número de documento </mat-label> <!--TODO: que me permira numero de documento, desarrollar validators y eso-->
           <input matInput placeholder="ejemplo@gmail.com" formControlName="email"/>
           <button matSuffix mat-icon-button>
@@ -10,22 +10,24 @@
           </button>
         </mat-form-field>
         <!-- ----------------------------------------------------------- -->
-        <mat-form-field required class="example-full-width" class="wid-100">
+        <mat-form-field required class="wid-100">
           <mat-label> Constraseña </mat-label><!--TODO: aqui falta que me permita meter tmb el numero de cel-->
           <input matInput placeholder=" . . . " formControlName="password">
           <button matSuffix mat-icon-button>
             <mat-icon> visibility </mat-icon>
           </button>
         </mat-form-field>
+        <!-- ------------------------------------------------------------ -->
+        <a routerLink="../recuperar-contrasena" class="non-space main-color">¿Has olvidado la contraseña?</a>
   
         <!-- ------------------------------------------------------------ -->
-        <div class="example-button-row">
-          <button
+        <!-- <div> -->
+          <button class="mar-05rem"
            mat-flat-button 
            [disabled]="!loginForm.valid" (click)="onSubmit()">
               Iniciar sesión
             </button>
-          </div>
+          <!-- </div> -->
         <!-- ------------------------------------------------------------- -->
         <mat-divider></mat-divider>
 </form>

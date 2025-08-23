@@ -5,7 +5,7 @@
       <h2>Crear contraseña</h2>
    <mat-form-field class="wid-100">
       <mat-label> Contraseña</mat-label>
-      <input matInput placeholder="Ingresa la clave que quieres vincular a tu cuenta." formControlName="password">
+      <input matInput class="wid-100" placeholder="Ingresa la clave que quieres vincular a tu cuenta." formControlName="password">
        @if(codeForm.invalid && codeForm.touched){
         <mat-error>La contraseña debe contener al menos 1 mayuscula, 1 minuscula  </mat-error>
        }

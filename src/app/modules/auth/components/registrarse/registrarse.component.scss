@@ -8,7 +8,15 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
+  max-width: 500px;
 }
 .wid-100{
   width: 100%;
+}
+.non-space{
+  padding: 0;
+  margin:0;
+}
+.mar-05rem{
+margin: 0.8rem;
 }

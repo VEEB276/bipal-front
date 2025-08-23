@@ -13,8 +13,9 @@
   width: 70%;
 }
 .mat-card-edited{
-  background-color: rgba($color: #eeeeee, $alpha: 0);
-  box-shadow: none;
-  width:60%;
   padding: 0.5rem;
+  box-shadow: none;
+  width:100%;
+  max-width: 940px;
+  background-color: rgba($color: #eeeeee, $alpha: 0);
 }

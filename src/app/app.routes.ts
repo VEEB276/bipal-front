@@ -5,6 +5,7 @@ import { AuthenticationComponent } from "./modules/auth/authentication.component
 import { CrearUsuarioComponent } from "./modules/auth/components/crear-usuario/crear-usuario.component";
 import { FullContainerAuthComponent } from "./modules/auth/components/full-container-auth/full-container-auth.component";
 import { userRedirectAutenticated } from "./core/auth/auth-user.guard";
+import { ResetPaswordComponentComponent } from "./modules/auth/components/reset-password/reset-pasword-component.component";
 
 export const routes: Routes = [
   {
@@ -25,6 +26,10 @@ export const routes: Routes = [
         path: "crear-usuario",
         component: CrearUsuarioComponent,
       },
+      {
+        path: "recuperar-contrasena",
+        component: ResetPaswordComponentComponent
+      }
     ],
   },
   {
