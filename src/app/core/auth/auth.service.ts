@@ -112,18 +112,16 @@ export class AuthService {
     numeroDocumento: number
   ): Promise<{ error: Error | null }> {
     this.loadingService.show();
-    return this.supabase.auth
-      .signInWithOtp({
-        email,
-        options: {
-          shouldCreateUser: true, // crea el usuario (sin password) si no existe aún
-          data: {
-            onboarding_step: "otp_sent",
-            numeroDocumento: numeroDocumento,
-          },
+    //llama al endpoint en supabase que verifica y envia el codigo para crear usuario.
+    return this.supabase.functions
+      .invoke("create-user-logic", {
+        body: {
+          email,
+          numeroDocumento,
         },
       })
-      .then(({ error }) => {
+      .then((resp) => {
+        const error = resp.error ?? resp.data.error;
         if (error) {
           this.notificationService.showError(
             `Error al enviar código: ${error.message}`
@@ -309,24 +307,31 @@ export class AuthService {
     this.loadingService.show();
 
     if (!this._session) {
-      const error = new Error('No hay sesión activa para actualizar metadata.');
+      const error = new Error("No hay sesión activa para actualizar metadata.");
       this.notificationService.showError(error.message);
       this.loadingService.hide();
       return Promise.resolve({ error });
     }
 
-    return this.supabase.auth.updateUser({
-      data: {
-        // Se agrega / sobreescribe idPersona. Supabase hace merge de metadata existente.
-        idPersona,
-      },
-    }).then(({ error }) => {
-      if (error) {
-        this.notificationService.showError(`Error al actualizar metadata: ${error.message}`);
-        return { error };
-      }
-      this.notificationService.showSuccess('Metadata actualizada (idPersona agregado).');
-      return { error: null };
-    }).finally(() => this.loadingService.hide());
+    return this.supabase.auth
+      .updateUser({
+        data: {
+          // Se agrega / sobreescribe idPersona. Supabase hace merge de metadata existente.
+          idPersona,
+        },
+      })
+      .then(({ error }) => {
+        if (error) {
+          this.notificationService.showError(
+            `Error al actualizar metadata: ${error.message}`
+          );
+          return { error };
+        }
+        this.notificationService.showSuccess(
+          "Metadata actualizada (idPersona agregado)."
+        );
+        return { error: null };
+      })
+      .finally(() => this.loadingService.hide());
   }
 }
