@@ -33,7 +33,7 @@
           <div [formGroupName]="i" class="titulo-form-group">
           <!-- Primera Fila: Nombre del Título -->
           <div class="form-row">
-            <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-form-field appearance="fill" class="form-field full-width">
               <mat-label>Título Académico</mat-label>
               <input
                 matInput
@@ -61,7 +61,7 @@
 
           <!-- Segunda Fila: Graduado, Nivel Educativo, Institución -->
           <div class="form-row">
-            <mat-form-field appearance="outline" class="form-field">
+            <mat-form-field appearance="fill" class="form-field">
               <mat-label>Graduado</mat-label>
               <mat-select formControlName="graduado">
                 <mat-option *ngFor="let opcion of graduadoOptions" [value]="opcion.value">{{ opcion.label }}</mat-option>
@@ -80,7 +80,7 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="form-field">
+            <mat-form-field appearance="fill" class="form-field">
               <mat-label>Nivel Educativo</mat-label>
               <mat-select formControlName="idNivelEducativo">
                 <mat-option *ngFor="let nivel of nivelesEducativos" [value]="nivel.id">{{ nivel.nombre }}</mat-option>
@@ -99,7 +99,7 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="form-field" [style.flex]="3">
+            <mat-form-field appearance="fill" class="form-field" [style.flex]="3">
               <mat-label
                 >Institución Educativa donde Cursó sus estudios</mat-label
               >

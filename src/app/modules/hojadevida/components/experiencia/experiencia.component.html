@@ -28,7 +28,7 @@
           <div [formGroupName]="i" class="experiencia-form-group">
             <!-- Descripción Perfil -->
             <div class="form-row">
-              <mat-form-field appearance="outline" class="form-field full-width">
+              <mat-form-field appearance="fill" class="form-field full-width">
                 <mat-label>Descripción Perfil</mat-label>
                 <textarea
                   matInput
@@ -50,7 +50,7 @@
 
             <!-- Tipo de Experiencia y Nombre de la Empresa -->
             <div class="form-row">
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field appearance="fill" class="form-field">
                 <mat-label>Tipo de Experiencia</mat-label>
                 <mat-select formControlName="idTipoExperiencia">
                   @for (tipo of tiposExperienciaSignal(); track tipo.value) {
@@ -65,7 +65,7 @@
                 }
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field appearance="fill" class="form-field">
                 <mat-label>Nombre de la Empresa</mat-label>
                 <input
                   matInput
@@ -84,7 +84,7 @@
 
             <!-- Nombre del Cargo y Dependencia -->
             <div class="form-row">
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field appearance="fill" class="form-field">
                 <mat-label>Nombre del Cargo</mat-label>
                 <input
                   matInput
@@ -100,7 +100,7 @@
                 }
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field appearance="fill" class="form-field">
                 <mat-label>Dependencia donde Desempeñó el Cargo</mat-label>
                 <input
                   matInput
@@ -119,7 +119,7 @@
 
             <!-- Trabajo Actual, Fecha de Inicio y Fecha de Retiro -->
             <div class="form-row">
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field appearance="fill" class="form-field">
                 <mat-label>¿Es su Trabajo Actual?</mat-label>
                 <mat-select 
                   formControlName="esTrabajoActual"
@@ -140,7 +140,7 @@
                 }
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field appearance="fill" class="form-field">
                 <mat-label>Fecha de Inicio del Cargo</mat-label>
                 <input
                   matInput
@@ -162,7 +162,7 @@
               </mat-form-field>
 
               @if (!isRetiroDisabled(i)) {
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field appearance="fill" class="form-field">
                 <mat-label>Fecha de Retiro del Cargo</mat-label>
                 <input
                   matInput

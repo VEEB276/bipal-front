@@ -33,8 +33,8 @@ export class EstudiosHvService {
     return this.http
       .post<EstudioHvDto[]>(`${this.apiUrl}/create-estudios`, estudios, this.httpOptions)
       .pipe(
-        tap(() => this.notification.showSuccess('Se ha creado los estudios exitosamente.')),
-        catchError(this.handleError)
+        tap(() => this.notification.showSuccess('Se ha guardado los estudios exitosamente.')),
+        catchError(this.handleError.bind(this))
       );
   }
 
@@ -46,7 +46,7 @@ export class EstudiosHvService {
       .put<EstudioHvDto[]>(`${this.apiUrl}/actualizar-estudio`, estudios, this.httpOptions)
       .pipe(
         tap(() => this.notification.showSuccess('Se ha actualizado los estudios con éxito.')),
-        catchError(this.handleError)
+        catchError(this.handleError.bind(this))
       );
   }
 
@@ -56,7 +56,7 @@ export class EstudiosHvService {
   obtenerEstudioPorId(id: number): Observable<EstudioHvDto> {
     return this.http
       .get<EstudioHvDto>(`${this.apiUrl}/find-by-id-estudio/${id}`)
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError.bind(this)));
   }
 
   /**
@@ -67,7 +67,7 @@ export class EstudiosHvService {
       .delete<boolean>(`${this.apiUrl}/eliminar-estudio-hv/${id}`)
       .pipe(
         tap((ok) => { if (ok) this.notification.showSuccess('Se ha borrado satisfactoriamente el estudio.'); }),
-        catchError(this.handleError)
+        catchError(this.handleError.bind(this))
       );
   }
 
@@ -77,7 +77,7 @@ export class EstudiosHvService {
   obtenerNivelesEducativos(): Observable<NivelEducativoDto[]> {
     return this.http
       .get<NivelEducativoDto[]>(`${this.apiUrl}/search-all-nivel-educativo`)
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError.bind(this)));
   }
 
   /**
@@ -86,7 +86,7 @@ export class EstudiosHvService {
   obtenerEstudiosPorPersona(idPersona: number): Observable<EstudioHvDto[]> {
     return this.http
       .get<EstudioHvDto[]>(`${this.apiUrl}/search-estudios-by-id-persona/${idPersona}`)
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError.bind(this)));
   }
 
   private handleError(error: any) {

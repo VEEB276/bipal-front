@@ -10,6 +10,7 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormControl,
 } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -19,13 +20,15 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { Observable } from "rxjs";
+import { map, take } from "rxjs/operators";
+import { AutocompleteSelectComponent } from "../../../../shared/components/autocomplete-select";
 import { PersonaDto, PersonaCreateDto, PersonaUpdateDto } from "../../models";
 import { InformacionPersonalService } from "../../services";
 import { NotificationService } from "../../../../core/services";
 import { AuthService } from "../../../../core/auth/auth.service";
 import { Store } from "@ngrx/store";
 import { HojavidaActions, selectPersona } from "../../store";
-import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-info-personal",
@@ -40,6 +43,7 @@ import { take } from "rxjs/operators";
     MatNativeDateModule,
     MatButtonModule,
     MatSnackBarModule,
+    AutocompleteSelectComponent,
   ],
   templateUrl: "./info-personal.component.html",
   styleUrl: "./info-personal.component.scss",
@@ -60,6 +64,9 @@ export class InfoPersonalComponent implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly store = inject(Store);
 
+  busquedaTextDepartamento = '';
+  textLugarNacimiento = '';
+
   ngOnInit(): void {
     // Primero construimos el formulario para garantizar que exista antes de patchValue
     this.buildForm();
@@ -68,6 +75,19 @@ export class InfoPersonalComponent implements OnInit {
       // Intentar obtener desde store primero
       this.store.select(selectPersona).subscribe((p) => {
         this.personaForm.patchValue(p);
+        //se debe llenar el campo autocompletado con la informacion que llega separada del backend
+        if (p?.departamentoResidencia && p?.ciudadResidencia) {
+          const nombreCompleto = `${p.departamentoResidencia}, ${p.ciudadResidencia}`;
+          this.personaForm.patchValue({ lugarResidencia: nombreCompleto });
+          this.busquedaTextDepartamento = nombreCompleto;
+        }
+        //se asigna el valor del campo ya llenado de lugar naciomiento, buscando entre todos los de la
+        // DB por el municipio
+        if (p?.lugarNacimiento) {
+          this.fetchCiudadDepartamento(p.lugarNacimiento).subscribe((data) => {
+            this.textLugarNacimiento = data[0]?.nombreCompleto || "";
+          });
+        }
       });
     }
   }
@@ -99,6 +119,7 @@ export class InfoPersonalComponent implements OnInit {
         [Validators.required, Validators.maxLength(255)],
       ],
       ciudadResidencia: ["", [Validators.required, Validators.maxLength(255)]],
+      lugarResidencia: ["", [Validators.required, Validators.maxLength(512)]], //para completar los campos de departamento y ciudad
       direccionResidencia: [
         "",
         [Validators.required, Validators.maxLength(255)],
@@ -139,11 +160,27 @@ export class InfoPersonalComponent implements OnInit {
     });
   }
 
+  fetchCiudadDepartamento = (text: string): Observable<any[]> => {
+    return this.informacionPersonalService
+      .buscarDepartamentosMunicipios(text);
+  };
+
+  onLugarResidenciaSelected(opt: any) {
+    if (!opt) return;
+    this.personaForm.patchValue({
+      departamentoResidencia: opt.departamento || "",
+      ciudadResidencia: opt.municipio || "",
+    });
+  }
+
+  onLugarNacimientoSelected(opt: any) {
+    if (!opt) return;
+    this.control("lugarNacimiento").setValue(opt.municipio);
+  }
+
   onSubmit(): void {
     this.personaForm.markAllAsTouched();
     if (this.personaForm.valid) {
-      //this.isLoading = true;
-
       if (this.isEditMode) {
         this.actualizarPersona();
       } else {
@@ -243,6 +280,6 @@ export class InfoPersonalComponent implements OnInit {
 
   // Getters para facilitar el acceso a los controles en el template
   control(name: string) {
-    return this.personaForm.get(name);
+    return this.personaForm.get(name) as FormControl;
   }
 }

@@ -71,25 +71,6 @@
   }
 }
 
-@media (min-width: 1025px) {
-  .personal-info-form {
-    .form-row {
-      // Para desktop, máximo 3 campos por fila excepto nombres
-      grid-template-columns: repeat(3, 1fr);
-      
-      // Para nombres, 4 campos en desktop
-      &:nth-child(1) {
-        grid-template-columns: repeat(4, 1fr);
-      }
-      
-      // Para información adicional, 2 campos
-      &:last-child {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-  }
-}
-
 // Action buttons styling
 .form-actions {
   display: flex;

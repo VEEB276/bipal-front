@@ -20,7 +20,7 @@
     <div class="right-container">
       <!-- ------------------------------ iniciar sesion ----------------------- -->
       <mat-accordion [multi]="false">
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title> Iniciar sesión </mat-panel-title>
             <mat-panel-description>
@@ -42,9 +42,10 @@
                 Acá podrás crear tu usuario para ingresar a BIPAL
               </mat-panel-description>
                 </mat-expansion-panel-header>
-
+                <!--registrarse componente-->
+                <ng-template matExpansionPanelContent>
                   <app-registrarse></app-registrarse>
-
+                </ng-template>
                 </mat-expansion-panel>
       </mat-accordion>
       <!------------------------------------------------------- -->

@@ -63,7 +63,6 @@ export class InformacionPersonalService {
       )
       .pipe(
         tap((resp) => {
-          //TODO: esto deberia hacerlo el backend
           // aqui solo se deberia actualizar el id de la persona en la sesion getSession()
           this.auth.updatePersonaId(resp.id).then(() => this.auth.getSession());
           this.store.dispatch(HojavidaActions.loadPersonaSuccess({ persona: resp }));
