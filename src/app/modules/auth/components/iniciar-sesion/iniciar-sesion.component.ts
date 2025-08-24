@@ -40,7 +40,7 @@ export class IniciarSesionComponent {
         '',
         [
           Validators.required,
-          Validators.pattern(/^[a-zA-Z0-9._%+*-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),// REGEX PARA CORREO
+          // Validators.pattern(/^[a-zA-Z0-9._%+*-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),// REGEX PARA CORREO
         ]
       ],
       password:[

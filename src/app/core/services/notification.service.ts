@@ -19,7 +19,7 @@ export class NotificationService {
   showMessage(
     message: string, 
     type: NotificationType = 'success', 
-    duration: number = 5000
+    duration: number = 9000
   ): void {
     const config: MatSnackBarConfig = {
       duration,

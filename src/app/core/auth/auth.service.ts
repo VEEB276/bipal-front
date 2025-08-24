@@ -71,25 +71,35 @@ export class AuthService {
   }
 
   signIn(
-    email: string,
+    user: string,
     password: string
   ): Promise<{ user: User | null; error: Error | null }> {
     this.loadingService.show();
-    return this.supabase.auth
-      .signInWithPassword({ email, password })
-      .then(({ data, error }) => {
-        this._session = data.session;
-
+    return this.supabase.functions
+      .invoke("login", { body: { user, password } })
+      .then(async (resp) => {
+        console.log(resp);
+        const data = resp.data;
+        const { error } = resp.error
+          ? await resp.response.json()
+          : { error: null };
+        console.log(data, error);
         // Mostrar mensaje de error si existe
         if (error) {
           this.notificationService.showError(
-            `Error al iniciar sesión: ${error.message}`
+            `Error al iniciar sesión: ${
+              error.code === "invalid_credentials"
+                ? "Usuario no existe o contraseña incorrecta."
+                : error.message
+            }`
           );
         } else {
+          this._session = data.session;
+          this.supabase.auth.setSession(data.session);
           this.notificationService.showSuccess("Inicio de sesión exitoso");
         }
-
-        return { user: data.user, error };
+        
+        return { user: data?.user, error };
       })
       .finally(() => {
         this.loadingService.hide();
@@ -102,7 +112,7 @@ export class AuthService {
    * al email proporcionado. El usuario recibirá un código de 6 dígitos.
    *
    * NOTA: Este método permite crear el usuario temporalmente para poder enviar el OTP,
-   * y no estará disponible hasta que se complete el proceso de verificación.
+   * y no estará disponible el usuario hasta que se complete el proceso de verificación.
    *
    * @param email - Dirección de correo electrónico donde se enviará el código
    * @returns Promise con el resultado de la operación (error si falla)
@@ -286,6 +296,7 @@ export class AuthService {
     return this.supabase.auth
       .signOut()
       .then(({ error }) => {
+        this.supabase.auth.setSession(null);
         this._session = null;
         this.router.navigate(["/auth"]); // Redirigir al login después de cerrar sesión
         return { error };
