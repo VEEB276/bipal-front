@@ -37,7 +37,6 @@ import { FullContainerAuthComponent } from "./components/full-container-auth/ful
 ],
   templateUrl: "./authentication.component.html",
   styleUrl: "./authentication.component.scss",
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthenticationComponent {
  

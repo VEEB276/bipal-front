@@ -28,7 +28,6 @@ import { AuthService } from "../../../../core/auth/auth.service";
   ],
   templateUrl: "./registrarse.component.html",
   styleUrl: "./registrarse.component.scss",
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrarseComponent {
   //injectamos las depdencias

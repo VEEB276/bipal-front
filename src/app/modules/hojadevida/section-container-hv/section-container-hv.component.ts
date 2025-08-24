@@ -35,7 +35,6 @@ import { Store } from "@ngrx/store";
     OtrosEstudiosComponent,
     ExperienciaComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SectionContainerHvComponent {
   //esto es para asegurarse que no se muestre el formulario hasta que haya cargado

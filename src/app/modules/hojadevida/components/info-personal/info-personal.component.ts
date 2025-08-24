@@ -43,7 +43,6 @@ import { take } from "rxjs/operators";
   ],
   templateUrl: "./info-personal.component.html",
   styleUrl: "./info-personal.component.scss",
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoPersonalComponent implements OnInit {
   personaForm!: FormGroup;
