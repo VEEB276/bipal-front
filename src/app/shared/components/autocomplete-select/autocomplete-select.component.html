@@ -1,0 +1,47 @@
+<mat-form-field
+  appearance="fill"
+  class="autocomplete-select-field"
+  [style.--panel-width]="panelWidth || null"
+>
+  @if (placeholder) { <mat-label>{{ placeholder }}</mat-label> }
+  <input
+    type="text"
+    matInput
+    [formControl]="textCtrl"
+    [attr.aria-label]="ariaLabel || placeholder"
+    [matAutocomplete]="auto"
+    (blur)="onBlur()"
+    [disabled]="disabled"
+  />
+  @if (textCtrl.value) {
+  <button
+    mat-icon-button
+    matSuffix
+    type="button"
+    (click)="clear($event)"
+    aria-label="Limpiar"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  }
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (opened)="openedPanel()"
+    (closed)="closedPanel()"
+    (optionSelected)="onOptionSelected($event.option?.value)"
+    [displayWith]="displayWith"
+  >
+    @for (opt of filtered; track opt) {
+    <mat-option [value]="opt">{{ readText(opt) }}</mat-option>
+    } @if (filtered.length === 0 && (textCtrl.value || '').length >= minLength)
+    {
+    <mat-option>{{ noResultsText }}</mat-option>
+    }
+  </mat-autocomplete>
+  @if (textCtrl?.touched && (textCtrl?.invalid || control?.invalid)) {
+  <mat-error>
+    @if (control?.errors?.['required'] || textCtrl?.errors?.['required']) { Este
+    campo es requerido. } @else { Valor inválido. }
+  </mat-error>
+  }
+</mat-form-field>

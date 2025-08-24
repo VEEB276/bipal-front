@@ -98,7 +98,7 @@ export class AuthService {
           this.supabase.auth.setSession(data.session);
           this.notificationService.showSuccess("Inicio de sesión exitoso");
         }
-        
+
         return { user: data?.user, error };
       })
       .finally(() => {
@@ -307,7 +307,6 @@ export class AuthService {
   }
 
   /**
-   * TODO: esto es responsabilidad del backend
    * Actualiza la metadata del usuario autenticado agregando el idPersona
    * retornado por el backend al crear la información personal.
    *
@@ -338,9 +337,7 @@ export class AuthService {
           );
           return { error };
         }
-        this.notificationService.showSuccess(
-          "Metadata actualizada (idPersona agregado)."
-        );
+        console.log("Metadata actualizada (idPersona agregado).");
         return { error: null };
       })
       .finally(() => this.loadingService.hide());
