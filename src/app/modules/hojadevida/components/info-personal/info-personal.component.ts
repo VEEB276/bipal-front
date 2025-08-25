@@ -23,7 +23,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { Observable } from "rxjs";
 import { map, take } from "rxjs/operators";
 import { AutocompleteSelectComponent } from "../../../../shared/components/autocomplete-select";
-import { PersonaDto, PersonaCreateDto, PersonaUpdateDto } from "../../models";
+import { PersonaDto, PersonaCreateDto, PersonaUpdateDto, TipoDocumentoDto, GeneroDto, EnfoqueDiferencialDto } from "../../models";
 import { InformacionPersonalService } from "../../services";
 import { NotificationService } from "../../../../core/services";
 import { AuthService } from "../../../../core/auth/auth.service";
@@ -67,9 +67,14 @@ export class InfoPersonalComponent implements OnInit {
   busquedaTextDepartamento = '';
   textLugarNacimiento = '';
 
+  tiposDocumento: TipoDocumentoDto[] = [];
+  generos: GeneroDto[] = [];
+  enfoques: EnfoqueDiferencialDto[] = [];
+
   ngOnInit(): void {
     // Primero construimos el formulario para garantizar que exista antes de patchValue
     this.buildForm();
+  this.cargarCatalogos();
     this.personaId = this.auth.session?.user.user_metadata.idPersona;
     if (this.personaId) {
       // Intentar obtener desde store primero
@@ -90,6 +95,12 @@ export class InfoPersonalComponent implements OnInit {
         }
       });
     }
+  }
+
+  private cargarCatalogos(): void {
+    this.informacionPersonalService.obtenerTiposDocumento().subscribe(list => this.tiposDocumento = list || []);
+    this.informacionPersonalService.obtenerGeneros().subscribe(list => this.generos = list || []);
+    this.informacionPersonalService.obtenerEnfoquesDiferenciales().subscribe(list => this.enfoques = list || []);
   }
 
   private buildForm(): void {

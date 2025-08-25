@@ -15,6 +15,9 @@ export const routes: Routes = [
   },
   {
     path: "terminos-condiciones",
+    data: {
+      backButton: true
+    },
     loadComponent: () =>
       import(
         "./modules/hojadevida/pages/terminos-condiciones/terminos-condiciones.component"

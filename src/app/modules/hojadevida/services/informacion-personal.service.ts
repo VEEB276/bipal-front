@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { environment } from "../../../../environments/environment";
-import { PersonaDto, PersonaCreateDto, PersonaUpdateDto } from "../models";
+import { PersonaDto, PersonaCreateDto, PersonaUpdateDto, TipoDocumentoDto, GeneroDto, EnfoqueDiferencialDto } from "../models";
 import { AuthService } from "../../../core/auth/auth.service";
 import { Store } from "@ngrx/store";
 import { HojavidaActions } from "../store";
@@ -145,9 +145,9 @@ export class InformacionPersonalService {
    * Obtiene todos los tipos de documento
    * Endpoint backend: GET /api/persona/search-all-tipo-documento
    */
-  obtenerTiposDocumento(): Observable<any[]> {
+  obtenerTiposDocumento(): Observable<TipoDocumentoDto[]> {
     return this.http
-      .get<any[]>(`${this.apiUrl}/search-all-tipo-documento`)
+      .get<TipoDocumentoDto[]>(`${this.apiUrl}/search-all-tipo-documento`)
       .pipe(catchError(this.handleError));
   }
 
@@ -155,9 +155,9 @@ export class InformacionPersonalService {
    * Obtiene todos los géneros
    * Endpoint backend: GET /api/persona/search-all-sexo
    */
-  obtenerGeneros(): Observable<any[]> {
+  obtenerGeneros(): Observable<GeneroDto[]> {
     return this.http
-      .get<any[]>(`${this.apiUrl}/search-all-sexo`)
+      .get<GeneroDto[]>(`${this.apiUrl}/search-all-sexo`)
       .pipe(catchError(this.handleError));
   }
 
@@ -165,9 +165,9 @@ export class InformacionPersonalService {
    * Obtiene todos los enfoques diferenciales
    * Endpoint backend: GET /api/persona/search-all-enfoque-diferencial
    */
-  obtenerEnfoquesDiferenciales(): Observable<any[]> {
+  obtenerEnfoquesDiferenciales(): Observable<EnfoqueDiferencialDto[]> {
     return this.http
-      .get<any[]>(`${this.apiUrl}/search-all-enfoque-diferencial`)
+      .get<EnfoqueDiferencialDto[]>(`${this.apiUrl}/search-all-enfoque-diferencial`)
       .pipe(catchError(this.handleError));
   }
 
