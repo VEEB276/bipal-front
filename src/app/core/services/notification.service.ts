@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
-export type NotificationType = 'success' | 'error' | 'warning';
+export type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
 @Injectable({
   providedIn: 'root'
@@ -57,4 +57,14 @@ export class NotificationService {
   showWarning(message: string, duration: number = 5000): void {
     this.showMessage(message, 'warning', duration);
   }
+
+  /**
+   * Shows an info notification
+   * @param message The message to display
+   * @param duration Duration in milliseconds (default: 5000)
+   */
+  showInfo(message: string, duration: number = 5000): void {
+    this.showMessage(message, 'info', duration);
+  }
+
 }

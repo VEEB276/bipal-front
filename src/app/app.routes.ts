@@ -1,6 +1,6 @@
 import { Routes } from "@angular/router";
 import { LayoutComponent } from "./layout/layout.component";
-import { hojaDeVidaCanActivateChild } from "./core/auth/hoja-de-vida-auth.guard";
+import { hojaDeVidaCanActivateChild } from "./modules/hojadevida/guard/hoja-de-vida-auth.guard";
 import { AuthenticationComponent } from "./modules/auth/authentication.component";
 import { CrearUsuarioComponent } from "./modules/auth/components/crear-usuario/crear-usuario.component";
 import { FullContainerAuthComponent } from "./modules/auth/components/full-container-auth/full-container-auth.component";
@@ -12,6 +12,13 @@ export const routes: Routes = [
     path: "",
     redirectTo: "auth",
     pathMatch: "full",
+  },
+  {
+    path: "terminos-condiciones",
+    loadComponent: () =>
+      import(
+        "./modules/hojadevida/pages/terminos-condiciones/terminos-condiciones.component"
+      ).then((m) => m.TerminosCondicionesComponent),
   },
   {
     path: "auth",
@@ -28,8 +35,8 @@ export const routes: Routes = [
       },
       {
         path: "recuperar-contrasena",
-        component: ResetPaswordComponentComponent
-      }
+        component: ResetPaswordComponentComponent,
+      },
     ],
   },
   {

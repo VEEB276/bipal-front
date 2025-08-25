@@ -175,3 +175,13 @@
     --mdc-snackbar-action-label-text-color: var(--text-color);
   }
 }
+
+.snackbar-info {
+  --mat-snack-bar-button-color: white;
+  --mdc-snackbar-container-color: var(--info-color);
+  --mdc-snackbar-supporting-text-color: var(--on-info);
+  
+  .mat-mdc-snack-bar-action {
+    --mdc-snackbar-action-label-text-color: var(--on-info);
+  }
+}

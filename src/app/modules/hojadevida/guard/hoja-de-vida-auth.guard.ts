@@ -1,9 +1,15 @@
-import { inject } from '@angular/core';
-import { CanActivateFn, CanActivateChildFn, Router, UrlTree } from '@angular/router';
-import { AuthService } from './auth.service';
-import { NotificationService } from '../services/notification.service';
+import { inject } from "@angular/core";
+import {
+  CanActivateFn,
+  CanActivateChildFn,
+  Router,
+  UrlTree,
+} from "@angular/router";
+import { AuthService } from "../../../core/auth/auth.service";
+import { NotificationService } from "../../../core/services/notification.service";
 
 async function ensureSessionOrRedirect(): Promise<boolean | UrlTree> {
+  console.log("Ensuring session");
   const auth = inject(AuthService);
   const router = inject(Router);
   const notifier = inject(NotificationService);
@@ -12,12 +18,12 @@ async function ensureSessionOrRedirect(): Promise<boolean | UrlTree> {
     if (auth.session) {
       return true;
     }
-    notifier.showError('Debe iniciar sesión para continuar');
-    return router.createUrlTree(['/auth']);
+    notifier.showInfo("Debe iniciar sesión para continuar");
+    return router.createUrlTree(["/auth"]);
   } catch (e: unknown) {
-    console.error('ensureSession error', e);
-    notifier.showError('Error verificando sesión');
-    return router.createUrlTree(['/auth']);
+    console.error("ensureSession error", e);
+    notifier.showError("Error verificando sesión");
+    return router.createUrlTree(["/auth"]);
   }
 }
 
