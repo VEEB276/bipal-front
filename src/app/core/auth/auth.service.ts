@@ -101,6 +101,12 @@ export class AuthService {
 
         return { user: data?.user, error };
       })
+      .catch(() => {
+        this.notificationService.showError(
+          "Ha ocurrio un problema, porfavor revise su conexion a internet."
+        );
+        return null;
+      })
       .finally(() => {
         this.loadingService.hide();
       });

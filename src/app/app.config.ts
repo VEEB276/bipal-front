@@ -1,9 +1,5 @@
 import { ApplicationConfig, provideZoneChangeDetection } from "@angular/core";
 import { provideStore } from "@ngrx/store";
-import {
-  hojavidaReducer,
-  HOJAVIDA_FEATURE_KEY,
-} from "./modules/hojadevida/store/feature/hojavida.reducer";
 import { provideEffects } from "@ngrx/effects";
 import { provideStoreDevtools } from "@ngrx/store-devtools";
 import { provideRouter } from "@angular/router";
@@ -21,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
-    provideStore({ [HOJAVIDA_FEATURE_KEY]: hojavidaReducer }),
+    provideStore({}),
     provideEffects([]),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
   { provide: MAT_DATE_LOCALE, useValue: 'es-CO' },

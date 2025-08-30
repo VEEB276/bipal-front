@@ -4,8 +4,7 @@ import { AuthService } from "../../../core/auth/auth.service";
 import { InformacionPersonalService } from "../services";
 import { Store } from "@ngrx/store";
 import { HojavidaActions, selectPersona } from "./index";
-import { catchError, map, take, tap } from "rxjs/operators";
-import { of } from "rxjs";
+import { map, tap } from "rxjs/operators";
 
 export const personaPrefetchGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
@@ -36,5 +35,4 @@ export const personaPrefetchGuard: CanActivateFn = () => {
     }),
     map(() => true)
   );
-  // return true;
 };
