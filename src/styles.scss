@@ -14,7 +14,7 @@ html {
       primary: theme.$primary-palette,
       tertiary: theme.$tertiary-palette
     ),
-    typography: 'Ubuntu, sans-serif',
+    typography: 'Ubuntu, oswald, sans-serif',
     density: 0,
   ));
 
@@ -31,5 +31,5 @@ body {
   color: #31333f; 
 }
 * {
-  font-family: 'Ubuntu', sans-serif; 
+  font-family: 'Ubuntu', oswald, sans-serif; 
 }
