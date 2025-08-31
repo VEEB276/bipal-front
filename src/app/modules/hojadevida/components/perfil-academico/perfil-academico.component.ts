@@ -33,6 +33,7 @@ import { selectIdHojaVida, selectIdPersona } from "../../store";
 import { forkJoin, tap } from "rxjs";
 import { ConfirmDialogService } from "../../../../core/services";
 import { SkeletonBannerComponent } from "../../../../core/components";
+import { ScrollFirstInvalidDirective } from "../../../../core/directives";
 
 @Component({
   selector: "app-perfil-academico",
@@ -47,6 +48,7 @@ import { SkeletonBannerComponent } from "../../../../core/components";
     MatSliderModule,
     MatCardModule,
     MatDividerModule,
+    ScrollFirstInvalidDirective,
     SkeletonBannerComponent,
   ],
   templateUrl: "./perfil-academico.component.html",

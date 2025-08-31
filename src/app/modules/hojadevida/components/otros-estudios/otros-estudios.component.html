@@ -6,6 +6,7 @@
     [formGroup]="estudiosForm"
     (ngSubmit)="onSubmit()"
     class="otros-estudios-form"
+    scrollFirstInvalid
   >
     <div formArrayName="estudios">
       @for (estudio of estudiosArray.controls; track trackEstudio(estudio, $index); let i = $index) {

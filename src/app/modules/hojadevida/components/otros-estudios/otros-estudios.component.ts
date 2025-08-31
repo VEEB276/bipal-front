@@ -23,6 +23,7 @@ import { Store } from "@ngrx/store";
 import { selectIdHojaVida, selectIdPersona } from "../../store";
 import { SkeletonBannerComponent } from "../../../../core/components";
 import { ConfirmDialogService } from "../../../../core/services";
+import { ScrollFirstInvalidDirective } from "../../../../core/directives";
 
 @Component({
   selector: "app-otros-estudios",
@@ -36,6 +37,7 @@ import { ConfirmDialogService } from "../../../../core/services";
     MatIconModule,
     MatCardModule,
     MatDividerModule,
+    ScrollFirstInvalidDirective,
     SkeletonBannerComponent,
   ],
   templateUrl: "./otros-estudios.component.html",
