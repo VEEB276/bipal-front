@@ -54,6 +54,9 @@ Concise, project-specific guidance to be productive quickly. Follow these patter
 - Evitar repetir lógica de transformación; crear helper en `core/utils` si se repite 3+ veces.
 - Subscriptions en componentes: usar forma corta `observable.subscribe(() => { ... })` por defecto. No introducir `{ next: ..., error: ... }` a menos que haya manejo de `complete` o múltiples callbacks necesarios. Errores ya se notifican en el servicio (snackbar) mediante `handleError`.
 - Control flow Angular: siempre usar las nuevas sintaxis `@if`, `@for`, `@switch` en lugar de `*ngIf` y `*ngFor`. No introducir directivas estructurales legacy en nuevo código; migrar cuando se toquen archivos.
+ - OBLIGATORIO: Ningún nuevo PR puede contener `*ngIf` / `*ngFor`; sustituirlos por `@if` / `@for` incluso en bloques pequeños (mantener consistencia global).
+ - Signals primero: preferir `signal()`, `computed()`, y `toSignal()` sobre `getter`/`variables` en componentes para estado local derivable; usar RxJS para flujos asíncronos complejos o efectos multi-fuente.
+ - Derivaciones: mover lógica derivada a `computed()` en vez de getters para evitar recalcular y facilitar memoización reactiva.
 
 ## 10. Flujo Persona (end-to-end)
 1. Usuario autenticado (Supabase) -> metadata puede traer `idPersona`.
