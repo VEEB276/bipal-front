@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   OnInit,
   inject,
@@ -21,14 +20,21 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { Observable } from "rxjs";
-import { map, take } from "rxjs/operators";
 import { AutocompleteSelectComponent } from "../../../../shared/components/autocomplete-select";
-import { PersonaDto, PersonaCreateDto, PersonaUpdateDto, TipoDocumentoDto, GeneroDto, EnfoqueDiferencialDto } from "../../models";
+import {
+  PersonaDto,
+  PersonaCreateDto,
+  PersonaUpdateDto,
+  TipoDocumentoDto,
+  GeneroDto,
+  EnfoqueDiferencialDto,
+} from "../../models";
 import { InformacionPersonalService } from "../../services";
 import { NotificationService } from "../../../../core/services";
 import { AuthService } from "../../../../core/auth/auth.service";
 import { Store } from "@ngrx/store";
 import { HojavidaActions, selectPersona } from "../../store";
+import moment from "moment";
 
 @Component({
   selector: "app-info-personal",
@@ -64,8 +70,10 @@ export class InfoPersonalComponent implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly store = inject(Store);
 
-  busquedaTextDepartamento = '';
-  textLugarNacimiento = '';
+  now = moment().toDate();
+
+  busquedaTextDepartamento = "";
+  textLugarNacimiento = "";
 
   tiposDocumento: TipoDocumentoDto[] = [];
   generos: GeneroDto[] = [];
@@ -74,8 +82,19 @@ export class InfoPersonalComponent implements OnInit {
   ngOnInit(): void {
     // Primero construimos el formulario para garantizar que exista antes de patchValue
     this.buildForm();
-  this.cargarCatalogos();
+    this.cargarCatalogos();
     this.personaId = this.auth.session?.user.user_metadata.idPersona;
+
+    // Revalidar fecha de expedición cuando cambia la fecha de nacimiento (para el atributo [min])
+    this.control("fechaNacimiento")?.valueChanges.subscribe(() => {
+      const ctrlExp = this.control("fechaExpedicionDoc");
+      // Si la expedición quedó por debajo del nuevo mínimo, la limpiamos para forzar selección válida
+      const nacimientoVal = this.control("fechaNacimiento")?.value;
+      if (nacimientoVal && ctrlExp?.value && new Date(ctrlExp.value) < new Date(nacimientoVal)) {
+        ctrlExp.setValue(null);
+        ctrlExp.markAsTouched();
+      }
+    });
     if (this.personaId) {
       // Intentar obtener desde store primero
       this.store.select(selectPersona).subscribe((p) => {
@@ -98,18 +117,38 @@ export class InfoPersonalComponent implements OnInit {
   }
 
   private cargarCatalogos(): void {
-    this.informacionPersonalService.obtenerTiposDocumento().subscribe(list => this.tiposDocumento = list || []);
-    this.informacionPersonalService.obtenerGeneros().subscribe(list => this.generos = list || []);
-    this.informacionPersonalService.obtenerEnfoquesDiferenciales().subscribe(list => this.enfoques = list || []);
+    this.informacionPersonalService
+      .obtenerTiposDocumento()
+      .subscribe((list) => (this.tiposDocumento = list || []));
+    this.informacionPersonalService
+      .obtenerGeneros()
+      .subscribe((list) => (this.generos = list || []));
+    this.informacionPersonalService
+      .obtenerEnfoquesDiferenciales()
+      .subscribe((list) => (this.enfoques = list || []));
   }
 
   private buildForm(): void {
+    const namePattern = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s'-]+$/u; // solo letras, espacios, apóstrofe y guion
+
     this.personaForm = this.fb.group({
       // Información personal básica
-      primerNombre: ["", [Validators.required, Validators.maxLength(255)]],
-      segundoNombre: ["", [Validators.maxLength(255)]],
-      primerApellido: ["", [Validators.required, Validators.maxLength(255)]],
-      segundoApellido: ["", [Validators.maxLength(255)]],
+      primerNombre: [
+        "",
+        [Validators.required, Validators.maxLength(255), Validators.pattern(namePattern)],
+      ],
+      segundoNombre: [
+        "",
+        [Validators.maxLength(255), Validators.pattern(namePattern)],
+      ],
+      primerApellido: [
+        "",
+        [Validators.required, Validators.maxLength(255), Validators.pattern(namePattern)],
+      ],
+      segundoApellido: [
+        "",
+        [Validators.maxLength(255), Validators.pattern(namePattern)],
+      ],
 
       // Documento
       idTipoDocumento: [null, [Validators.required]],
@@ -155,7 +194,10 @@ export class InfoPersonalComponent implements OnInit {
       idEnfoqueDiferencial: [null, [Validators.required]],
 
       // informacion de Contacto adicional
-      nombreContacto: ["", [Validators.required, Validators.maxLength(255)]],
+      nombreContacto: [
+        "",
+        [Validators.required, Validators.maxLength(255), Validators.pattern(namePattern)],
+      ],
       telefonoContacto: [
         "",
         [
@@ -169,11 +211,11 @@ export class InfoPersonalComponent implements OnInit {
         [Validators.required, Validators.email, Validators.maxLength(127)],
       ],
     });
+
   }
 
   fetchCiudadDepartamento = (text: string): Observable<any[]> => {
-    return this.informacionPersonalService
-      .buscarDepartamentosMunicipios(text);
+    return this.informacionPersonalService.buscarDepartamentosMunicipios(text);
   };
 
   onLugarResidenciaSelected(opt: any) {
@@ -292,5 +334,24 @@ export class InfoPersonalComponent implements OnInit {
   // Getters para facilitar el acceso a los controles en el template
   control(name: string) {
     return this.personaForm.get(name) as FormControl;
+  }
+
+  onDigitInput(controlName: string, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const soloDigitos = input.value.replace(/\D+/g, "");
+    if (input.value !== soloDigitos) {
+      input.value = soloDigitos;
+    }
+    this.control(controlName).setValue(soloDigitos);
+  }
+
+  onNameInput(controlName: string, event: Event) {
+    const input = event.target as HTMLInputElement;
+    // Eliminamos dígitos inmediatamente para mejor UX
+    const limpio = input.value.replace(/\d+/g, "");
+    if (limpio !== input.value) {
+      input.value = limpio;
+      this.control(controlName).setValue(limpio);
+    }
   }
 }

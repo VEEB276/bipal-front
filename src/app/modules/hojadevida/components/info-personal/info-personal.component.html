@@ -6,45 +6,70 @@
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label> Primer Nombre </mat-label>
-        <input matInput formControlName="primerNombre" placeholder="Primer Nombre">
+        <input matInput formControlName="primerNombre" placeholder="Primer Nombre" (input)="onNameInput('primerNombre', $event)">
         <mat-icon matPrefix> person </mat-icon>
-        <mat-error *ngIf="control('primerNombre')?.invalid && control('primerNombre')?.touched">
-          <span *ngIf="control('primerNombre')?.errors?.['required']">El primer nombre es requerido</span>
-          <span *ngIf="control('primerNombre')?.errors?.['maxlength']">Máximo 255 caracteres</span>
-        </mat-error>
+        @if (control('primerNombre')?.invalid && control('primerNombre')?.touched) {
+          <mat-error>
+            @if (control('primerNombre')?.errors?.['required']) { <span>El primer nombre es requerido</span> }
+            @if (control('primerNombre')?.errors?.['maxlength']) { <span>Máximo 255 caracteres</span> }
+            @if (control('primerNombre')?.errors?.['pattern']) { <span>No se permiten números</span> }
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Segundo Nombre</mat-label>
-        <input matInput formControlName="segundoNombre" placeholder="Segundo Nombre">
+        <input matInput formControlName="segundoNombre" placeholder="Segundo Nombre" (input)="onNameInput('segundoNombre', $event)">
         <mat-icon matPrefix>person</mat-icon>
-        <mat-error *ngIf="control('segundoNombre')?.invalid && control('segundoNombre')?.touched">
-          <span *ngIf="control('segundoNombre')?.errors?.['maxlength']">Máximo 255 caracteres</span>
-        </mat-error>
+        @if (control('segundoNombre')?.invalid && control('segundoNombre')?.touched) {
+          <mat-error>
+            @if (control('segundoNombre')?.errors?.['maxlength']) { <span>Máximo 255 caracteres</span> }
+            @if (control('segundoNombre')?.errors?.['pattern']) { <span>No se permiten números</span> }
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Primer Apellido</mat-label>
-        <input matInput formControlName="primerApellido" placeholder="Primer Apellido">
+        <input matInput formControlName="primerApellido" placeholder="Primer Apellido" (input)="onNameInput('primerApellido', $event)">
         <mat-icon matPrefix>person</mat-icon>
-        <mat-error *ngIf="control('primerApellido')?.invalid && control('primerApellido')?.touched">
-          <span *ngIf="control('primerApellido')?.errors?.['required']">El primer apellido es requerido</span>
-          <span *ngIf="control('primerApellido')?.errors?.['maxlength']">Máximo 255 caracteres</span>
-        </mat-error>
+        @if (control('primerApellido')?.invalid && control('primerApellido')?.touched) {
+          <mat-error>
+            @if (control('primerApellido')?.errors?.['required']) { <span>El primer apellido es requerido</span> }
+            @if (control('primerApellido')?.errors?.['maxlength']) { <span>Máximo 255 caracteres</span> }
+            @if (control('primerApellido')?.errors?.['pattern']) { <span>No se permiten números</span> }
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Segundo Apellido</mat-label>
-        <input matInput formControlName="segundoApellido" placeholder="Segundo Apellido">
+        <input matInput formControlName="segundoApellido" placeholder="Segundo Apellido" (input)="onNameInput('segundoApellido', $event)">
         <mat-icon matPrefix>person</mat-icon>
-        <mat-error *ngIf="control('segundoApellido')?.invalid && control('segundoApellido')?.touched">
-          <span *ngIf="control('segundoApellido')?.errors?.['maxlength']">Máximo 255 caracteres</span>
-        </mat-error>
+        @if (control('segundoApellido')?.invalid && control('segundoApellido')?.touched) {
+          <mat-error>
+            @if (control('segundoApellido')?.errors?.['maxlength']) { <span>Máximo 255 caracteres</span> }
+            @if (control('segundoApellido')?.errors?.['pattern']) { <span>No se permiten números</span> }
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
     <!-- Documento Row ----------------------------------------------------------------------------------->
     <div class="form-row">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput [matDatepicker]="nacimientoPicker" formControlName="fechaNacimiento" [max]="now" placeholder="DD/MM/YYYY">
+        <mat-datepicker-toggle matSuffix [for]="nacimientoPicker"></mat-datepicker-toggle>
+        <mat-datepicker #nacimientoPicker></mat-datepicker>
+        <mat-icon matPrefix>cake</mat-icon>
+        @if (control('fechaNacimiento')?.invalid && control('fechaNacimiento')?.touched) {
+          <mat-error>
+            @if (control('fechaNacimiento')?.errors?.['required']) { <span>La fecha de nacimiento es requerida</span> }
+          </mat-error>
+        }
+      </mat-form-field>
+      
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Tipo de Documento</mat-label>
         <mat-select formControlName="idTipoDocumento">
@@ -71,28 +96,21 @@
 
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Fecha de Expedición del Documento</mat-label>
-  <input matInput [matDatepicker]="expedicionPicker" formControlName="fechaExpedicionDoc" placeholder="2025/06/18">
+        <input matInput [matDatepicker]="expedicionPicker" formControlName="fechaExpedicionDoc" [max]="now" [min]="control('fechaNacimiento')?.value || null" placeholder="DD/MM/YYYY">
         <mat-datepicker-toggle matSuffix [for]="expedicionPicker"></mat-datepicker-toggle>
         <mat-datepicker #expedicionPicker></mat-datepicker>
         <mat-icon matPrefix>date_range</mat-icon>
-        <mat-error *ngIf="control('fechaExpedicionDoc')?.invalid && control('fechaExpedicionDoc')?.touched">
-          <span *ngIf="control('fechaExpedicionDoc')?.errors?.['required']">La fecha de expedición es requerida</span>
-        </mat-error>
+        @if (control('fechaExpedicionDoc')?.invalid && control('fechaExpedicionDoc')?.touched) {
+          <mat-error>
+            @if (control('fechaExpedicionDoc')?.errors?.['required']) { <span>La fecha de expedición es requerida</span> }
+            @if (control('fechaExpedicionDoc')?.errors?.['matDatepickerMin']) { <span>No puede ser anterior a la fecha de nacimiento</span> }
+          </mat-error>
+        }
       </mat-form-field>
     </div>
 
     <!-- Nacimiento y Lugar Row -->
     <div class="form-row">
-      <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Fecha de Nacimiento</mat-label>
-        <input matInput [matDatepicker]="nacimientoPicker" formControlName="fechaNacimiento" placeholder="2025/06/18">
-        <mat-datepicker-toggle matSuffix [for]="nacimientoPicker"></mat-datepicker-toggle>
-        <mat-datepicker #nacimientoPicker></mat-datepicker>
-        <mat-icon matPrefix>cake</mat-icon>
-        <mat-error *ngIf="control('fechaNacimiento')?.invalid && control('fechaNacimiento')?.touched">
-          <span *ngIf="control('fechaNacimiento')?.errors?.['required']">La fecha de nacimiento es requerida</span>
-        </mat-error>
-      </mat-form-field>
 
       <!--lugar de nacimiento-->
       <app-autocomplete-select
@@ -105,10 +123,8 @@
         placeholder="Lugar de Nacimiento"
         (optionSelected)="onLugarNacimientoSelected($event)">
       </app-autocomplete-select>
-    </div>
 
-    <!-- Residencia Row (Campo único) -->
-    <div class="form-row">
+      <!--lugar de residencia-->
       <app-autocomplete-select
         class="form-field"
         [textCtrl]="control('lugarResidencia')"
@@ -138,13 +154,15 @@
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Número de Teléfono Celular (10 dígitos)</mat-label>
-  <input matInput formControlName="telefono" placeholder="3001234567" type="tel">
+        <input matInput formControlName="telefono" placeholder="Ej: 300********" type="tel" (input)="onDigitInput('telefono', $event)">
         <mat-icon matPrefix>phone</mat-icon>
-        <mat-error *ngIf="control('telefono')?.invalid && control('telefono')?.touched">
-          <span *ngIf="control('telefono')?.errors?.['required']">El número de teléfono es requerido</span>
-          <span *ngIf="control('telefono')?.errors?.['pattern']">Debe tener exactamente 10 dígitos</span>
-          <span *ngIf="control('telefono')?.errors?.['maxlength']">Máximo 63 caracteres</span>
-        </mat-error>
+        @if (control('telefono')?.invalid && control('telefono')?.touched) {
+          <mat-error>
+            @if (control('telefono')?.errors?.['required']) { <span>El número de teléfono es requerido</span> }
+            @if (control('telefono')?.errors?.['pattern']) { <span>Debe tener exactamente 10 dígitos</span> }
+            @if (control('telefono')?.errors?.['maxlength']) { <span>Máximo 63 caracteres</span> }
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
@@ -193,7 +211,7 @@
     <div class="header-section">
       <h3>
         <mat-icon>contact_emergency</mat-icon>
-        Informacion de Contacto
+        Información de Contacto
       </h3>
     </div>
 
@@ -201,23 +219,28 @@
     <div class="form-row">
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Nombre de Contacto</mat-label>
-        <input matInput formControlName="nombreContacto" placeholder="Nombre completo del contacto">
+        <input matInput formControlName="nombreContacto" placeholder="Nombre completo del contacto" (input)="onNameInput('nombreContacto', $event)">
         <mat-icon matPrefix>person</mat-icon>
-        <mat-error *ngIf="control('nombreContacto')?.invalid && control('nombreContacto')?.touched">
-          <span *ngIf="control('nombreContacto')?.errors?.['required']">El nombre del contacto es requerido</span>
-          <span *ngIf="control('nombreContacto')?.errors?.['maxlength']">Máximo 255 caracteres</span>
-        </mat-error>
+        @if (control('nombreContacto')?.invalid && control('nombreContacto')?.touched) {
+          <mat-error>
+            @if (control('nombreContacto')?.errors?.['required']) { <span>El nombre del contacto es requerido</span> }
+            @if (control('nombreContacto')?.errors?.['maxlength']) { <span>Máximo 255 caracteres</span> }
+            @if (control('nombreContacto')?.errors?.['pattern']) { <span>No se permiten números</span> }
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Celular de Contacto</mat-label>
-  <input matInput formControlName="telefonoContacto" placeholder="3001234567" type="tel">
+        <input matInput formControlName="telefonoContacto" placeholder="Ej: 607******* / 300********" type="tel" (input)="onDigitInput('telefonoContacto', $event)">
         <mat-icon matPrefix>phone</mat-icon>
-        <mat-error *ngIf="control('telefonoContacto')?.invalid && control('telefonoContacto')?.touched">
-          <span *ngIf="control('telefonoContacto')?.errors?.['required']">El teléfono del contacto es requerido</span>
-          <span *ngIf="control('telefonoContacto')?.errors?.['pattern']">Debe tener exactamente 10 dígitos</span>
-          <span *ngIf="control('telefonoContacto')?.errors?.['maxlength']">Máximo 63 caracteres</span>
-        </mat-error>
+        @if (control('telefonoContacto')?.invalid && control('telefonoContacto')?.touched) {
+          <mat-error>
+            @if (control('telefonoContacto')?.errors?.['required']) { <span>El teléfono del contacto es requerido</span> }
+            @if (control('telefonoContacto')?.errors?.['pattern']) { <span>Debe tener exactamente 10 dígitos</span> }
+            @if (control('telefonoContacto')?.errors?.['maxlength']) { <span>Máximo 63 caracteres</span> }
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
