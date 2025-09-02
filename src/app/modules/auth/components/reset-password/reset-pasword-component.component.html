@@ -1,18 +1,71 @@
-<mat-card class="card-container" appearance="outlined">
-  <h3>  Resetear contraseña </h3>
-  <mat-form-field  required class="wid-100">
-    <mat-label> Nueva contraseña </mat-label>
-    <input matInput formControlName="email"/>
-    <button matSuffix mat-icon-button>
-      <mat-icon> visibility </mat-icon>
+<div class="container-reset">
+  <form [formGroup]="codeForm" class="reset-form">
+
+    <h2>Resetear contraseña</h2>
+
+    <!-- Lista de validaciones -->
+    <div class="password-requirements">
+      <p class="requirements-title">La contraseña debe cumplir:</p>
+      <ul>
+        <li [class.valid]="hasMinLength">
+          <mat-icon>{{ hasMinLength ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          Al menos 6 caracteres
+        </li>
+        <li [class.valid]="hasUpperCase">
+          <mat-icon>{{ hasUpperCase ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          Al menos una mayúscula
+        </li>
+        <li [class.valid]="hasNumber">
+          <mat-icon>{{ hasNumber ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          Al menos un número
+        </li>
+        <li [class.valid]="hasValidCharacters">
+          <mat-icon>{{ hasValidCharacters ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          Caracteres especiales permitidos (._%+*-)
+        </li>
+      </ul>
+    </div>
+
+    <mat-form-field required class="wid-100">
+      <mat-label>Nueva contraseña</mat-label>
+      <mat-icon matPrefix class="prefix-icon">lock</mat-icon>
+      <input matInput 
+             [type]="hidePassword ? 'password' : 'text'" 
+             autocomplete="off"
+             [readonly]="false"
+             formControlName="password">
+      <button matSuffix mat-icon-button (click)="hidePassword = !hidePassword" type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field required class="wid-100">
+      <mat-label>Confirmar contraseña</mat-label>
+      <mat-icon matPrefix class="prefix-icon">lock</mat-icon>
+      <input matInput 
+             [type]="hideConfirmPassword ? 'password' : 'text'" 
+             autocomplete="off"
+             [readonly]="false"
+             placeholder="Ingresa la misma contraseña"
+             formControlName="confirmPassword">
+      <button matSuffix mat-icon-button (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
+        <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <!-- Debug información -->
+    <div style="color: red; font-size: 12px; margin: 10px 0;">
+      <!-- <pre>Estado del formulario: {{ formState | json }}</pre> -->
+      <!-- {{aqui es una vista provicional para revisar el estado del fromualrio}} -->
+    </div>
+
+    <button mat-flat-button 
+            class="mar-05rem"
+            [disabled]="!codeForm.valid || isSubmitting" 
+            (click)="onSubmit()">
+      <span *ngIf="!isSubmitting">Cambiar contraseña</span>
+      <span *ngIf="isSubmitting">Cambiando contraseña...</span>
     </button>
-  </mat-form-field>
-<!-- ----------------------------------------------------------- -->
-  <mat-form-field required class="wid-100">
-    <mat-label> Comprobar contraseña </mat-label>
-    <input matInput placeholder=" . . . " formControlName="password">
-    <button matSuffix mat-icon-button>
-      <mat-icon> visibility </mat-icon>
-    </button>
-  </mat-form-field>
-</mat-card>
+    <mat-divider></mat-divider>
+  </form>
+</div>
