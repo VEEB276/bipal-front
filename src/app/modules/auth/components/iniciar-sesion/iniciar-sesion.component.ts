@@ -31,7 +31,8 @@ export class IniciarSesionComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  loginForm:FormGroup;
+  loginForm: FormGroup;
+  hidePassword = true;
   
   constructor(private fb:FormBuilder){
     // console.log("INIT SESION");

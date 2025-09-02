@@ -3,6 +3,7 @@
   <!-- ----------------------------------------------------------- -->
   <mat-form-field class="wid-100">
     <mat-label> Número de documento</mat-label>
+    <mat-icon matPrefix class="prefix-icon">badge</mat-icon>
     <input
       matInput
       placeholder=" Número de documento sin puntos ni comas"
@@ -13,57 +14,49 @@
       >El número de documento es <strong>obligatorio</strong>
     </mat-error>
     }
-    <!-- Si entra al input y se sale 
-            (registerForm.controls['documentNumber'].hasError('required'))-->
     @else if(registerForm.controls['documentNumber'].hasError('pattern') ) {
-    <mat-error>Ingresa un número de documento válido </mat-error>
+      <mat-error>Ingresa un número de documento válido </mat-error>
     }
-    <button matSuffix mat-icon-button>
-      <mat-icon (click)="BorrarData()">close</mat-icon>
-    </button>
   </mat-form-field>
   <!-- ---------------------------------------------------------- -->
-  <mat-form-field class="example-full-width" class="wid-100">
+  <mat-form-field class="wid-100">
     <mat-label> Correo electrónico </mat-label>
-    <input matInput placeholder="ejemplo@gmail.com" formControlName="email" />
-    @if (registerForm.controls['email'].hasError('pattern') &&
-    !registerForm.controls['email'].hasError('required')) {
-    <mat-error>Por favor ingresa un email válido</mat-error>
-    } @if (registerForm.controls['email'].hasError('required')) {
-    <mat-error>El email es <strong>obligatorio</strong></mat-error>
+    <mat-icon matPrefix class="prefix-icon">mail</mat-icon>
+    <input matInput placeholder="ejemplo@gmail.com" formControlName="email">
+    @if (registerForm.controls['email'].hasError('pattern') && !registerForm.controls['email'].hasError('required')) {
+      <mat-error>Por favor ingresa un email válido</mat-error>
     }
-    <button matSuffix mat-icon-button>
-      <mat-icon> close </mat-icon>
-    </button>
+    @if (registerForm.controls['email'].hasError('required')) {
+      <mat-error>El email es <strong>obligatorio</strong></mat-error>
+    }
   </mat-form-field>
-  <!-- ------------------------------------------------------------ -->
-  <mat-checkbox (change)="clickOnCheckbox = !clickOnCheckbox">
-    <span>
-      Declaro que he leído y aceptado los
-      <a routerLink="/terminos-condiciones"> términos y condiciones </a>
-      aquí establecidos.
-    </span>
-  </mat-checkbox>
-  <mat-divider></mat-divider>
-  <!-- --------------------------------------------------------------- -->
-  <span>
-    <br />
-    Para el proceso de registro se debe verificar su correo electronico con un
-    codigo de verificación.
-  </span>
-  <!-- ------------------------------------------------------------- -->
-  <div>
-    <!--TODO: [routerLink]="['../hoja-de-vida']" este router va en los atricutos del boton pero falta que vaya a la ruta codigo de verificacion -->
-    <!-- routerLinkActive="router-link-active" >  -->
-    <button
-      class="mar-05rem"
-      mat-flat-button
-      type="submit"
-      (click)="onSubmit()"
-      [disabled]="registerForm.invalid || !clickOnCheckbox"
-    >
-      Enviar código
-    </button>
-  </div>
-  <!-- ------------------------------------------------------------- -->
+        <!-- ------------------------------------------------------------ -->
+        <mat-checkbox (change)="clickOnCheckbox=!clickOnCheckbox">
+          <span>
+            Declaro que he leído y aceptado los
+            <a routerLink="/terminos-condiciones">términos y condiciones </a>
+            aquí establecidos. 
+          </span>
+        </mat-checkbox>
+        <mat-divider></mat-divider>
+        <!-- --------------------------------------------------------------- -->
+        <span>
+        <br>
+        Para el proceso de registro se debe verificar su correo electrónico con un código de verificación.
+        </span>
+        <!-- ------------------------------------------------------------- -->
+        <div>
+            <!--TODO: [routerLink]="['../hoja-de-vida']" este router va en los atricutos del boton pero falta que vaya a la ruta codigo de verificacion -->
+            <!-- routerLinkActive="router-link-active" >  -->
+          <button class="mar-05rem"
+            mat-flat-button
+            type="submit"
+            (click)="onSubmit()"
+            [disabled]="!registerForm.valid || !clickOnCheckbox"
+            
+            >
+            Enviar código
+          </button>
+        </div>
+        <!-- ------------------------------------------------------------- -->
 </form>

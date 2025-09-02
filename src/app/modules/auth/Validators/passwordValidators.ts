@@ -29,7 +29,7 @@ export class PasswordValidators{
             * { uppercase: true }, lo cual representa un error en el campo uppercase dentro de ValidatorErrors.
             * En este contexto, "uppercase": true significa que la validación ha fallado para ese criterio.
             */
-            return /A-Z/.test(control.value)? null : {uppercase:true}//uppercase:true indica que se cumple que fallo, es true el failed
+            return /[A-Z]/.test(control.value)? null : {uppercase:true}//uppercase:true indica que se cumple que fallo, es true el failed
             //[A-Z]/.test("contraseña123") → devuelve false
         }
     }
@@ -38,11 +38,11 @@ export class PasswordValidators{
             return /\d/.test(control.value)? null: {number: true}
         }
     }
-    static lenghtCheck(minLength: number= 6):ValidatorFn{
+    
+    static lengthCheck(minLength: number = 6):ValidatorFn{
         return(input:AbstractControl): null| ValidationErrors=>{
-            return input.value?.lenght >= minLength ? null : {minLength:true}
+            return (input.value?.length || 0) >= minLength ? null : {minLength:true}
         }
-
     }
     
 }

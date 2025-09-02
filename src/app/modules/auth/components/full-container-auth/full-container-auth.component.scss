@@ -7,47 +7,83 @@
   display: flex;
   width: 100vw;
 }
-.full-container{
+.full-container {
   display: flex;
-  width: 80%;
+  width: 90%;
+  max-width: 1200px;
   flex-direction: row;
   padding-top: 2rem;
   justify-content: center;
-  // height: 50vh;  
-}// ----------------------------left container-------------------------------------
-.left-container{
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 95%;
+    padding-top: 1rem;
+    gap: 1rem;
+  }
+}
+
+// ----------------------------left container-------------------------------------
+.left-container {
   width: 40%;
-  height: 100%;
   background-color: #2D5F00;
   color: white;
-  padding: 0rem;
-  border-radius: 1.7rem 0% 0% 1.7rem;
-  margin-left: 2rem;
+  padding: 0;
+  border-radius: 1.7rem 0 0 1.7rem;
   
-}
-.img-perfiles{
-  width: 100%;
-  border-radius: 1.7rem 0% 0% 0rem;
-  // height: 30%;
-}
-.text-perfiles{
-  h3{
-    margin-top: 0rem;
+  @media (max-width: 768px) {
+    width: 100%;
+    border-radius: 1.7rem 1.7rem 0 0;
+    margin: 0;
   }
-  padding: 2rem;
-  // height: 100%;
-  font-size: 1rem;
 }
+
+.img-perfiles {
+  width: 100%;
+  border-radius: 1.7rem 0 0 0;
+  
+  @media (max-width: 768px) {
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 1.7rem 1.7rem 0 0;
+  }
+}
+
+.text-perfiles {
+  padding: 2rem;
+  font-size: 1rem;
+  
+  h3 {
+    margin-top: 0;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    font-size: 0.9rem;
+    
+    h3 {
+      font-size: 1.2rem;
+    }
+  }
+}
+
 // --------------------------right container----------------------------------------
-.right-container{
+.right-container {
   background-color: rgba($color: #cfd2d2, $alpha: 0.5);
-  display: flex; 
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem 3rem;
-  margin-right: 2rem;
+  padding: 2rem;
   width: 50%;
-  border-radius: 0% 1.7rem 1.7rem 0%;
+  border-radius: 0 1.7rem 1.7rem 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0 0 1.7rem 1.7rem;
+    margin: 0;
+  }
 }
 .mat-expansion-panel-header-description{
   flex-basis: min-content;

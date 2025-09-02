@@ -4,35 +4,69 @@
   justify-content: center;
   margin: 0;
   padding: 0;
- 
+  width: 100%;
 }
-.login-form{
+
+.login-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-   max-width: 500px;
+  max-width: 500px;
+  width: 100%;
+  padding: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+    
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.wid-100 {
   width: 100%;
   
-  
+  @media (max-width: 768px) {
+    ::ng-deep .mat-mdc-form-field {
+      font-size: 14px;
+    }
+    
+    input {
+      font-size: 14px;
+    }
+  }
 }
-.wid-100{
- width: 100%;
-}
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // height: 100%;
 
-// input{ // TODO: pasar esto a transversal
-//   width: 70%; //como hacerlo mas ancho? xd suppngo que con matformfield
-// }
-.non-space{
+.non-space {
   padding: 0;
-  margin:0;
+  margin: 0;
 }
-.mar-05rem{
-margin: 0.8rem;
+
+.mar-05rem {
+  margin: 0.8rem;
+  
+  @media (max-width: 768px) {
+    margin: 0.5rem;
+    width: 100%;
+  }
 }
 .main-color{
- color: #2d5f00 ;
+ color: #2d5f00;
+}
+
+::-ms-reveal {
+  display: none;
+}
+
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  position: absolute;
+  right: 0;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
 }

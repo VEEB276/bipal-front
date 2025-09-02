@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-crear-clave',
@@ -19,7 +20,8 @@ import { AuthService } from '../../../../core/auth/auth.service';
     MatLabel,
     RouterModule,
     MatCard,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf
 ],
   templateUrl: './crear-clave.component.html',
   styleUrl: './crear-clave.component.scss'
@@ -27,9 +29,12 @@ import { AuthService } from '../../../../core/auth/auth.service';
 export class CrearClaveComponent {
   private readonly authService = inject(AuthService);
 
-  codeForm:FormGroup;
+  codeForm: FormGroup;
+  hidePassword = true;
+  hideConfirmPassword = true;
+  isSubmitting = false;
 
-  //parametros de entrada
+  // parámetros de entrada
   email = input<string>();
   numeroDocumento = input<number>();
 
@@ -39,14 +44,14 @@ export class CrearClaveComponent {
     private router: Router
   ){
     this.codeForm=this.fb.group({
-      password:[
+      password: [
         '',
         [
           Validators.required,
-          // Validators.pattern(/^ [a-zA-Z0-9._%+*-]+\ $/), //TODO: revisar este regex
-          // PasswordValidators.UpperCaseCheck(),
-          // //PasswordValidators.lenghtCheck(6), // TODO: es necesario el parametro?
-          // PasswordValidators.numberCheck()
+          Validators.pattern(/^[a-zA-Z0-9._%+*-]+$/),
+          PasswordValidators.UpperCaseCheck(),
+          PasswordValidators.lengthCheck(6),
+          PasswordValidators.numberCheck()
         ]
       ],
       confirmPassword: [
@@ -57,20 +62,46 @@ export class CrearClaveComponent {
       ]
     })
   }
-  crearUsuario() {
-    this.authService.createUserAccount(
-      this.numeroDocumento(),
-      this.email(),
-      this.codeForm.value.password
-    ).then(() => {
-      console.log("Usuario creado exitosamente");
-      // Redirigir al usuario a la página de inicio de sesión o a donde sea necesario
-      this.router.navigate(['/hoja-de-vida'], { replaceUrl: true });
-    }).catch(error => {
-      console.error("Error al crear el usuario:", error);
-      // Manejar el error, mostrar un mensaje al usuario, etc.
-    });
 
+  get hasMinLength(): boolean {
+    const password = this.codeForm.get('password')?.value;
+    return password ? password.length >= 6 : false;
+  }
+
+  get hasUpperCase(): boolean {
+    const password = this.codeForm.get('password')?.value;
+    return password ? /[A-Z]/.test(password) : false;
+  }
+
+  get hasNumber(): boolean {
+    const password = this.codeForm.get('password')?.value;
+    return password ? /[0-9]/.test(password) : false;
+  }
+
+  get hasValidCharacters(): boolean {
+    const password = this.codeForm.get('password')?.value;
+    return password ? /^[a-zA-Z0-9._%+*-]+$/.test(password) : false;
+  }
+
+  crearUsuario() {
+    if (this.codeForm.valid && !this.isSubmitting) {
+      this.isSubmitting = true;
+      
+      this.authService.createUserAccount(
+        this.numeroDocumento(),
+        this.email(),
+        this.codeForm.value.password
+      ).then(() => {
+        console.log("Usuario creado exitosamente");
+        // Redirigir al usuario a la página de inicio de sesión o a donde sea necesario
+        this.router.navigate(['/hoja-de-vida'], { replaceUrl: true });
+      }).catch(error => {
+        console.error("Error al crear el usuario:", error);
+        // Manejar el error, mostrar un mensaje al usuario, etc.
+      }).finally(() => {
+        this.isSubmitting = false;
+      });
+    }
   }
   
 }
