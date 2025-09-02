@@ -8,6 +8,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatIcon } from '@angular/material/icon';
 import { ReactiveFormsModule, Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from "../../../../core/auth/auth.service";
 
 @Component({
@@ -23,6 +24,7 @@ import { AuthService } from "../../../../core/auth/auth.service";
     MatFormFieldModule,
     MatCheckboxModule,
     MatIcon,
+    MatTooltipModule
   ],
   templateUrl: "./iniciar-sesion.component.html",
   styleUrl: "./iniciar-sesion.component.scss",
@@ -33,15 +35,33 @@ export class IniciarSesionComponent {
 
   loginForm: FormGroup;
   hidePassword = true;
+
+  get isValidEmail(): boolean {
+    const emailControl = this.loginForm?.get('email');
+    if (!emailControl) return false;
+    
+    return emailControl.valid && 
+           /^[a-zA-Z0-9._%+*-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailControl.value);
+  }
+
+  get tooltipMessage(): string {
+    if (!this.loginForm?.get('email')?.value) {
+      return 'Debes ingresar un correo electrónico para recuperar tu contraseña';
+    }
+    if (!this.isValidEmail) {
+      return 'Debes ingresar un correo electrónico válido';
+    }
+    return '';
+  }
   
   constructor(private fb:FormBuilder){
     // console.log("INIT SESION");
     this.loginForm=this.fb.group({
-      email:[// o numero
+      email:[
         '',
         [
           Validators.required,
-          // Validators.pattern(/^[a-zA-Z0-9._%+*-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),// REGEX PARA CORREO
+          Validators.pattern(/^[a-zA-Z0-9._%+*-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
         ]
       ],
       password:[
