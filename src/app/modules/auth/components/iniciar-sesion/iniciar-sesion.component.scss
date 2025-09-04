@@ -13,26 +13,15 @@
   align-items: center;
   max-width: 500px;
   width: 100%;
-  padding: 2rem;
-  gap: 0.5rem;
+  height: 100%;
+  padding: 1rem;
+    // margin:0;
+    padding: 0;
 
   h2 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
     color: #2d5f00;
-  }
-
-  mat-form-field {
-    margin-bottom: 0.5rem;
-  }
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-    
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
   }
 }
 
@@ -56,14 +45,7 @@
 }
 
 .mar-05rem {
-  margin: 1rem 0;
-  width: 100%;
-  max-width: 200px;
-  
-  @media (max-width: 768px) {
-    margin: 0.5rem;
-    width: 100%;
-  }
+  margin: 0.5rem;
 }
 .main-color{
  color: #2d5f00;
@@ -72,7 +54,7 @@
 .password-reset-link {
   position: relative;
   display: inline-block;
-  margin: 4px 0 12px;
+  margin: 0.4rem 0;
   font-size: 0.9rem;
 }
 
