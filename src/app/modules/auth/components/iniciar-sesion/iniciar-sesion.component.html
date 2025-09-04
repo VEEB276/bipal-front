@@ -5,7 +5,10 @@
         <mat-form-field required class="wid-100">
           <mat-label> Correo electrónico o número de documento </mat-label>
           <mat-icon matPrefix class="prefix-icon">person</mat-icon>
-          <input matInput placeholder="ejemplo@gmail.com" formControlName="email"/>
+          <input matInput placeholder="ejemplo@gmail.com o número de documento" formControlName="email"/>
+          <mat-error *ngIf="loginForm.get('email')?.invalid">
+            {{ getErrorMessage }}
+          </mat-error>
         </mat-form-field>
         <!-- ----------------------------------------------------------- -->
         <mat-form-field required class="wid-100">
@@ -35,13 +38,11 @@
         </a>
   
         <!-- ------------------------------------------------------------ -->
-        <!-- <div> -->
           <button class="mar-05rem"
            mat-flat-button 
            [disabled]="!loginForm.valid" (click)="onSubmit()">
               Iniciar sesión
             </button>
-          <!-- </div> -->
         <!-- ------------------------------------------------------------- -->
         <mat-divider></mat-divider>
 </form>

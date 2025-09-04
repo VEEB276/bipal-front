@@ -36,20 +36,52 @@ export class IniciarSesionComponent {
   loginForm: FormGroup;
   hidePassword = true;
 
-  get isValidEmail(): boolean {
-    const emailControl = this.loginForm?.get('email');
-    if (!emailControl) return false;
+  get isValidInput(): boolean {
+    const control = this.loginForm?.get('email');
+    if (!control || !control.value) return false;
     
-    return emailControl.valid && 
-           /^[a-zA-Z0-9._%+*-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailControl.value);
+    const value = control.value.toString();
+    return this.isEmail(value) || this.isDocument(value);
+  }
+
+  get isValidEmail(): boolean {
+    const control = this.loginForm?.get('email');
+    if (!control || !control.value) return false;
+    
+    return this.isEmail(control.value.toString());
+  }
+
+  private isEmail(value: string): boolean {
+    return /^[a-zA-Z0-9._%+*-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value);
+  }
+
+  private isDocument(value: string): boolean {
+    return /^\d{8,10}$/.test(value);
+  }
+
+  get getErrorMessage(): string {
+    const control = this.loginForm?.get('email');
+    if (!control) return '';
+    if (!control.value) return 'Este campo es requerido';
+    if (!this.isEmail(control.value) && !this.isDocument(control.value)) {
+      return 'Ingresa un correo electrónico válido o un número de documento (8-10 dígitos)';
+    }
+    return '';
   }
 
   get tooltipMessage(): string {
     if (!this.loginForm?.get('email')?.value) {
+      return 'Debes ingresar un correo electrónico o número de documento';
+    }
+    const value = this.loginForm?.get('email')?.value;
+    if (!value) {
       return 'Debes ingresar un correo electrónico para recuperar tu contraseña';
     }
+    if (this.isDocument(value)) {
+      return 'Para recuperar tu contraseña, debes ingresar un correo electrónico';
+    }
     if (!this.isValidEmail) {
-      return 'Debes ingresar un correo electrónico válido';
+      return 'Ingresa un correo electrónico válido para recuperar tu contraseña';
     }
     return '';
   }
