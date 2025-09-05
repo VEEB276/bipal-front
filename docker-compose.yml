@@ -1,0 +1,18 @@
+services:
+  bipal-front:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bipal-front
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      - bipal-net
+      - bipal-front-net
+
+networks:
+  bipal-net:
+    external: true
+  bipal-front-net:
+    driver: bridge
