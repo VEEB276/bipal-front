@@ -5,7 +5,10 @@
         <mat-form-field required class="wid-100">
           <mat-label> Correo electrónico o número de documento </mat-label>
           <mat-icon matPrefix class="prefix-icon">person</mat-icon>
-          <input matInput placeholder="ejemplo@gmail.com" formControlName="email"/>
+          <input matInput placeholder="ejemplo@gmail.com o número de documento" formControlName="email"/>
+          <mat-error *ngIf="loginForm.get('email')?.invalid">
+            {{ getErrorMessage }}
+          </mat-error>
         </mat-form-field>
         <!-- ----------------------------------------------------------- -->
         <mat-form-field required class="wid-100">
@@ -22,16 +25,24 @@
           </button>
         </mat-form-field>
         <!-- ------------------------------------------------------------ -->
-        <a routerLink="/auth/recuperar-contrasena" class="non-space main-color">¿Has olvidado la contraseña?</a>
+        <a [routerLink]="isValidEmail ? '/auth/recuperar-contrasena' : null"
+           [state]="{ email: loginForm.get('email')?.value }"
+           [class.disabled]="!isValidEmail"
+           [matTooltip]="tooltipMessage"
+           [matTooltipDisabled]="isValidEmail"
+           matTooltipPosition="above"
+           matTooltipShowDelay="500"
+           matTooltipClass="custom-tooltip"
+           class="non-space main-color password-reset-link">
+           ¿Has olvidado la contraseña?
+        </a>
   
         <!-- ------------------------------------------------------------ -->
-        <!-- <div> -->
           <button class="mar-05rem"
            mat-flat-button 
            [disabled]="!loginForm.valid" (click)="onSubmit()">
               Iniciar sesión
             </button>
-          <!-- </div> -->
         <!-- ------------------------------------------------------------- -->
         <mat-divider></mat-divider>
 </form>

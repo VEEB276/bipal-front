@@ -13,15 +13,15 @@
   align-items: center;
   max-width: 500px;
   width: 100%;
+  height: 100%;
   padding: 1rem;
+    // margin:0;
+    padding: 0;
 
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-    
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #2d5f00;
   }
 }
 
@@ -45,15 +45,34 @@
 }
 
 .mar-05rem {
-  margin: 0.8rem;
-  
-  @media (max-width: 768px) {
-    margin: 0.5rem;
-    width: 100%;
-  }
+  margin: 0.5rem;
 }
 .main-color{
  color: #2d5f00;
+}
+
+.password-reset-link {
+  position: relative;
+  display: inline-block;
+  margin: 0.4rem 0;
+  font-size: 0.9rem;
+}
+
+::ng-deep .custom-tooltip {
+  font-size: 14px !important;
+  background-color: rgba(97, 97, 97, 0.9) !important;
+  padding: 8px 12px !important;
+}
+
+a.disabled {
+  color: rgba(0, 0, 0, 0.38);
+  pointer-events: none;
+  cursor: not-allowed;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 ::-ms-reveal {
