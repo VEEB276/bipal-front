@@ -61,9 +61,11 @@ jobs:
             exit 1
           fi
 
-      - name: Extraer version
+      - name: Extraer versión
         id: pkg
-        run: echo "version=$(node -p \"require('./package.json').version\")" >> $GITHUB_OUTPUT
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Preparar tags
         id: meta
