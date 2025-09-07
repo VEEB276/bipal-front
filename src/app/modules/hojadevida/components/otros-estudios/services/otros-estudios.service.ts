@@ -19,7 +19,7 @@ export class OtrosEstudiosService {
     return this.http
       .post<OtroEstudioHvDto[]>(`${this.apiUrl}/create-otro-estudio`, estudios)
       .pipe(
-        tap(() => this.notification.showSuccess('Se han creado los otros estudios.')),
+        tap(() => this.notification.showSuccess('Se han guardado los otros estudios satisfactoriamente.')),
         catchError(this.handleError)
       );
   }

@@ -7,23 +7,82 @@
   max-width: 90vw;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 
-  &__header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 12px; }
-  &__title { margin: 0; font-size: 20px; font-weight: 600; }
-  &__close { background: none; border: none; cursor: pointer; color: var(--on-surface); display: flex; }
-  &__divider { height: 1px; background: var(--outline-variant); width: 100%; }
-  &__content { padding: 24px; flex: 1; }
-  &__actions { display: flex; gap: 12px; justify-content: flex-end; padding: 0 24px 24px; }
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 12px;
+  }
+  &__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  &__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--on-surface);
+    display: flex;
+  }
+  &__divider {
+    height: 1px;
+    background: var(--outline-variant);
+    width: 100%;
+  }
+  &__content {
+    padding: 24px;
+    flex: 1;
+  }
+  &__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 0 24px 24px;
+  }
 
-  button.mat-mdc-button, button.mat-mdc-unelevated-button, button.mat-mdc-raised-button, button.mat-mdc-outlined-button, button.mat-mdc-flat-button { border-radius: 9999px; text-transform: none; font-weight: 500; }
+  button.mat-mdc-button,
+  button.mat-mdc-unelevated-button,
+  button.mat-mdc-raised-button,
+  button.mat-mdc-outlined-button,
+  button.mat-mdc-flat-button {
+    border-radius: 9999px;
+    text-transform: none;
+    font-weight: 500;
+  }
 
-  &.delete .modal-dialog__title { color: var(--error-color); }
-  &.warning .modal-dialog__title { color: var(--warning-color); }
-  &.info .modal-dialog__title { color: var(--info-color); }
+  &.delete .modal-dialog__title {
+    color: var(--error-color);
+  }
+  &.warning .modal-dialog__title {
+    color: var(--warning-color);
+  }
+  &.info .modal-dialog__title {
+    color: var(--info-color);
+  }
 }
 
-.modal-dialog__actions button.primary-warn { background: var(--error-color); color: var(--on-error); }
-.modal-dialog__actions button.primary-primary { background: var(--primary-color); color: var(--on-primary); }
-.modal-dialog__actions button.primary-warning { background: var(--warning-color); color: #000; }
-.modal-dialog__actions button.primary-info { background: var(--info-color); color: #fff; }
+.modal-dialog__actions button.primary-warn {
+  background: var(--error-color);
+  color: var(--on-error);
+}
+.modal-dialog__actions button.primary-primary {
+  background: var(--primary-color);
+  color: var(--on-primary);
+}
+.modal-dialog__actions button.primary-warning {
+  background: var(--warning-color);
+  color: #000;
+}
+.modal-dialog__actions button.primary-info {
+  background: var(--info-color);
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .modal-dialog {
+    min-width: unset;
+  }
+}

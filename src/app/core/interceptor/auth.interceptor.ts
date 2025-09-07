@@ -1,8 +1,8 @@
-import type { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { LoadingService } from '../services/loading.service';
-import { finalize } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
+import type { HttpInterceptorFn } from "@angular/common/http";
+import { inject } from "@angular/core";
+import { LoadingService } from "../services/loading.service";
+import { finalize } from "rxjs/operators";
+import { AuthService } from "../auth/auth.service";
 
 /**
  * Interceptor que maneja el loading automático para peticiones POST
@@ -15,14 +15,23 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // Si existe sesión de Supabase agregamos header user-id
   const userId = auth.session?.user?.id;
   if (userId) {
-    req = req.clone({ setHeaders: { 'user-id': userId } });
+    req = req.clone({
+      setHeaders: {
+        "user-id": userId,
+        Authorization: `Bearer ${auth.session.access_token}`,
+      },
+    });
   }
-
+console.log('User ID agregado al header:', req);
   // Solo aplicar loading para peticiones POST
-  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
+  if (
+    req.method === "POST" ||
+    req.method === "PUT" ||
+    req.method === "DELETE"
+  ) {
     // Mostrar loading antes de enviar la petición
     loadingService.show();
-    
+
     return next(req).pipe(
       finalize(() => {
         // Ocultar loading cuando la petición termine (éxito o error)
@@ -30,7 +39,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       })
     );
   }
-  
+
   // Para otros métodos HTTP, continuar sin loading
   return next(req);
 };

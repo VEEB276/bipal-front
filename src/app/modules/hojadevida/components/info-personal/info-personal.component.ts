@@ -91,7 +91,6 @@ export class InfoPersonalComponent implements OnInit {
       // Si la expedición quedó por debajo del nuevo mínimo, la limpiamos para forzar selección válida
       const nacimientoVal = this.control("fechaNacimiento")?.value;
       if (nacimientoVal && ctrlExp?.value && new Date(ctrlExp.value) < new Date(nacimientoVal)) {
-        ctrlExp.setValue(null);
         ctrlExp.markAsTouched();
       }
     });
