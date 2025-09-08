@@ -19,7 +19,7 @@
   </section>
   <footer class="modal-dialog__actions">
     @if (config.secondaryText) {
-      <button mat-button type="button" (click)="close(false)" [attr.cdkFocusInitial]="config.autoFocus==='secondary'?'' : null">{{ config.secondaryText }}</button>
+      <button mat-stroked-button type="button" (click)="close(false)" [attr.cdkFocusInitial]="config.autoFocus==='secondary'?'' : null">{{ config.secondaryText }}</button>
     }
     <button mat-flat-button type="button" (click)="close(true)" [ngClass]="primaryBtnClass" [attr.cdkFocusInitial]="config.autoFocus!=='secondary' && config.autoFocus!=='none' ? '' : null">{{ config.primaryText }}</button>
   </footer>

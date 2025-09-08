@@ -8,13 +8,12 @@ import { PasswordValidators } from '../../Validators/passwordValidators';
 import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { JsonPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-reset-pasword-component',
   imports: [
-    MatCard, 
     MatInputModule, 
     MatIconModule,
     ReactiveFormsModule,
@@ -22,7 +21,6 @@ import { NotificationService } from '../../../../core/services/notification.serv
     MatFormFieldModule,
     MatButtonModule,
     NgIf,
-    JsonPipe
   ],
   templateUrl: './reset-pasword-component.component.html',
   styleUrl: './reset-pasword-component.component.scss'

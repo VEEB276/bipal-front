@@ -4,7 +4,7 @@
   } @else {
   <form [formGroup]="experienciaForm" (ngSubmit)="onSubmit()" class="experiencia-form" scrollFirstInvalid>
     <div formArrayName="experiencias">
-  @for (experiencia of experienciasArray.controls; track $index; let i = $index) {
+  @for (experiencia of experienciasArray.controls; track experiencia; let i = $index) {
       <mat-card class="experiencia-section">
         <mat-card-header class="experiencia-header">
           <mat-card-title>

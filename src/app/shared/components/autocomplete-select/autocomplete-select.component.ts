@@ -5,9 +5,12 @@ import {
   EventEmitter,
   OnInit,
   OnDestroy,
+  input,
+  effect,
+  booleanAttribute,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatError, MatInputModule } from "@angular/material/input";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -57,18 +60,19 @@ export class AutocompleteSelectComponent implements OnInit, OnDestroy {
 
   @Input() fieldValue: string = "id";
   @Input() fieldText: string = "nombre";
+  label = input<string>("");
   @Input() placeholder: string = "";
   @Input() delay: number = 300;
   @Input() minLength: number = 1;
   @Input() autoSelectExact: boolean = true;
   @Input() clearOnBlurNoMatch: boolean = true;
-  @Input() startWithFirstLoad: boolean = false;
   @Input() valueMode: "object" | "value" = "value";
   @Input() compareWith: (a: any, b: any) => boolean = (a, b) => a === b;
   @Input() noResultsText: string = "Sin resultados";
   @Input() ariaLabel: string = "";
   @Input() panelWidth?: string;
-  @Input() disabled: boolean = false;
+  disabled = input(false, { transform: booleanAttribute });
+  required = input(false, { transform: booleanAttribute });
 
   @Input()
   set textValue(value) {
@@ -87,12 +91,31 @@ export class AutocompleteSelectComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
   private updatingText = false;
 
+  constructor() {
+    effect(() => {
+      if (this.disabled() === null || this.disabled() === undefined) return;
+      console.log("Disabled cambiado a:", this.disabled());
+      if (this.disabled()) {
+        this.textCtrl.disable({ emitEvent: false });
+      } else {
+        this.textCtrl.enable({ emitEvent: false });
+      }
+    });
+
+    effect(() => {
+      if (this.required() === null || this.required() === undefined) return;
+      if (this.required()) {
+        this.textCtrl.addValidators(Validators.required);
+      } else {
+        this.textCtrl.removeValidators(Validators.required);
+      }
+      this.textCtrl.updateValueAndValidity({ emitEvent: false });
+    });
+  }
+
   ngOnInit(): void {
     if (!this.control) {
       this.control = new FormControl();
-    }
-    if (this.disabled) {
-      this.textCtrl.disable({ emitEvent: false });
     }
 
     // Pipeline de entrada de texto
@@ -106,7 +129,6 @@ export class AutocompleteSelectComponent implements OnInit, OnDestroy {
         )
         .subscribe((opts) => {
           this.filtered = opts;
-          console.log(this.filtered, this.control.value);
           // si hay valor inicial y no se ha seteado texto
           if (this.control.value && !this.textCtrl.value) {
             this.syncTextFromValue();
@@ -132,7 +154,6 @@ export class AutocompleteSelectComponent implements OnInit, OnDestroy {
     // Escucha cambios de texto directos
     this.subs.push(
       this.textCtrl.valueChanges.subscribe((val) => {
-        console.log("Change del control:", val);
         if (this.updatingText) return;
         this.triggerSearch(val || "");
       })
@@ -169,18 +190,15 @@ export class AutocompleteSelectComponent implements OnInit, OnDestroy {
       return option;
     }
     return this.readText(option) || "";
-  }
+  };
 
   onOptionSelected(option: any) {
-    console.log("Opción seleccionada:", option);
     const value = this.valueMode === "value" ? this.readValue(option) : option;
-    console.log("Valor a setear en control:", value);
     this.control.setValue(value);
     this.optionSelected.emit(option);
   }
 
   onBlur() {
-    console.log("onBlur fired", this.textCtrl.value);
     const typed = (this.textCtrl.value || "").trim();
     if (!typed) {
       if (this.control.value) {
@@ -228,7 +246,6 @@ export class AutocompleteSelectComponent implements OnInit, OnDestroy {
   }
 
   private syncTextFromValue() {
-    console.log("Sync text from value", this.control.value);
     if (!this.control.value) {
       this.updatingText = true;
       this.textCtrl.setValue("", { emitEvent: false });

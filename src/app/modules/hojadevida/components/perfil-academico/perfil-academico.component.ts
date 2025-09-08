@@ -179,10 +179,6 @@ export class PerfilAcademicoComponent implements OnInit {
       });
   }
 
-  trackEstudio(group: any, index: number) {
-    return group?.get("id")?.value ?? index;
-  }
-
   private cargarNivelesEducativos() {
     return this.estudiosService
       .obtenerNivelesEducativos()

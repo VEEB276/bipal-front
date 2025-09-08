@@ -158,7 +158,7 @@ export class ExperienciaComponent implements OnInit {
         fechaHasta
       };
     });
-    this.service.crearExperiencias(payload).subscribe(listaActualizada => {
+    this.service.guardarExperiencias(payload).subscribe(listaActualizada => {
       // Reemplazar ids devueltos
       this.experienciasArray.controls.forEach((control, idx) => control.patchValue(listaActualizada[idx]));
     });

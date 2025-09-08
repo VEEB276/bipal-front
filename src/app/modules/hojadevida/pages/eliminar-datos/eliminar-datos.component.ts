@@ -3,6 +3,10 @@ import { CommonModule } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { ConfirmDialogService } from "../../../../core/services";
+import { Store } from "@ngrx/store";
+import { selectIdPersona } from "../../store";
+import { EliminarDatosService } from "./services/eliminar-datos.service";
+import { AuthService } from "../../../../core/auth/auth.service";
 import { MatIconModule } from "@angular/material/icon";
 
 @Component({
@@ -13,6 +17,10 @@ import { MatIconModule } from "@angular/material/icon";
 })
 export class EliminarDatosComponent {
   private readonly confirm = inject(ConfirmDialogService);
+  private readonly eliminarService = inject(EliminarDatosService);
+  private readonly auth = inject(AuthService);
+  private readonly store = inject(Store);
+  private readonly idPersona = this.store.selectSignal(selectIdPersona);
 
   onClickDeleteAll(): void {
     this.confirm
@@ -24,9 +32,10 @@ export class EliminarDatosComponent {
       })
       .subscribe((ok) => {
         if (!ok) return;
-        // TODO: Invocar servicio backend para eliminar datos y cerrar sesión si aplica
-        // Placeholder de acción
-        console.log("Eliminar todos los datos del usuario");
+        // Invocar servicio backend usando idPersona desde el token
+        this.eliminarService
+          .eliminarPersonaCompleta()
+          .subscribe(() => this.auth.signOut());
       });
   }
 }

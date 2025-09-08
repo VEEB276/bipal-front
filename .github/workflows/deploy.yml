@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Pages & Publish Docker Image
 
 on:
   push:
@@ -12,9 +12,8 @@ permissions:
   id-token: write
 
 jobs:
-  build-and-deploy:
+  build-and-deploy-pages:
     runs-on: ubuntu-latest
-    
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -22,13 +21,13 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         #cache: 'pnpm'
 
     - name: Install pnpm
       uses: pnpm/action-setup@v2
       with:
-        version: 8
+        version: 10
 
     - name: Install dependencies
       run: pnpm install
@@ -46,3 +45,21 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist/bipal-front/browser
+
+    - name: Upload dist artifact (post-deploy)
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-bipal
+        path: dist/bipal-front/browser
+        if-no-files-found: error
+
+  dockerhub-publish:
+    needs: build-and-deploy-pages
+    uses: ./.github/workflows/dockerhub.yml
+    with:
+      image-name: bipal-front
+      download-artifact-name: dist-bipal
+      check-dist: true
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

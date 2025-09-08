@@ -9,7 +9,7 @@
     scrollFirstInvalid
   >
   <div formArrayName="estudios">
-      @for (estudio of estudiosArray.controls; track trackEstudio(estudio, $index); let i = $index) {
+      @for (estudio of estudiosArray.controls; track estudio; let i = $index) {
       <mat-card class="titulo-section">
         <mat-card-header class="titulo-header">
           <mat-card-title>
