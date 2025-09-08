@@ -22,7 +22,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       },
     });
   }
-console.log('User ID agregado al header:', req);
   // Solo aplicar loading para peticiones POST
   if (
     req.method === "POST" ||

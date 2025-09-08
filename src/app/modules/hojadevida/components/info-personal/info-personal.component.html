@@ -117,10 +117,12 @@
         class="form-field"
         [textValue]="textLugarNacimiento"
         [control]="control('lugarNacimiento')"
+        required
         [fetchFn]="fetchCiudadDepartamento"
         fieldText="nombreCompleto"
         fieldValue="departamento"
-        placeholder="Lugar de Nacimiento"
+        label="Lugar de Nacimiento"
+        placeholder="Ingrese y seleccione el lugar de nacimiento"
         (optionSelected)="onLugarNacimientoSelected($event)">
       </app-autocomplete-select>
 
@@ -131,8 +133,8 @@
         [fetchFn]="fetchCiudadDepartamento"
         fieldText="nombreCompleto"
         fieldValue="nombreCompleto"
-        placeholder="Lugar de Residencia"
-        [startWithFirstLoad]="true"
+        label="Lugar de Residencia"
+        placeholder="Ingrese y seleccione el lugar de residencia"
         (optionSelected)="onLugarResidenciaSelected($event)">
       </app-autocomplete-select>
     </div>

@@ -3,15 +3,15 @@
   class="autocomplete-select-field"
   [style.--panel-width]="panelWidth || null"
 >
-  @if (placeholder) { <mat-label>{{ placeholder }}</mat-label> }
+  <mat-label>{{ label() }}</mat-label>
   <input
     type="text"
     matInput
     [formControl]="textCtrl"
     [attr.aria-label]="ariaLabel || placeholder"
+    [placeholder]="placeholder"
     [matAutocomplete]="auto"
     (blur)="onBlur()"
-    [disabled]="disabled"
   />
   @if (textCtrl.value) {
   <button
