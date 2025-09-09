@@ -81,7 +81,7 @@ export class ResetPaswordComponentComponent {
 
   get hasValidCharacters(): boolean {
     const password = this.codeForm.get('password')?.value;
-    return password ? /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{}|:;"'<>,.?\\/]+$/.test(password) : false;
+    return password ? /[!@#$%^&*()_+\-=\[\]{}|:;"'<>,.?\\/]+/.test(password) : false;
   }
 
   get passwordsMatch(): boolean {
