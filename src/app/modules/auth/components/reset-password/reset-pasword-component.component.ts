@@ -46,7 +46,8 @@ export class ResetPaswordComponentComponent {
         '',
         [
           Validators.required,
-          Validators.pattern(/^[a-zA-Z0-9._%+*-]+$/), 
+          // Caracteres validos del regex: cualquiera que no sea emojis, espacios o cosas raras
+          Validators.pattern('^[a-zA-Z0-9!@#$%^&*()_+\\-=\[\\]{}|:;"\'<>,.?\\\\/]+$'),
           PasswordValidators.UpperCaseCheck(),
           PasswordValidators.lengthCheck(6),
           PasswordValidators.numberCheck()
@@ -80,7 +81,7 @@ export class ResetPaswordComponentComponent {
 
   get hasValidCharacters(): boolean {
     const password = this.codeForm.get('password')?.value;
-    return password ? /^[a-zA-Z0-9._%+*-]+$/.test(password) : false;
+    return password ? /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{}|:;"'<>,.?\\/]+$/.test(password) : false;
   }
 
   get passwordsMatch(): boolean {
@@ -95,6 +96,7 @@ export class ResetPaswordComponentComponent {
   }
 //-----------------------------------------------------------------------------------------------
   // Getter para debuggear el estado del formulario
+
   // get formState(): any {
   //   const password = this.codeForm.get('password');
   //   const confirmPassword = this.codeForm.get('confirmPassword');
