@@ -1,0 +1,17 @@
+#Esta es la version para el servidor de produccion
+services:
+  bipal-front:
+    image: bipal-front:latest
+    container_name: bipal-front
+    ports:
+      - "${APP_PORT_EXPOSE}:80"
+    restart: unless-stopped
+    networks:
+      - bipal-net
+      - bipal-front-net
+
+networks:
+  bipal-net:
+    external: true
+  bipal-front-net:
+    driver: bridge
