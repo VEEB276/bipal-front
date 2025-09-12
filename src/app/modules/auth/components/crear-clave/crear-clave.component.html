@@ -57,8 +57,12 @@
    <button mat-flat-button
           [disabled]="!codeForm.valid || isSubmitting"
           (click)="crearUsuario()">
-     <span *ngIf="!isSubmitting">Crear usuario</span>
-     <span *ngIf="isSubmitting">Creando usuario...</span>
+     @if (!isSubmitting) {
+       <span>Crear usuario</span>
+     }
+     @if (isSubmitting) {
+       <span>Creando usuario...</span>
+     }
    </button>
 </form>
 </mat-card>

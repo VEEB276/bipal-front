@@ -1,50 +1,68 @@
 <!-- --------------------------------------------form------------------------------------------------------------ -->
 <form [formGroup]="loginForm" class="login-form">
-        <h2>Iniciar sesión</h2>
-        <!-- ------------------------------------------------ ---------- -->
-        <mat-form-field required class="wid-100">
-          <mat-label> Correo electrónico o número de documento </mat-label>
-          <mat-icon matPrefix class="prefix-icon">person</mat-icon>
-          <input matInput placeholder="ejemplo@gmail.com o número de documento" formControlName="email"/>
-          <mat-error *ngIf="loginForm.get('email')?.invalid">
-            {{ getErrorMessage }}
-          </mat-error>
-        </mat-form-field>
-        <!-- ----------------------------------------------------------- -->
-        <mat-form-field required class="wid-100">
-          <mat-label> Contraseña </mat-label>
-          <mat-icon matPrefix class="prefix-icon">lock</mat-icon>
-          <input matInput 
-                 [type]="hidePassword ? 'password' : 'text'"
-                 [readonly]="false"
-                 placeholder="Ingresa tu contraseña"
-                 formControlName="password">
-          <button matSuffix mat-icon-button (click)="hidePassword = !hidePassword" type="button">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-        </mat-form-field>
-        <!-- ------------------------------------------------------------ -->
-        <a [routerLink]="isValidEmail ? '/auth/recuperar-contrasena' : null"
-           [state]="{ email: loginForm.get('email')?.value }"
-           [class.disabled]="!isValidEmail"
-           [matTooltip]="tooltipMessage"
-           [matTooltipDisabled]="isValidEmail"
-           matTooltipPosition="above"
-           matTooltipShowDelay="500"
-           matTooltipClass="custom-tooltip"
-           class="non-space main-color password-reset-link">
-           ¿Has olvidado la contraseña?
-        </a>
-  
-        <!-- ------------------------------------------------------------ -->
-          <button class="mar-05rem"
-           mat-flat-button 
-           [disabled]="!loginForm.valid" (click)="onSubmit()">
-              Iniciar sesión
-            </button>
-        <!-- ------------------------------------------------------------- -->
-        <mat-divider></mat-divider>
+  <h2>Iniciar sesión</h2>
+  <!-- ------------------------------------------------ ---------- -->
+  <mat-form-field required class="wid-100">
+    <mat-label> Correo electrónico o número de documento </mat-label>
+    <mat-icon matPrefix class="prefix-icon">person</mat-icon>
+    <input
+      matInput
+      placeholder="ejemplo@gmail.com o número de documento"
+      formControlName="email"
+    />
+    @if (loginForm.get('email')?.invalid) {
+    <mat-error>
+      {{ getErrorMessage }}
+    </mat-error>
+    }
+  </mat-form-field>
+  <!-- ----------------------------------------------------------- -->
+  <mat-form-field required class="wid-100">
+    <mat-label> Contraseña </mat-label>
+    <mat-icon matPrefix class="prefix-icon">lock</mat-icon>
+    <input
+      matInput
+      [type]="hidePassword ? 'password' : 'text'"
+      [readonly]="false"
+      placeholder="Ingresa tu contraseña"
+      formControlName="password"
+    />
+    <button
+      matSuffix
+      mat-icon-button
+      (click)="hidePassword = !hidePassword"
+      type="button"
+    >
+      <mat-icon>{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+    </button>
+  </mat-form-field>
+  <!-- ------------------------------------------------------------ -->
+  <!--[routerLink]="isValidEmail ? '/auth/recuperar-contrasena' : null"
+        [state]="{ email: loginForm.get('email')?.value }"
+        [class.disabled]="!isValidEmail"
+        
+        -->
+  <a 
+    (click)="llamarModal()" 
+    [matTooltip]="tooltipMessage"
+    [matTooltipDisabled]="isValidEmail"
+    matTooltipPosition="above"
+    matTooltipShowDelay="500"
+    matTooltipClass="custom-tooltip"
+    class="non-space main-color password-reset-link"
+  >
+    ¿Has olvidado la contraseña?
+  </a>
+<!-- ------------------------------------------------------------ -->
+  <button
+    class="mar-05rem"
+    mat-flat-button
+    [disabled]="!loginForm.valid"
+    (click)="onSubmit()"
+  >
+    Iniciar sesión
+  </button>
+  <!-- ------------------------------------------------------------- -->
+  <mat-divider></mat-divider>
 </form>
 <!-- ----------------------------------------------------------------------------------------------------------------------- -->
-
-

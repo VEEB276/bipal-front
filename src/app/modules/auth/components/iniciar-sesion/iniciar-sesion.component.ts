@@ -7,9 +7,12 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatIcon } from '@angular/material/icon';
-import { ReactiveFormsModule, Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { ReactiveFormsModule, Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from "../../../../core/auth/auth.service";
+import { MatCard, MatCardModule } from "@angular/material/card";
+import { ConfirmDialogService } from "../../../../core/services";
+import { ModalRecuperarCuentaComponent } from "../modal-recuperar-cuenta/modal-recuperar-cuenta.component";
 
 @Component({
   selector: "app-iniciar-sesion",
@@ -24,17 +27,24 @@ import { AuthService } from "../../../../core/auth/auth.service";
     MatFormFieldModule,
     MatCheckboxModule,
     MatIcon,
-    MatTooltipModule
-  ],
+    MatTooltipModule,
+    MatCard,
+    MatCardModule,
+],
   templateUrl: "./iniciar-sesion.component.html",
   styleUrl: "./iniciar-sesion.component.scss",
 })
 export class IniciarSesionComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly modal=inject(ConfirmDialogService);
 
   loginForm: FormGroup;
   hidePassword = true;
+  clickOnOlvidarContrasena=false;
+  //control validator del email de recuperar cuenta
+  emailControl = new FormControl('', [Validators.required, Validators.email]);
+
 
   get isValidInput(): boolean {
     const control = this.loginForm?.get('email');
@@ -119,10 +129,22 @@ export class IniciarSesionComponent {
         } else {
           console.log("Usuario autenticado:", user);
           // Redirigir a la hoja de vida o realizar otra acción
-          this.router.navigate(['/hoja-de-vida']);
+          this.router.navigate(['/hoja-de-vida'],{ queryParams:{email: this.loginForm.value.email, origin:"login" }});
           this.loginForm.reset();
         }
       });
     }
   }
+  // ponerParametros(){
+  //  this.router.navigate(['/hoja-de-vida'],{ queryParams:{email: this.loginForm.value.email, origin:"login" }});
+  // }
+  llamarModal(){
+    this.modal.open({
+      title:"Recuperar contraseña",
+      type:"confirm",
+      component:ModalRecuperarCuentaComponent,
+      primaryText:"Reestablecer contraseña",
+    })
+  }
 }
+  

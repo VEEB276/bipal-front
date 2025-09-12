@@ -1,4 +1,5 @@
-import { Component, EventEmitter, inject, input, Output } from "@angular/core";
+import { Component, EventEmitter, inject, input, Input, Output } from "@angular/core";
+import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
 import {
   FormControl,
   FormArray,
@@ -25,15 +26,25 @@ import { AuthService } from "../../../../core/auth/auth.service";
   styleUrl: "./comprobar-codigo.component.scss",
 })
 export class ComprobarCodigoComponent {
-  private readonly authService = inject(AuthService);
+  //inyeccion de dependencias con API basada en funciones:
+  //private readonly authService = inject(AuthService);
+  //private readonly router = inject(Router);
+  //private readonly route = inject(ActivatedRoute); // para recibir los queryparams
+  //private readonly fb = inject(FormBuilder);
 
   // Entradas
   email = input<string>("");
 
   @Output() next = new EventEmitter<any>();
+  @Input() origin: 'reset' | 'create' = 'create';
   // form:FormControl=new form
   formCode: FormGroup;
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private rout:ActivatedRoute,
+    private router: Router,
+    private authServ: AuthService
+  ) {
     this.formCode = this.fb.group({
       digitsGroup: this.fb.array([
         this.fb.control("", [Validators.required, Validators.pattern(/^\d$/)]),
@@ -44,9 +55,8 @@ export class ComprobarCodigoComponent {
         new FormControl("", [Validators.required, Validators.pattern(/^\d$/)]),
       ]),
     });
-
-    this.digitGroup.controls[0]
-   //var a = this.formCode.controls["digitsGroup"] as FormArray
+    // this.digitGroup.controls[0]
+    // var a = this.formCode.controls["digitsGroup"] as FormArray
   }
   //este get accede a la informacion del controler digitGroup del formulario formcode
   get digitGroup():FormArray{
@@ -58,19 +68,50 @@ export class ComprobarCodigoComponent {
       e igualarlos a la variable codigoIngresadoH*/
       const codigoIngresadoH = this.digitGroup.value.join('');
       console.log("el codigo ingresado es: ", codigoIngresadoH,"?");
-      this.authService.verifyEmailCode(this.email(), codigoIngresadoH).then((response) => {
-        if (response.error) {
-          console.error("Error al verificar el código:", response.error.message);
-          // Manejar error de verificación
-        } else {
-          console.log("Código verificado exitosamente");
-          // Emitir true para indicar que debe mostrar el componente crear-clave
-          this.next.emit(false);
-        }
-      });
-    //TODO: le faltan cositas al verificar pero creo que eos lo hace supabase
+      //------------------------------- subscripcion a los parametros de la direccion ----------------------------------
+      this.rout.queryParams.subscribe(params =>{
+        const origin = params["login"];
+        console.log("login ha sido leido por los queryParams con valor de:", origin)
+      })
+      //---------------------------------- verificacion del numero de supabase
+        this.authServ.verifyEmailCode(this.email(), codigoIngresadoH).then((response) => {
+          if (response.error) {
+            console.error("Error al verificar el código:", response.error.message);
+            // Manejar error de verificación
+          } else {
+            console.log("Código verificado exitosamente");
+            // Emitir true para indicar que el código fue verificado
+            this.next.emit(true);
+            // Navegación condicional según el queryParam
+            const ruta = origin === 'reset'
+            ? '/auth/recuperar-contrasena'
+            : '/auth/crear-usuario';
+
+            this.router.navigate([ruta]);
+          }
+
+          // Si la verificación fue exitosa, navegar según el origen
+          //if (this.origin === 'reset') {
+          //  this.irARutaReset();
+          //} else {
+          //  this.irARutaCreate();
+          //}
+        })
+      }
+      
     }
-  }
+
+    
+    //
+    // irARutaReset() {
+    // navegar a la ruta de reset password
+  //  this.router.navigate(['/auth/recuperar-contrasena']);
+  //}
+
+  //irARutaCreate() {
+    // navegar a la ruta para crear clave (si existe)
+  //  this.router.navigate(['/auth/crear-usuario']);
+  //}//
 
   toFormControl(item: any){
     return item as FormControl;
@@ -96,7 +137,7 @@ export class ComprobarCodigoComponent {
       this.focusNextInput(index + 1);
     }
   }
-
+  
   /**
    * Maneja las teclas especiales como Backspace y flechas
    * @param event - Evento del teclado
@@ -170,5 +211,4 @@ export class ComprobarCodigoComponent {
       prevInput.select();
     }
   }
-
 }

@@ -77,7 +77,8 @@ console.log('hola');
       if (error) {
         console.error("Error al enviar el código de verificación:", error);
       } else {
-        this.routerBj.navigate(['auth', 'crear-usuario'], { queryParams: { email: this.registerForm.value.email, documento: this.registerForm.value.documentNumber } });
+        //origin es el type
+        this.routerBj.navigate(['auth', 'crear-usuario'], { queryParams: { email: this.registerForm.value.email, documento: this.registerForm.value.documentNumber, origin:"register" } });
       }
     });
   }
@@ -87,7 +88,6 @@ console.log('hola');
     if (this.registerForm.invalid) return;
 
     if (this.clickOnCheckbox && this.registerForm.valid) {
-      console.info("la información del formulario es:", this.registerForm.value);
       this.consultarEstadoCodigo();
     }
   }

@@ -18,64 +18,70 @@
     
     <!-- Menú principal -->
     <div class="menu-content">
-      <h3 class="section-title" *ngIf="!isCollapsed() || isMobile()">
-        Hojas de vida
-      </h3>
+      @if (!isCollapsed() || isMobile()) {
+        <h3 class="section-title">Hojas de vida</h3>
+      }
       
       <mat-nav-list>
-        <mat-list-item 
-          *ngFor="let item of menuItems"
-          class="menu-item"
-          [class.active]="isActive(item)"
-          (click)="handleItemClick(item)"
-          [matTooltip]=" isCollapsed() ? item.label : ''"
-          matTooltipPosition="right"
-          (keydown.enter)="handleItemClick(item)"
-          (keydown.space)="handleItemClick(item)">
-          <mat-icon matListItemIcon class="menu-icon">{{ item.icon }}</mat-icon>
-          <span matListItemTitle *ngIf="!isCollapsed() || isMobile()">
-            {{ item.label }}
-          </span>
-        </mat-list-item>
+        @for (item of menuItems; track item.label) {
+          <mat-list-item 
+            class="menu-item"
+            [class.active]="isActive(item)"
+            (click)="handleItemClick(item)"
+            [matTooltip]=" isCollapsed() ? item.label : ''"
+            matTooltipPosition="right"
+            (keydown.enter)="handleItemClick(item)"
+            (keydown.space)="handleItemClick(item)">
+            <mat-icon matListItemIcon class="menu-icon">{{ item.icon }}</mat-icon>
+            @if (!isCollapsed() || isMobile()) {
+              <span matListItemTitle>{{ item.label }}</span>
+            }
+          </mat-list-item>
+        }
       </mat-nav-list>
       
       <mat-divider></mat-divider>
       
       <!-- Sección Cuenta -->
-      <h3 class="section-title" *ngIf="!isCollapsed() || isMobile()">
-        Cuenta
-      </h3>
+      @if (!isCollapsed() || isMobile()) {
+        <h3 class="section-title">Cuenta</h3>
+      }
       
       <mat-nav-list>
-        <mat-list-item 
-          *ngFor="let item of accountMenuItems"
-          class="menu-item"
-          [class.active]="isActive(item)"
-          (click)="handleItemClick(item)"
-          [matTooltip]=" isCollapsed() ? item.label : ''"
-          matTooltipPosition="right"
-          (keydown.enter)="handleItemClick(item)"
-          (keydown.space)="handleItemClick(item)">
-          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-          <span matListItemTitle *ngIf="!isCollapsed() || isMobile()">
-            {{ item.label }}
-          </span>
-        </mat-list-item>
+        @for (item of accountMenuItems; track item.label) {
+          <mat-list-item 
+            class="menu-item"
+            [class.active]="isActive(item)"
+            (click)="handleItemClick(item)"
+            [matTooltip]=" isCollapsed() ? item.label : ''"
+            matTooltipPosition="right"
+            (keydown.enter)="handleItemClick(item)"
+            (keydown.space)="handleItemClick(item)">
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            @if (!isCollapsed() || isMobile()) {
+              <span matListItemTitle>{{ item.label }}</span>
+            }
+          </mat-list-item>
+        }
       </mat-nav-list>
     </div>
     
     <!-- Footer -->
-    <div class="sidenav-footer">
-      <div class="footer-content" *ngIf="!isCollapsed() || isMobile()">
-        <p class="version">Versión 2025.04.30</p>
-        <p class="support">
-          Reporte de errores y soporte: 
-          <a href="mailto:secretaria-administrativa&#64;bucaramanga.gov.co">
-            secretaria-administrativa&#64;bucaramanga.gov.co
-          </a>
-        </p>
-      </div>
-      <mat-icon class="footer-icon" *ngIf="isCollapsed() && !isMobile()">info</mat-icon>
+      <div class="sidenav-footer">
+      @if (!isCollapsed() || isMobile()) {
+        <div class="footer-content">
+          <p class="version">Versión 2025.04.30</p>
+          <p class="support">
+            Reporte de errores y soporte: 
+            <a href="mailto:secretaria-administrativa&#64;bucaramanga.gov.co">
+              secretaria-administrativa&#64;bucaramanga.gov.co
+            </a>
+          </p>
+        </div>
+      }
+      @if (isCollapsed() && !isMobile()) {
+        <mat-icon class="footer-icon">info</mat-icon>
+      }
     </div>
   </mat-sidenav>
 

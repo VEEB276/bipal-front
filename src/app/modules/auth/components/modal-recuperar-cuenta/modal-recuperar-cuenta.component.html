@@ -1,0 +1,13 @@
+  <mat-card class="modal-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title> Recuperar contraseña</mat-card-title>
+      <mat-card-content>
+        <p>Ingrese los siguientes datos para crear una nueva contraseña</p>
+      </mat-card-content>
+    </mat-card-header>
+    <mat-form-field appearance="fill">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput placeholder="Ingresa tu correo" [formControl]="emailControl">
+    </mat-form-field>
+   
+  </mat-card>
