@@ -37,18 +37,12 @@
     </button>
   </mat-form-field>
   <!-- ------------------------------------------------------------ -->
-  <!--[routerLink]="isValidEmail ? '/auth/recuperar-contrasena' : null"
-        [state]="{ email: loginForm.get('email')?.value }"
-        [class.disabled]="!isValidEmail"
-        
-        -->
+  <!--[state]="{ email: loginForm.get('email')?.value }"
+  [class.disabled]="!isValidEmail"
+  -->
+  <!-- [routerLink]="isValidEmail ? '/auth/recuperar-contrasena' : null" -->
   <a 
-    (click)="llamarModal()" 
-    [matTooltip]="tooltipMessage"
-    [matTooltipDisabled]="isValidEmail"
-    matTooltipPosition="above"
-    matTooltipShowDelay="500"
-    matTooltipClass="custom-tooltip"
+    [routerLink]=" '/auth/recuperar-contrasena'"
     class="non-space main-color password-reset-link"
   >
     ¿Has olvidado la contraseña?
@@ -57,7 +51,7 @@
   <button
     class="mar-05rem"
     mat-flat-button
-    [disabled]="!loginForm.valid"
+    [disabled]="loginForm.invalid"
     (click)="onSubmit()"
   >
     Iniciar sesión

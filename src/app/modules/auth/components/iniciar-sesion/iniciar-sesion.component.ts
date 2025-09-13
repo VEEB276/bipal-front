@@ -28,7 +28,6 @@ import { ModalRecuperarCuentaComponent } from "../modal-recuperar-cuenta/modal-r
     MatCheckboxModule,
     MatIcon,
     MatTooltipModule,
-    MatCard,
     MatCardModule,
 ],
   templateUrl: "./iniciar-sesion.component.html",
@@ -138,13 +137,14 @@ export class IniciarSesionComponent {
   // ponerParametros(){
   //  this.router.navigate(['/hoja-de-vida'],{ queryParams:{email: this.loginForm.value.email, origin:"login" }});
   // }
-  llamarModal(){
-    this.modal.open({
-      title:"Recuperar contraseña",
-      type:"confirm",
-      component:ModalRecuperarCuentaComponent,
-      primaryText:"Reestablecer contraseña",
-    })
-  }
+  // llamarModal(){
+  //   this.modal.open({
+  //     title:"Recuperar contraseña",
+  //     type:"confirm",
+  //     component:ModalRecuperarCuentaComponent,
+  //     primaryText:"Reestablecer contraseña",
+  //   })
+
+  // }
 }
   

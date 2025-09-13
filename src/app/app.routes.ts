@@ -6,6 +6,8 @@ import { CrearUsuarioComponent } from "./modules/auth/components/crear-usuario/c
 import { FullContainerAuthComponent } from "./modules/auth/components/full-container-auth/full-container-auth.component";
 import { userRedirectAutenticated } from "./core/auth/auth-user.guard";
 import { ResetPaswordComponentComponent } from "./modules/auth/components/reset-password/reset-pasword-component.component";
+import { ModalRecuperarCuentaComponent } from "./modules/auth/components/modal-recuperar-cuenta/modal-recuperar-cuenta.component";
+import { ComprobarCodigoComponent } from "./modules/auth/components/comprobar-codigo/comprobar-codigo.component";
 
 export const routes: Routes = [
   {
@@ -38,7 +40,15 @@ export const routes: Routes = [
       },
       {
         path: "recuperar-contrasena",
+        component: ModalRecuperarCuentaComponent,
+      },
+      {
+        path:"resetear-contraseña",
         component: ResetPaswordComponentComponent,
+      },
+      {
+        path:"comprobar-codigo",
+        component: CrearUsuarioComponent,
       },
     ],
   },

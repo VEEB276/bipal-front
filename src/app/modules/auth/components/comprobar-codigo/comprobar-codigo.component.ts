@@ -13,6 +13,7 @@ import { MatCard } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { AuthService } from "../../../../core/auth/auth.service";
+
 @Component({
   selector: "app-comprobar-codigo",
   imports: [
@@ -32,7 +33,7 @@ export class ComprobarCodigoComponent {
   //private readonly route = inject(ActivatedRoute); // para recibir los queryparams
   //private readonly fb = inject(FormBuilder);
 
-  // Entradas
+  // Entrada dl correo
   email = input<string>("");
 
   @Output() next = new EventEmitter<any>();
@@ -55,8 +56,6 @@ export class ComprobarCodigoComponent {
         new FormControl("", [Validators.required, Validators.pattern(/^\d$/)]),
       ]),
     });
-    // this.digitGroup.controls[0]
-    // var a = this.formCode.controls["digitsGroup"] as FormArray
   }
   //este get accede a la informacion del controler digitGroup del formulario formcode
   get digitGroup():FormArray{
@@ -101,18 +100,6 @@ export class ComprobarCodigoComponent {
       
     }
 
-    
-    //
-    // irARutaReset() {
-    // navegar a la ruta de reset password
-  //  this.router.navigate(['/auth/recuperar-contrasena']);
-  //}
-
-  //irARutaCreate() {
-    // navegar a la ruta para crear clave (si existe)
-  //  this.router.navigate(['/auth/crear-usuario']);
-  //}//
-
   toFormControl(item: any){
     return item as FormControl;
   }
@@ -124,7 +111,7 @@ export class ComprobarCodigoComponent {
    */
   onInputChange(event: any, index: number): void {
     const value = event.target.value;
-    
+     
     // Solo permitir números
     if (value && !/^\d$/.test(value)) {
       event.target.value = '';
@@ -137,7 +124,6 @@ export class ComprobarCodigoComponent {
       this.focusNextInput(index + 1);
     }
   }
-  
   /**
    * Maneja las teclas especiales como Backspace y flechas
    * @param event - Evento del teclado

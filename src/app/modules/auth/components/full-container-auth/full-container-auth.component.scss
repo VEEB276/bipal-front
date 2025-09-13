@@ -93,9 +93,13 @@
 }
 .mat-expansion-panel-header-description{
   flex-basis: min-content;
+   @media(max-width: 855px){
+    font-size: 0.79rem;
+  }
 }
 .panel-description{
   font-size: 0.9rem;
+ 
 }
   
 // ---------------------------------------------/container-------------------------------------------------------------------------------
