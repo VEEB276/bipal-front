@@ -1,0 +1,37 @@
+<mat-card class="modal-card modal-overlay" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title> Recuperar contraseña</mat-card-title>
+    <mat-card-content>
+      <p>Ingrese los siguientes datos para crear una nueva contraseña</p>
+    </mat-card-content>
+  </mat-card-header>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Correo electrónico</mat-label>
+    <mat-icon matPrefix class="prefix-icon">person</mat-icon>
+    <input
+      matInput
+      placeholder="Ingresa tu correo"
+      [formControl]="emailControl"
+    />
+    @if (emailControl.invalid && emailControl.touched) {
+    <mat-error *ngIf="emailControl.hasError('required')">
+      El correo es obligatorio
+    </mat-error>
+    <mat-error *ngIf="emailControl.hasError('email')">
+      Ingresa un correo válido
+    </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-card-actions class="botones-acciones">
+    <button mat-stroked-button (click)="cerrarModal()">Cancelar</button>
+    <button
+      mat-flat-button
+      [disabled]="emailControl.invalid"
+      (click)="recuperarCuenta()"
+    >
+      Restablecer contraseña
+    </button>
+  </mat-card-actions>
+</mat-card>

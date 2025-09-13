@@ -52,10 +52,11 @@
             mat-flat-button
             type="submit"
             (click)="onSubmit()"
-            [disabled]="!registerForm.valid || !clickOnCheckbox"
+            [disabled]="!registerForm.valid || !clickOnCheckbox || isCooldown"
             
             >
-            Enviar código
+            @if (!isCooldown) { Enviar código }
+            @else { Reintenta en {{ cooldownSeconds }}s }
           </button>
         </div>
         <!-- ------------------------------------------------------------- -->

@@ -1,5 +1,6 @@
+<app-container-auth>
 <mat-card class="card-container" appearance="outlined">
-  <h3>Código de verificación</h3>
+  <h3>{{ heading }}</h3>
   <div class="container-code">
     <div class="squares-for-code">
       @for(control_i of digitGroup.controls; track $index){
@@ -29,28 +30,26 @@
               } 
           </div> -->
       </mat-form-field>
-      } 
-     </div>
-      @if(formCode.invalid && formCode.touched){
-      <div>
-        <mat-error>El campo numérico es obligatorio </mat-error>
-      </div>
+      }
+    </div>
+    @if(formCode.invalid && formCode.touched){
+    <div>
+      <mat-error>El campo numérico es obligatorio </mat-error>
+    </div>
     }
     <!-- ------------------------------------------------------------------------------------------------------------------------------- -->
     <br />
   </div>
-  <span>
-    <!--TODO anadir la variable de correo en el texto-->
-    Ingrese el código de verificación que enviamos a su <strong>{{email()}}</strong>  para
-    poder continuar con el registro.
-  </span>
-  <br>
- 
+  <span [innerHTML]="description"></span>
+  <br />
+
   <!-- Botón continuar que navega según el origen -->
-  <button 
-    mat-stroked-button 
+  <button
+    mat-stroked-button
     (click)="verificarCodigo()"
     [disabled]="formCode.invalid"
-    >Continuar
+  >
+    Continuar
   </button>
 </mat-card>
+</app-container-auth>

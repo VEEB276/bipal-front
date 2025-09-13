@@ -1,0 +1,28 @@
+<div class="container-reset">
+  <h2>Restablecer contraseña</h2>
+
+  <app-password-form></app-password-form>
+
+  <button
+    mat-flat-button
+    class="mar-05rem"
+    [disabled]="!codeForm?.valid || isSubmitting"
+    (click)="onSubmit()"
+  >
+    <span *ngIf="!isSubmitting">Cambiar contraseña</span>
+    <span *ngIf="isSubmitting">Cambiando contraseña...</span>
+  </button>
+
+  <mat-divider></mat-divider>
+
+  <div class="info-warning" style="margin-top: 1rem">
+    <p>
+      Importante: si cierra esta página o la recargas sin cambiar su contraseña,
+      la sesión permanecerá activa y podrá ingresar al sistema autenticado
+      automáticamente.
+    </p>
+  </div>
+  <button mat-stroked-button color="primary" (click)="cancelRecovery()">
+    No cambiar clave
+  </button>
+</div>

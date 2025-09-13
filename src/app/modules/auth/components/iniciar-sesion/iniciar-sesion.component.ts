@@ -12,7 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from "../../../../core/auth/auth.service";
 import { MatCard, MatCardModule } from "@angular/material/card";
 import { ConfirmDialogService } from "../../../../core/services";
-import { ModalRecuperarCuentaComponent } from "../modal-recuperar-cuenta/modal-recuperar-cuenta.component";
+import { RecuperarCuentaComponent } from "../recuperar-cuenta/recuperar-cuenta.component";
 
 @Component({
   selector: "app-iniciar-sesion",

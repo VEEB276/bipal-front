@@ -19,6 +19,7 @@ export class AuthService {
   private readonly supabase: SupabaseClient;
   _session: AuthSession | null = null;
   private _sessionLoadingPromise: Promise<AuthSession | null> | null = null;
+  private _recoveryMode = false;
 
   //inyeccion de depdencias
   private readonly router = inject(Router);
@@ -29,11 +30,46 @@ export class AuthService {
     return this._session;
   }
 
+  get isRecoverySession(): boolean {
+    return this._recoveryMode;
+  }
+
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl,
       environment.supabaseKey
     );
+
+    // Escucha cambios de autenticación para detectar flujos especiales (e.g., recovery)
+    this.supabase.auth.onAuthStateChange((event: AuthChangeEvent, session) => {
+      // Actualizar sesión interna
+      this._session = session as AuthSession | null;
+
+      if (event === "PASSWORD_RECOVERY") {
+        // Activar modo recuperación y redirigir al formulario de nueva contraseña
+        this._recoveryMode = true;
+        if (session) {
+          // Persistir para sobrevivir recargas
+          this.supabase.auth.setSession(session);
+        }
+        // Redirigir sólo si no estamos ya en la ruta
+        if (!this.router.url.startsWith("/auth/reset-password")) {
+          this.router.navigate(["/auth/reset-password"]);
+        }
+        return;
+      }
+
+      if (event === "SIGNED_OUT") {
+        this._recoveryMode = false;
+        return;
+      }
+
+      if (event === "SIGNED_IN") {
+        // Si se firmó de forma normal, salir de modo recovery
+        this._recoveryMode = false;
+        return;
+      }
+    });
   }
 
   getSession() {
@@ -87,11 +123,9 @@ export class AuthService {
         // Mostrar mensaje de error si existe
         if (error) {
           this.notificationService.showError(
-            `Error al iniciar sesión: ${
-              error.code === "invalid_credentials"
-                ? "Usuario no existe o contraseña incorrecta."
-                : error.message
-            }`
+            error.code === "invalid_credentials"
+              ? "Usuario no existe o contraseña incorrecta."
+              : error.message
           );
         } else {
           this._session = data.session;
@@ -139,11 +173,20 @@ export class AuthService {
       .then((resp) => {
         const error = resp.error ?? resp.data.error;
         if (error) {
-          this.notificationService.showError(
-            `Error al enviar código: ${error.message}`
-          );
+          const code = (error as any)?.code ?? (error as any)?.status ?? '';
+          if (code === 'over_email_send_rate_limit' || code === 429 || code === 'email_rate_limit_exceeded') {
+            this.notificationService.showError(
+              "Se ha superado el límite de envío de correos. Por favor, inténtelo en 1 minuto."
+            );
+          } else {
+            this.notificationService.showError(
+              `Error al enviar código: ${error.message}`
+            );
+          }
         } else {
-          this.notificationService.showSuccess("Código enviado al correo");
+          this.notificationService.showSuccess(
+            "Código de verificación enviado al correo"
+          );
         }
         return { error };
       })
@@ -182,6 +225,10 @@ export class AuthService {
 
         // Guardar sesión temporal para el siguiente paso
         this._session = data.session;
+        // Persistir sesión para que sobreviva a recargas durante el onboarding
+        if (data.session) {
+          this.supabase.auth.setSession(data.session);
+        }
         // Actualizar metadata para reflejar avance del onboarding
         return this.supabase.auth
           .updateUser({
@@ -193,7 +240,7 @@ export class AuthService {
             if (updateError) {
               // No es crítico, solo avisamos
               this.notificationService.showError(
-                `Código verificado pero fallo metadata: ${updateError.message}`
+                `Código verificado pero fallo: ${updateError.message}`
               );
             } else {
               this.notificationService.showSuccess(
@@ -219,29 +266,25 @@ export class AuthService {
    * @returns Promise con los datos del usuario creado o error
    */
   createUserAccount(
-    numeroDocumento: number,
-    email: string,
     password: string
   ): Promise<{ user: User | null; error: Error | null }> {
     this.loadingService.show();
-    // Debe existir una sesión previa (resultado de verifyEmailCode) para poder
-    // establecer password con updateUser. Si no, retornamos error.
-    if (!this._session) {
-      const err = new Error(
-        "Sesión no encontrada. Verifique el código antes de crear la contraseña."
-      );
-      this.notificationService.showError(err.message);
-      this.loadingService.hide();
-      return Promise.resolve({ user: null, error: err });
-    }
-
-    return this.supabase.auth
-      .updateUser({
-        password,
-        data: {
-          numeroDocumento,
-          onboarding_step: "completed",
-        },
+    // Asegurar que haya sesión activa (puede venir de verifyEmailCode o de storage tras reload)
+    return this.ensureSessionLoaded()
+      .then((session) => {
+        if (!session) {
+          const err = new Error(
+            "Sesión no encontrada. Verifique el código antes de crear la contraseña."
+          );
+          this.notificationService.showError(err.message);
+          throw err;
+        }
+        return this.supabase.auth.updateUser({
+          password,
+          data: {
+            onboarding_step: "completed",
+          },
+        });
       })
       .then(({ data, error }) => {
         if (error) {
@@ -257,6 +300,10 @@ export class AuthService {
           );
         }
         return { user: data?.user ?? null, error: null };
+      })
+      .catch((err) => {
+        // Propaga el error como parte del contrato de salida
+        return { user: null, error: err as Error };
       })
       .finally(() => {
         this.loadingService.hide();
@@ -310,6 +357,118 @@ export class AuthService {
       .finally(() => {
         this.loadingService.hide();
       });
+  }
+
+  /**
+   * Envía un correo para restablecer la contraseña del usuario.
+   * Supabase enviará un enlace al email. Al abrirlo, se crea una sesión de recuperación
+   * y el front debe permitir establecer una nueva contraseña usando `auth.updateUser`.
+   */
+  sendPasswordReset(email: string): Promise<{ error: Error | null }> {
+    this.loadingService.show();
+    // Redirige al flujo de recuperación dentro de la app
+    const redirectTo = `${window.location.origin}/auth/reset-password`;
+    return this.supabase.auth
+      .resetPasswordForEmail(email, { redirectTo })
+      .then(({ error }) => {
+        if (error) {
+          this.notificationService.showError(
+            `No se pudo enviar el correo: ${error.message}`
+          );
+          return { error };
+        }
+        this.notificationService.showSuccess(
+          "Correo para restablecer la contraseña enviado exitosamente."
+        );
+        return { error: null };
+      })
+      .catch((e: unknown) => {
+        const err = e as Error;
+        this.notificationService.showError(
+          `No se pudo enviar el correo por favor contacte al administrador`
+        );
+        return { error: err };
+      })
+      .finally(() => this.loadingService.hide());
+  }
+
+  /**
+   * Establece una nueva contraseña para el usuario autenticado.
+   * Usado en el flujo de recuperación (o sesión normal) para actualizar la clave.
+   */
+  resetPasswordWithNewPassword(
+    password: string
+  ): Promise<{ error: Error | null }> {
+    this.loadingService.show();
+    return this.ensureSessionLoaded()
+      .then((session) => {
+        if (!session) {
+          const err = new Error(
+            "No hay sesión activa para actualizar la contraseña."
+          );
+          this.notificationService.showError(err.message);
+          throw err;
+        }
+        return this.supabase.auth.updateUser({ password });
+      })
+      .then(async ({ error }) => {
+        if (error) {
+          this.notificationService.showError(
+            `No se pudo actualizar la contraseña: ${error.message}`
+          );
+          return { error };
+        }
+        // Salir del modo recovery si estaba activo
+        this._recoveryMode = false;
+        // Cerrar sesión por seguridad y redirigir a /auth
+        try {
+          this.signOut();
+        } catch (e) {
+          console.warn(
+            "Error al cerrar sesión tras cambio de contraseña:",
+            (e as Error).message
+          );
+        }
+        // Mostrar mensaje solicitado y navegar al login
+        this.notificationService.showSuccess(
+          "Se ha cambiado la clave con exito, ya puede ingresar con la nueva contraseña."
+        );
+        return { error: null };
+      })
+      .catch((e: unknown) => {
+        const err = e as Error;
+        return { error: err };
+      })
+      .finally(() => this.loadingService.hide());
+  }
+
+  /**
+   * Verifica un código de recuperación (reset password) manual ingresado por el usuario.
+   * Si es válido, queda una sesión de recovery activa para permitir `updateUser({ password })`.
+   */
+  verifyRecoveryCode(
+    email: string,
+    token: string
+  ): Promise<{ error: Error | null; verified: boolean }> {
+    this.loadingService.show();
+    return this.supabase.auth
+      .verifyOtp({ email, token, type: "recovery" })
+      .then(({ data, error }) => {
+        if (error) {
+          this.notificationService.showError(
+            `Código inválido o expirado: ${error.message}`
+          );
+          return { error, verified: false };
+        }
+        // Guardar y persistir sesión de recovery
+        this._session = data.session;
+        if (data.session) this.supabase.auth.setSession(data.session);
+        this.notificationService.showSuccess(
+          "Código verificado. Continúa para crear una nueva contraseña."
+        );
+        return { error: null, verified: true };
+      })
+      .finally(() => this.loadingService.hide());
   }
 
   /**

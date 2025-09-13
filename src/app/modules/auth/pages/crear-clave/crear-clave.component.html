@@ -1,0 +1,22 @@
+<!-- @if () {} if pendiente para que aparezca cuando el input esta siendo tocado -->
+<app-container-auth>
+  <mat-card class="mat-card-edited" appearance="outlined">
+    <section class="key-form">
+      <h2>Crear contraseña</h2>
+
+      <app-password-form></app-password-form>
+
+      <button
+        mat-flat-button
+        [disabled]="!codeForm?.valid || isSubmitting"
+        (click)="crearUsuario()"
+      >
+        @if (!isSubmitting) {
+        <span>Crear usuario</span>
+        } @if (isSubmitting) {
+        <span>Creando usuario...</span>
+        }
+      </button>
+    </section>
+  </mat-card>
+</app-container-auth>

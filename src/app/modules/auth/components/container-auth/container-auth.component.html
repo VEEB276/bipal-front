@@ -5,7 +5,7 @@
             <br>
             <!-- contenido aqui, ojito con el height porque esta a la
             <br> fuerza y no depende del tamaño de los componentes que van a qui adentro xd -->
-            @if (comprobarCodigoP) {
+            <!-- @if (comprobarCodigoP) {
                 <button mat-button (click)="volver()">
                     <mat-icon>arrow_back</mat-icon>
                     volver</button>
@@ -13,8 +13,9 @@
 
             }
             @else{
-                <app-crear-clave [email]="emailUser()" [numeroDocumento]="documentoUser()"></app-crear-clave>
-            }
+                <app-crear-clave></app-crear-clave>
+            } -->
+            <ng-content></ng-content>
         </div>
     </mat-card>
 </div>
