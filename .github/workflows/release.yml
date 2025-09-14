@@ -1,0 +1,59 @@
+name: Release (Build Prod + Publish Docker)
+
+on:
+  workflow_dispatch:
+    inputs:
+      extra-tags:
+        description: 'Tags adicionales (coma-separados), ej: v1.2.3,prod'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  build-dist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          # cache: 'pnpm' # opcional: activar cache de pnpm si se desea
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Build (production)
+        run: pnpm run build:prod
+
+      - name: Copy index.html to 404.html (SPA routing fix)
+        run: cp dist/bipal-front/browser/index.html dist/bipal-front/browser/404.html
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-bipal
+          path: dist/bipal-front/browser
+          if-no-files-found: error
+          retention-days: 7
+
+  publish-docker:
+    needs: build-dist
+    uses: ./.github/workflows/dockerhub.yml
+    with:
+      image-name: bipal-front
+      download-artifact-name: dist-bipal
+      check-dist: true
+      extra-tags: ${{ inputs.extra-tags }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

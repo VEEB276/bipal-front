@@ -32,8 +32,8 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
-    - name: Build application
-      run: pnpm run build:prod
+    - name: Build application (dev)
+      run: pnpm run build
 
     - name: Copy index.html to 404.html (SPA routing fix)
       run: cp dist/bipal-front/browser/index.html dist/bipal-front/browser/404.html
@@ -53,13 +53,4 @@ jobs:
         path: dist/bipal-front/browser
         if-no-files-found: error
 
-  dockerhub-publish:
-    needs: build-and-deploy-pages
-    uses: ./.github/workflows/dockerhub.yml
-    with:
-      image-name: bipal-front
-      download-artifact-name: dist-bipal
-      check-dist: true
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  # Nota: Publicación a Docker Hub separada en release.yml (manual)
