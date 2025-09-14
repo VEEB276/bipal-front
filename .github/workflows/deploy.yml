@@ -33,7 +33,7 @@ jobs:
       run: pnpm install
 
     - name: Build application (dev)
-      run: pnpm run build
+      run: pnpm run build:develop
 
     - name: Copy index.html to 404.html (SPA routing fix)
       run: cp dist/bipal-front/browser/index.html dist/bipal-front/browser/404.html
