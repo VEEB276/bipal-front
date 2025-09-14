@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/shared/components/autocomplete-select/autocomplete-select.component.scss"],
+  "sourcesContent": [".autocomplete-select-field {\n  width: 100%;\n  .mat-mdc-form-field-flex { align-items: center; }\n  button[mat-icon-button] { line-height: 1; }\n}\n"],
+  "mappings": ";AAAA,CAAA;AACE,SAAA;;AACA,CAFF,0BAEE,CAAA;AAA2B,eAAA;;AAC3B,CAHF,0BAGE,MAAA,CAAA;AAA0B,eAAA;;",
+  "names": []
+}

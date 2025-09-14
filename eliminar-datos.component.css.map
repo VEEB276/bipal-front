@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/modules/hojadevida/pages/eliminar-datos/eliminar-datos.component.scss"],
+  "sourcesContent": [" .delete-card {\n  margin: 24px auto;\n  max-width: 880px;\n  border: 1px solid var(--outline-variant);\n  box-shadow: none;\n }\n\n .actions {\n  padding: 16px 24px 24px;\n  display: flex;\n  justify-content: flex-end;\n }\n\n .btn-delete {\n  text-transform: none;\n  font-weight: 600;\n }\n"],
+  "mappings": ";AAAC,CAAA;AACC,UAAA,KAAA;AACA,aAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,cAAA;;AAGD,CAAA;AACC,WAAA,KAAA,KAAA;AACA,WAAA;AACA,mBAAA;;AAGD,CAAA;AACC,kBAAA;AACA,eAAA;;",
+  "names": []
+}

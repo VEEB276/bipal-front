@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/modules/auth/authentication.component.scss"],
+  "sourcesContent": [":host {\n  h2 {\n    color: #000;\n  }\n}\n// -------------------------------------------------------------------------------------\n.background-img{\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  height: 100%;\n  /* Ruta relativa (sube 3 niveles) para que Angular resuelva y copie el asset, compatible con baseHref en /bipal-front/ */\n  background-image: url('../../../assets/img/background-auth.jpg');\n  background-size:inherit;\n}\nspan{\n  padding: 1rem ;\n}\n//  -----------------------title----------------------------------------------------------\n.title{\n  display: flex;\n  margin:0;\n  padding: 5vh 20vw 0 20vw ;\n  text-align: center;\n  color:#5b5d61;\n  @media (max-width:840px) {\n    font-size: 1.8rem;\n  }\n  @media (max-width:600px) {\n    font-size: 1.4rem;\n  }\n}\n\n"],
+  "mappings": ";AACE,MAAA;AACE,SAAA;;AAIJ,CAAA;AACE,WAAA;AACA,kBAAA;AACA,eAAA;AACA,UAAA;AAEA,oBAAA;AACA,mBAAA;;AAEF;AACE,WAAA;;AAGF,CAAA;AACE,WAAA;AACA,UAAA;AACA,WAAA,IAAA,KAAA,EAAA;AACA,cAAA;AACA,SAAA;;AACA,OAAA,CAAA,SAAA,EAAA;AANF,GAAA;AAOI,eAAA;;;AAEF,OAAA,CAAA,SAAA,EAAA;AATF,GAAA;AAUI,eAAA;;;",
+  "names": []
+}
