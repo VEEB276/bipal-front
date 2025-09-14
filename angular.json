@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "baseHref": "/bipal-front/",
             "outputPath": "dist/bipal-front",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -55,7 +56,6 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/bipal-front/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
