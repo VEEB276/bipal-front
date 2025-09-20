@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
+import { Observable, throwError, from } from "rxjs";
+import { catchError, tap, switchMap, map } from "rxjs/operators";
 import { environment } from "../../../../environments/environment";
 import { PersonaDto, PersonaCreateDto, PersonaUpdateDto, TipoDocumentoDto, GeneroDto, EnfoqueDiferencialDto } from "../models";
 import { AuthService } from "../../../core/auth/auth.service";
@@ -62,10 +62,26 @@ export class InformacionPersonalService {
         this.httpOptions
       )
       .pipe(
-        tap((resp) => {
-          // aqui solo se deberia actualizar el id de la persona en la sesion getSession()
-          this.auth.updatePersonaId(resp.id).then(() => this.auth.getSession());
+        // Usar switchMap para manejar la actualización de metadata como parte del flujo
+        switchMap((resp) => {
+          // Actualizar el estado inmediatamente
           this.store.dispatch(HojavidaActions.loadPersonaSuccess({ persona: resp }));
+          
+          // Convertir la Promise en Observable y manejar errores
+          return from(this.auth.updatePersonaId(resp.id)).pipe(
+            // Si la actualización de metadata es exitosa, refrescar sesión y retornar la persona
+            switchMap(() => from(this.auth.getSession()).pipe(
+              map(() => resp) // Retornar la persona original
+            )),
+            // Si falla la actualización de metadata, lanzar error específico
+            catchError((metadataError) => {
+              console.error('Error al actualizar metadata de persona:', metadataError);
+              return throwError(() => new Error(
+                'La persona fue creada exitosamente, pero hubo un problema al vincularla con su cuenta. ' +
+                'Por favor, contacte al administrador o intente cerrar sesión e ingresar nuevamente.'
+              ));
+            })
+          );
         }),
         catchError(this.handleError)
       );
