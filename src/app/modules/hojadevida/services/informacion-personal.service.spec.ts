@@ -3,10 +3,15 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { InformacionPersonalService } from './informacion-personal.service';
 import { PersonaDto, PersonaCreateDto, PersonaUpdateDto } from '../models';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../core/auth/auth.service';
+import { Store } from '@ngrx/store';
+import { of, throwError } from 'rxjs';
 
 describe('InformacionPersonalService', () => {
   let service: InformacionPersonalService;
   let httpMock: HttpTestingController;
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let storeSpy: jasmine.SpyObj<Store>;
   
   const mockPersona: PersonaDto = {
     id: 1,
@@ -32,12 +37,22 @@ describe('InformacionPersonalService', () => {
   };
 
   beforeEach(() => {
+    const authSpy = jasmine.createSpyObj('AuthService', ['updatePersonaId', 'getSession']);
+    const mockStore = jasmine.createSpyObj('Store', ['dispatch']);
+
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [InformacionPersonalService]
+      providers: [
+        InformacionPersonalService,
+        { provide: AuthService, useValue: authSpy },
+        { provide: Store, useValue: mockStore }
+      ]
     });
+    
     service = TestBed.inject(InformacionPersonalService);
     httpMock = TestBed.inject(HttpTestingController);
+    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+    storeSpy = TestBed.inject(Store) as jasmine.SpyObj<Store>;
   });
 
   afterEach(() => {
@@ -63,17 +78,47 @@ describe('InformacionPersonalService', () => {
   });
 
   describe('crearInformacionPersonal', () => {
-    it('should create new personal information', () => {
+    it('should create new personal information and update metadata successfully', () => {
       const personaCreate: PersonaCreateDto = { ...mockPersona };
       delete (personaCreate as any).id;
 
+      // Mock successful metadata update
+      authServiceSpy.updatePersonaId.and.returnValue(Promise.resolve({ error: null }));
+      authServiceSpy.getSession.and.returnValue(Promise.resolve(null));
+
       service.crearInformacionPersonal(personaCreate).subscribe(persona => {
         expect(persona).toEqual(mockPersona);
+        expect(authServiceSpy.updatePersonaId).toHaveBeenCalledWith(1);
+        expect(storeSpy.dispatch).toHaveBeenCalled();
       });
 
-  const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/create-persona`);
+      const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/create-persona`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(personaCreate);
+      req.flush(mockPersona);
+    });
+
+    it('should fail when metadata update fails', (done) => {
+      const personaCreate: PersonaCreateDto = { ...mockPersona };
+      delete (personaCreate as any).id;
+
+      // Mock failed metadata update
+      const metadataError = new Error('Session not found');
+      authServiceSpy.updatePersonaId.and.returnValue(Promise.reject(metadataError));
+
+      service.crearInformacionPersonal(personaCreate).subscribe({
+        next: () => {
+          done.fail('Should not succeed');
+        },
+        error: (error) => {
+          expect(error.message).toContain('La persona fue creada exitosamente, pero hubo un problema al vincularla');
+          expect(authServiceSpy.updatePersonaId).toHaveBeenCalledWith(1);
+          expect(storeSpy.dispatch).toHaveBeenCalled(); // Store should still be updated
+          done();
+        }
+      });
+
+      const req = httpMock.expectOne(`${environment.hojaDeVidaApiUrl}/persona/create-persona`);
       req.flush(mockPersona);
     });
   });

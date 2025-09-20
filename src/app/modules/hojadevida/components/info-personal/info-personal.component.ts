@@ -258,15 +258,21 @@ export class InfoPersonalComponent implements OnInit {
           this.personaId = persona.id;
           this.isLoading = false;
           this.notificationService.showSuccess(
-            "Información personal guardada exitosamente."
+            "Información personal guardada exitosamente y vinculada a su cuenta."
           );
         },
         error: (error) => {
           console.error("Error al crear persona:", error);
           this.isLoading = false;
-          this.notificationService.showError(
-            error.message || "Error al guardar la información personal."
-          );
+          
+          // Verificar si el error es específico de metadata
+          if (error.message && error.message.includes('persona fue creada exitosamente')) {
+            this.notificationService.showWarning(error.message);
+          } else {
+            this.notificationService.showError(
+              error.message || "Error al guardar la información personal."
+            );
+          }
         },
       });
   }
