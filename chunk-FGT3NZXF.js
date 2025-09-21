@@ -16448,6 +16448,10 @@ var AuthService = class _AuthService {
         this._session = session;
         return;
       }
+      if (event === "TOKEN_REFRESHED") {
+        this._session = session;
+        return;
+      }
     });
   }
   getSession() {
@@ -16483,15 +16487,38 @@ var AuthService = class _AuthService {
    * para reflejar cambios de metadata hechos por el backend (por ejemplo, idPersona).
    */
   reloadUser() {
-    return this.profile().then(({ data, error }) => {
+    return this.refreshSession().then(() => {
+      return this.profile().then(({ data, error }) => {
+        if (error) {
+          console.error("No se pudo recargar el usuario:", error.message);
+          return null;
+        }
+        if (this._session && data.user) {
+          this._session.user = data.user;
+        }
+        return data.user ?? null;
+      });
+    });
+  }
+  /**
+   * Fuerza la renovación del access_token usando el refresh_token actual.
+   * Útil cuando el backend actualiza metadata que el backend leerá desde el JWT.
+   */
+  refreshSession() {
+    return this.supabase.auth.refreshSession().then(({ data, error }) => {
       if (error) {
-        console.error("No se pudo recargar el usuario:", error.message);
-        return null;
+        console.warn("No se pudo refrescar la sesi\xF3n:", error.message);
+        return this._session;
       }
-      if (this._session && data.user) {
-        this._session.user = data.user;
+      if (data?.session) {
+        this._session = data.session;
+        this.supabase.auth.setSession(data.session);
+        const user = data?.user;
+        if (user && this._session) {
+          this._session.user = user;
+        }
       }
-      return data.user ?? null;
+      return this._session;
     });
   }
   signIn(user, password) {
@@ -16510,7 +16537,7 @@ var AuthService = class _AuthService {
       }
       return { user: data?.user, error };
     })).catch(() => {
-      this.notificationService.showError("Ha ocurrio un problema, porfavor revise su conexion a internet.");
+      this.notificationService.showError("Usuario no existe o porfavor revise su conexion a internet.");
       return null;
     }).finally(() => {
       this.loadingService.hide();
@@ -19041,4 +19068,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-VNV4OY5J.js.map
+//# sourceMappingURL=chunk-FGT3NZXF.js.map

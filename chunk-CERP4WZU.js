@@ -13,7 +13,7 @@ import {
   Store,
   environment,
   selectIdPersona
-} from "./chunk-VNV4OY5J.js";
+} from "./chunk-FGT3NZXF.js";
 import "./chunk-EGGHZP6O.js";
 import {
   CommonModule,
@@ -119,4 +119,4 @@ var EliminarDatosComponent = class _EliminarDatosComponent {
 export {
   EliminarDatosComponent
 };
-//# sourceMappingURL=chunk-LHH3KCFV.js.map
+//# sourceMappingURL=chunk-CERP4WZU.js.map

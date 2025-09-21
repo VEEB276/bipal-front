@@ -29,7 +29,7 @@ import {
   NativeDateAdapter,
   TopGetLoadingBarComponent,
   _MatInternalFormField
-} from "./chunk-RGSNZBFZ.js";
+} from "./chunk-K7O4JYQB.js";
 import {
   CheckboxRequiredValidator,
   DefaultValueAccessor,
@@ -88,7 +88,7 @@ import {
   environment,
   provideStore,
   toSignal
-} from "./chunk-VNV4OY5J.js";
+} from "./chunk-FGT3NZXF.js";
 import "./chunk-EGGHZP6O.js";
 import {
   A11yModule,
@@ -7179,7 +7179,7 @@ var routes = [
     path: "hoja-de-vida",
     component: LayoutComponent,
     canActivateChild: [hojaDeVidaCanActivateChild],
-    loadChildren: () => import("./chunk-Q2FR4QRL.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
+    loadChildren: () => import("./chunk-KO5CQOBY.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
   }
 ];
 

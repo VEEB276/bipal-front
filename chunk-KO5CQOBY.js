@@ -5,7 +5,7 @@ import {
   hojavidaReducer,
   personaPrefetchGuard,
   provideState
-} from "./chunk-VNV4OY5J.js";
+} from "./chunk-FGT3NZXF.js";
 import "./chunk-EGGHZP6O.js";
 import {
   inject
@@ -34,7 +34,7 @@ var HOJA_DE_VIDA_ROUTES = [
       {
         path: "personal",
         canActivate: [personaPrefetchGuard],
-        loadComponent: () => import("./chunk-WXWSHAQT.js").then((c) => c.SectionContainerHvComponent)
+        loadComponent: () => import("./chunk-FXNPNPL5.js").then((c) => c.SectionContainerHvComponent)
       },
       {
         path: "terminos-condiciones",
@@ -42,7 +42,7 @@ var HOJA_DE_VIDA_ROUTES = [
       },
       {
         path: "eliminar-datos",
-        loadComponent: () => import("./chunk-LHH3KCFV.js").then((c) => c.EliminarDatosComponent)
+        loadComponent: () => import("./chunk-CERP4WZU.js").then((c) => c.EliminarDatosComponent)
       }
     ]
   },
@@ -56,4 +56,4 @@ var HOJA_DE_VIDA_ROUTES = [
 export {
   HOJA_DE_VIDA_ROUTES
 };
-//# sourceMappingURL=chunk-Q2FR4QRL.js.map
+//# sourceMappingURL=chunk-KO5CQOBY.js.map

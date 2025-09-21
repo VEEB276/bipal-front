@@ -12,7 +12,7 @@ import {
   LoadingService,
   PortalModule,
   TemplatePortal
-} from "./chunk-VNV4OY5J.js";
+} from "./chunk-FGT3NZXF.js";
 import {
   ANIMATION_MODULE_TYPE,
   AsyncPipe,
@@ -5600,4 +5600,4 @@ export {
   HttpGetLoadingService,
   TopGetLoadingBarComponent
 };
-//# sourceMappingURL=chunk-RGSNZBFZ.js.map
+//# sourceMappingURL=chunk-K7O4JYQB.js.map
