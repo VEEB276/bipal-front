@@ -4,7 +4,7 @@ import {
   MatListItemTitle,
   MatListModule,
   MatNavList
-} from "./chunk-Y24WFXUV.js";
+} from "./chunk-AULEXFFY.js";
 import {
   DateAdapter,
   HttpGetLoadingService,
@@ -29,7 +29,7 @@ import {
   NativeDateAdapter,
   TopGetLoadingBarComponent,
   _MatInternalFormField
-} from "./chunk-TCL6Q7SY.js";
+} from "./chunk-RGSNZBFZ.js";
 import {
   CheckboxRequiredValidator,
   DefaultValueAccessor,
@@ -49,7 +49,7 @@ import {
   ReactiveFormsModule,
   Validators,
   ɵNgNoValidate
-} from "./chunk-DKQR6YDV.js";
+} from "./chunk-TRD36DVC.js";
 import {
   MatCard,
   MatCardActions,
@@ -57,7 +57,7 @@ import {
   MatCardHeader,
   MatCardModule,
   MatCardTitle
-} from "./chunk-GZ4RBFNB.js";
+} from "./chunk-BYQETCUD.js";
 import {
   ActionsSubject,
   AuthService,
@@ -68,6 +68,7 @@ import {
   FEATURE_STATE_PROVIDER,
   INIT,
   INITIAL_STATE,
+  InformacionPersonalService,
   LoadingService,
   NotificationService,
   Overlay,
@@ -87,7 +88,7 @@ import {
   environment,
   provideStore,
   toSignal
-} from "./chunk-JOCNUMAS.js";
+} from "./chunk-VNV4OY5J.js";
 import "./chunk-EGGHZP6O.js";
 import {
   A11yModule,
@@ -166,6 +167,7 @@ import {
   exhaustMap,
   filter,
   finalize,
+  firstValueFrom,
   forkJoin,
   forwardRef,
   fromEvent,
@@ -251,7 +253,7 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵviewQuery
-} from "./chunk-52XVDXSC.js";
+} from "./chunk-IXVPDR65.js";
 import {
   __async,
   __spreadProps,
@@ -6690,12 +6692,12 @@ var ContainerAuthComponent = class _ContainerAuthComponent {
       \u0275\u0275projection(5);
       \u0275\u0275elementEnd()()();
     }
-  }, dependencies: [MatCard, MatButtonModule], styles: ["\n\n.mat-card-container[_ngcontent-%COMP%] {\n  margin-top: 2rem;\n  padding: 2rem;\n  width: 60vw;\n  background-color: #eeeeee;\n  border-radius: 1.7rem;\n}\n.img-perfiles[_ngcontent-%COMP%] {\n  border-radius: 1.7rem 1.7rem 0rem;\n  width: 100%;\n}\n/*# sourceMappingURL=container-auth.component.css.map */"] });
+  }, dependencies: [MatCard, MatButtonModule], styles: ["\n\n.mat-card-container[_ngcontent-%COMP%] {\n  margin-top: 2rem;\n  padding: 2rem;\n  background-color: #eeeeee;\n  border-radius: 1.7rem;\n  max-width: 860px;\n}\n.img-perfiles[_ngcontent-%COMP%] {\n  border-radius: 1.7rem 1.7rem 0rem;\n  width: 100%;\n}\n/*# sourceMappingURL=container-auth.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ContainerAuthComponent, [{
     type: Component,
-    args: [{ selector: "app-container-auth", imports: [MatCard, MatButtonModule], template: '<div>\n    <mat-card class="mat-card-container">\n        <img src="assets/img/banco_info_perfiles.svg" class="img-perfiles" />\n        <div>\n            <br>\n            <!-- contenido aqui, ojito con el height porque esta a la\n            <br> fuerza y no depende del tama\xF1o de los componentes que van a qui adentro xd -->\n            <!-- @if (comprobarCodigoP) {\n                <button mat-button (click)="volver()">\n                    <mat-icon>arrow_back</mat-icon>\n                    volver</button>\n                <app-comprobar-codigo [email]="emailUser()"  (next)="verificarCodigoValido($event)"> </app-comprobar-codigo>\n\n            }\n            @else{\n                <app-crear-clave></app-crear-clave>\n            } -->\n            <ng-content></ng-content>\n        </div>\n    </mat-card>\n</div>\n', styles: ["/* src/app/modules/auth/components/container-auth/container-auth.component.scss */\n.mat-card-container {\n  margin-top: 2rem;\n  padding: 2rem;\n  width: 60vw;\n  background-color: #eeeeee;\n  border-radius: 1.7rem;\n}\n.img-perfiles {\n  border-radius: 1.7rem 1.7rem 0rem;\n  width: 100%;\n}\n/*# sourceMappingURL=container-auth.component.css.map */\n"] }]
+    args: [{ selector: "app-container-auth", imports: [MatCard, MatButtonModule], template: '<div>\n    <mat-card class="mat-card-container">\n        <img src="assets/img/banco_info_perfiles.svg" class="img-perfiles" />\n        <div>\n            <br>\n            <!-- contenido aqui, ojito con el height porque esta a la\n            <br> fuerza y no depende del tama\xF1o de los componentes que van a qui adentro xd -->\n            <!-- @if (comprobarCodigoP) {\n                <button mat-button (click)="volver()">\n                    <mat-icon>arrow_back</mat-icon>\n                    volver</button>\n                <app-comprobar-codigo [email]="emailUser()"  (next)="verificarCodigoValido($event)"> </app-comprobar-codigo>\n\n            }\n            @else{\n                <app-crear-clave></app-crear-clave>\n            } -->\n            <ng-content></ng-content>\n        </div>\n    </mat-card>\n</div>\n', styles: ["/* src/app/modules/auth/components/container-auth/container-auth.component.scss */\n.mat-card-container {\n  margin-top: 2rem;\n  padding: 2rem;\n  background-color: #eeeeee;\n  border-radius: 1.7rem;\n  max-width: 860px;\n}\n.img-perfiles {\n  border-radius: 1.7rem 1.7rem 0rem;\n  width: 100%;\n}\n/*# sourceMappingURL=container-auth.component.css.map */\n"] }]
   }], null, null);
 })();
 (() => {
@@ -6894,7 +6896,7 @@ var ComprobarCodigoComponent = class _ComprobarCodigoComponent {
   static \u0275fac = function ComprobarCodigoComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _ComprobarCodigoComponent)(\u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(AuthService));
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ComprobarCodigoComponent, selectors: [["app-comprobar-codigo"]], inputs: { email: [1, "email"], origin: "origin" }, decls: 14, vars: 4, consts: [["appearance", "outlined", 1, "card-container"], [1, "container-code"], [1, "squares-for-code"], ["appearance", "outline", 2, "width", "50px"], [3, "innerHTML"], ["mat-stroked-button", "", 3, "click", "disabled"], ["matInput", "", "maxlength", "1", 2, "text-align", "center", 3, "input", "keydown", "paste", "formControl", "id"]], template: function ComprobarCodigoComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ComprobarCodigoComponent, selectors: [["app-comprobar-codigo"]], inputs: { email: [1, "email"], origin: "origin" }, decls: 14, vars: 4, consts: [["appearance", "outlined", 1, "card-container"], [1, "container-code"], [1, "squares-for-code"], ["appearance", "outline", 1, "squares"], [3, "innerHTML"], ["mat-stroked-button", "", 3, "click", "disabled"], ["matInput", "", "maxlength", "1", 2, "text-align", "center", 3, "input", "keydown", "paste", "formControl", "id"]], template: function ComprobarCodigoComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "app-container-auth")(1, "mat-card", 0)(2, "h3");
       \u0275\u0275text(3);
@@ -6940,7 +6942,7 @@ var ComprobarCodigoComponent = class _ComprobarCodigoComponent {
     MaxLengthValidator,
     FormControlDirective,
     ContainerAuthComponent
-  ], styles: ["\n\n[_nghost-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n}\n.card-container[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  padding: 2rem;\n}\n.squares-for-code[_ngcontent-%COMP%] {\n  display: flex;\n  gap: 12px;\n}\n.container-code[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n/*# sourceMappingURL=comprobar-codigo.component.css.map */"] });
+  ], styles: ["\n\n[_nghost-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n}\n.card-container[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  padding: 2rem;\n}\n.squares-for-code[_ngcontent-%COMP%] {\n  display: flex;\n  gap: 8px;\n}\n.squares-for-code[_ngcontent-%COMP%]   .squares[_ngcontent-%COMP%] {\n  width: 2.5rem;\n}\n.squares-for-code[_ngcontent-%COMP%]   .squares[_ngcontent-%COMP%]     .mat-mdc-text-field-wrapper {\n  height: 2.5rem;\n}\n.container-code[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n/*# sourceMappingURL=comprobar-codigo.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ComprobarCodigoComponent, [{
@@ -6958,7 +6960,7 @@ var ComprobarCodigoComponent = class _ComprobarCodigoComponent {
   <div class="container-code">
     <div class="squares-for-code">
       @for(control_i of digitGroup.controls; track $index){
-      <mat-form-field appearance="outline" style="width: 50px">
+      <mat-form-field appearance="outline" class="squares">
         <input
           matInput
           maxlength="1"
@@ -7007,7 +7009,7 @@ var ComprobarCodigoComponent = class _ComprobarCodigoComponent {
   </button>
 </mat-card>
 </app-container-auth>
-`, styles: ["/* src/app/modules/auth/components/comprobar-codigo/comprobar-codigo.component.scss */\n:host {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n}\n.card-container {\n  display: flex;\n  align-items: center;\n  padding: 2rem;\n}\n.squares-for-code {\n  display: flex;\n  gap: 12px;\n}\n.container-code {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n/*# sourceMappingURL=comprobar-codigo.component.css.map */\n"] }]
+`, styles: ["/* src/app/modules/auth/components/comprobar-codigo/comprobar-codigo.component.scss */\n:host {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n}\n.card-container {\n  display: flex;\n  align-items: center;\n  padding: 2rem;\n}\n.squares-for-code {\n  display: flex;\n  gap: 8px;\n}\n.squares-for-code .squares {\n  width: 2.5rem;\n}\n.squares-for-code .squares ::ng-deep .mat-mdc-text-field-wrapper {\n  height: 2.5rem;\n}\n.container-code {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n/*# sourceMappingURL=comprobar-codigo.component.css.map */\n"] }]
   }], () => [{ type: FormBuilder }, { type: ActivatedRoute }, { type: Router }, { type: AuthService }], { origin: [{
     type: Input
   }] });
@@ -7034,6 +7036,7 @@ function CrearClaveComponent_Conditional_8_Template(rf, ctx) {
 var CrearClaveComponent = class _CrearClaveComponent {
   authService = inject(AuthService);
   router = inject(Router);
+  infoService = inject(InformacionPersonalService);
   isSubmitting = false;
   passwordFormComponent;
   get codeForm() {
@@ -7042,10 +7045,21 @@ var CrearClaveComponent = class _CrearClaveComponent {
   crearUsuario() {
     if (this.codeForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
-      this.authService.createUserAccount(this.codeForm.value.password).then(() => {
+      this.authService.createUserAccount(this.codeForm.value.password).then(() => __async(this, null, function* () {
         console.log("Usuario creado exitosamente");
+        const numeroDocumento = this.authService.session?.user?.user_metadata?.numeroDocumento;
+        if (numeroDocumento) {
+          try {
+            const migrado = yield firstValueFrom(this.infoService.migrarUsuarioPorNumeroDocumento(numeroDocumento));
+            if (migrado) {
+              yield this.authService.reloadUser();
+            }
+          } catch (e) {
+            console.warn("Migraci\xF3n no completada:", e.message);
+          }
+        }
         this.router.navigate(["/hoja-de-vida"], { replaceUrl: true });
-      }).catch((error) => {
+      })).catch((error) => {
         console.error("Error al crear el usuario:", error);
       }).finally(() => {
         this.isSubmitting = false;
@@ -7095,7 +7109,7 @@ var CrearClaveComponent = class _CrearClaveComponent {
     ReactiveFormsModule,
     ContainerAuthComponent,
     PasswordFormComponent
-  ], styles: ["\n\n[_nghost-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.key-form[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  height: 100%;\n}\n.wid-100[_ngcontent-%COMP%] {\n  width: 70%;\n}\n.mat-card-edited[_ngcontent-%COMP%] {\n  padding: 0.5rem;\n  box-shadow: none;\n  width: 100%;\n  max-width: 940px;\n  background-color: rgba(238, 238, 238, 0);\n}\n.password-requirements[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 300px;\n  margin: 1rem auto;\n  padding: 0 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.password-requirements[_ngcontent-%COMP%]   .requirements-title[_ngcontent-%COMP%] {\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.5rem;\n  text-align: center;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%] {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  width: fit-content;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.3rem;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]   mat-icon[_ngcontent-%COMP%] {\n  font-size: 1rem;\n  height: 1rem;\n  width: 1rem;\n  margin-right: 0.5rem;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li.valid[_ngcontent-%COMP%] {\n  color: #2d5f00;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li.valid[_ngcontent-%COMP%]   mat-icon[_ngcontent-%COMP%] {\n  color: #2d5f00;\n}\n@media (max-width: 768px) {\n  .password-requirements[_ngcontent-%COMP%] {\n    padding: 0 0.5rem;\n  }\n  .password-requirements[_ngcontent-%COMP%]   .requirements-title[_ngcontent-%COMP%] {\n    font-size: 0.8rem;\n  }\n  .password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n    font-size: 0.8rem;\n  }\n  .password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]   mat-icon[_ngcontent-%COMP%] {\n    font-size: 0.9rem;\n    height: 0.9rem;\n    width: 0.9rem;\n  }\n}\n/*# sourceMappingURL=crear-clave.component.css.map */"] });
+  ], styles: ["\n\n[_nghost-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.key-form[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  height: 100%;\n}\n.wid-100[_ngcontent-%COMP%] {\n  width: 70%;\n}\n.mat-card-edited[_ngcontent-%COMP%] {\n  padding: 0.5rem;\n  box-shadow: none;\n  width: 100%;\n  background-color: rgba(238, 238, 238, 0);\n}\n.password-requirements[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 300px;\n  margin: 1rem auto;\n  padding: 0 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.password-requirements[_ngcontent-%COMP%]   .requirements-title[_ngcontent-%COMP%] {\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.5rem;\n  text-align: center;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%] {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  width: fit-content;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.3rem;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]   mat-icon[_ngcontent-%COMP%] {\n  font-size: 1rem;\n  height: 1rem;\n  width: 1rem;\n  margin-right: 0.5rem;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li.valid[_ngcontent-%COMP%] {\n  color: #2d5f00;\n}\n.password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li.valid[_ngcontent-%COMP%]   mat-icon[_ngcontent-%COMP%] {\n  color: #2d5f00;\n}\n@media (max-width: 768px) {\n  .password-requirements[_ngcontent-%COMP%] {\n    padding: 0 0.5rem;\n  }\n  .password-requirements[_ngcontent-%COMP%]   .requirements-title[_ngcontent-%COMP%] {\n    font-size: 0.8rem;\n  }\n  .password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n    font-size: 0.8rem;\n  }\n  .password-requirements[_ngcontent-%COMP%]   ul[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]   mat-icon[_ngcontent-%COMP%] {\n    font-size: 0.9rem;\n    height: 0.9rem;\n    width: 0.9rem;\n  }\n}\n/*# sourceMappingURL=crear-clave.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CrearClaveComponent, [{
@@ -7105,20 +7119,19 @@ var CrearClaveComponent = class _CrearClaveComponent {
       MatIconModule,
       MatButtonModule,
       MatFormFieldModule,
-      MatLabel,
       RouterModule,
       MatCard,
       ReactiveFormsModule,
       ContainerAuthComponent,
       PasswordFormComponent
-    ], template: '<!-- @if () {} if pendiente para que aparezca cuando el input esta siendo tocado -->\n<app-container-auth>\n  <mat-card class="mat-card-edited" appearance="outlined">\n    <section class="key-form">\n      <h2>Crear contrase\xF1a</h2>\n\n      <app-password-form></app-password-form>\n\n      <button\n        mat-flat-button\n        [disabled]="!codeForm?.valid || isSubmitting"\n        (click)="crearUsuario()"\n      >\n        @if (!isSubmitting) {\n        <span>Crear usuario</span>\n        } @if (isSubmitting) {\n        <span>Creando usuario...</span>\n        }\n      </button>\n    </section>\n  </mat-card>\n</app-container-auth>\n', styles: ["/* src/app/modules/auth/pages/crear-clave/crear-clave.component.scss */\n:host {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.key-form {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  height: 100%;\n}\n.wid-100 {\n  width: 70%;\n}\n.mat-card-edited {\n  padding: 0.5rem;\n  box-shadow: none;\n  width: 100%;\n  max-width: 940px;\n  background-color: rgba(238, 238, 238, 0);\n}\n.password-requirements {\n  width: 100%;\n  max-width: 300px;\n  margin: 1rem auto;\n  padding: 0 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.password-requirements .requirements-title {\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.5rem;\n  text-align: center;\n}\n.password-requirements ul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  width: fit-content;\n}\n.password-requirements ul li {\n  display: flex;\n  align-items: center;\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.3rem;\n}\n.password-requirements ul li mat-icon {\n  font-size: 1rem;\n  height: 1rem;\n  width: 1rem;\n  margin-right: 0.5rem;\n}\n.password-requirements ul li.valid {\n  color: #2d5f00;\n}\n.password-requirements ul li.valid mat-icon {\n  color: #2d5f00;\n}\n@media (max-width: 768px) {\n  .password-requirements {\n    padding: 0 0.5rem;\n  }\n  .password-requirements .requirements-title {\n    font-size: 0.8rem;\n  }\n  .password-requirements ul li {\n    font-size: 0.8rem;\n  }\n  .password-requirements ul li mat-icon {\n    font-size: 0.9rem;\n    height: 0.9rem;\n    width: 0.9rem;\n  }\n}\n/*# sourceMappingURL=crear-clave.component.css.map */\n"] }]
+    ], template: '<!-- @if () {} if pendiente para que aparezca cuando el input esta siendo tocado -->\n<app-container-auth>\n  <mat-card class="mat-card-edited" appearance="outlined">\n    <section class="key-form">\n      <h2>Crear contrase\xF1a</h2>\n\n      <app-password-form></app-password-form>\n\n      <button\n        mat-flat-button\n        [disabled]="!codeForm?.valid || isSubmitting"\n        (click)="crearUsuario()"\n      >\n        @if (!isSubmitting) {\n        <span>Crear usuario</span>\n        } @if (isSubmitting) {\n        <span>Creando usuario...</span>\n        }\n      </button>\n    </section>\n  </mat-card>\n</app-container-auth>\n', styles: ["/* src/app/modules/auth/pages/crear-clave/crear-clave.component.scss */\n:host {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.key-form {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  height: 100%;\n}\n.wid-100 {\n  width: 70%;\n}\n.mat-card-edited {\n  padding: 0.5rem;\n  box-shadow: none;\n  width: 100%;\n  background-color: rgba(238, 238, 238, 0);\n}\n.password-requirements {\n  width: 100%;\n  max-width: 300px;\n  margin: 1rem auto;\n  padding: 0 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.password-requirements .requirements-title {\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.5rem;\n  text-align: center;\n}\n.password-requirements ul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  width: fit-content;\n}\n.password-requirements ul li {\n  display: flex;\n  align-items: center;\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.3rem;\n}\n.password-requirements ul li mat-icon {\n  font-size: 1rem;\n  height: 1rem;\n  width: 1rem;\n  margin-right: 0.5rem;\n}\n.password-requirements ul li.valid {\n  color: #2d5f00;\n}\n.password-requirements ul li.valid mat-icon {\n  color: #2d5f00;\n}\n@media (max-width: 768px) {\n  .password-requirements {\n    padding: 0 0.5rem;\n  }\n  .password-requirements .requirements-title {\n    font-size: 0.8rem;\n  }\n  .password-requirements ul li {\n    font-size: 0.8rem;\n  }\n  .password-requirements ul li mat-icon {\n    font-size: 0.9rem;\n    height: 0.9rem;\n    width: 0.9rem;\n  }\n}\n/*# sourceMappingURL=crear-clave.component.css.map */\n"] }]
   }], null, { passwordFormComponent: [{
     type: ViewChild,
     args: [PasswordFormComponent]
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CrearClaveComponent, { className: "CrearClaveComponent", filePath: "src/app/modules/auth/pages/crear-clave/crear-clave.component.ts", lineNumber: 37 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CrearClaveComponent, { className: "CrearClaveComponent", filePath: "src/app/modules/auth/pages/crear-clave/crear-clave.component.ts", lineNumber: 38 });
 })();
 
 // src/app/app.routes.ts
@@ -7133,7 +7146,7 @@ var routes = [
     data: {
       backButton: true
     },
-    loadComponent: () => import("./chunk-2FCTFI4L.js").then((m) => m.TerminosCondicionesComponent)
+    loadComponent: () => import("./chunk-CYJYMGV7.js").then((m) => m.TerminosCondicionesComponent)
   },
   {
     path: "auth",
@@ -7166,7 +7179,7 @@ var routes = [
     path: "hoja-de-vida",
     component: LayoutComponent,
     canActivateChild: [hojaDeVidaCanActivateChild],
-    loadChildren: () => import("./chunk-PC2JELJK.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
+    loadChildren: () => import("./chunk-Q2FR4QRL.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
   }
 ];
 

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["src/app/modules/hojadevida/section-container-hv/section-container-hv.component.scss"],
-  "sourcesContent": [":host {\n  display: block;\n}\n\n.image-banner {\n  width: 100%;\n  height: auto;\n  margin-bottom: -50px;\n}\n\n// .mat-expansion-panel {\n//   .title-section{\n//     transition: all 0,5s ease-in-out;\n//     //position: inherit;\n//     left: 0;\n//     top: 0;\n//   }\n// }\n// .mat-expanded {\n//   .title-section {\n//     position: absolute;\n//     left: 90px;\n//     top: 90px;\n//   }   \n// }\n\n.title-section {\n  display: flex;\n  flex-direction: row;\n  gap: 16px;\n}"],
-  "mappings": ";AAAA;AACE,WAAA;;AAGF,CAAA;AACE,SAAA;AACA,UAAA;AACA,iBAAA;;AAmBF,CAAA;AACE,WAAA;AACA,kBAAA;AACA,OAAA;;",
+  "sourcesContent": [":host {\n  display: block;\n}\n\n.image-banner {\n  width: 100%;\n  height: auto;\n  margin-bottom: -50px;\n}\n\n@media (max-width: 768px) {\n  .image-banner {\n    margin-bottom: 0;\n  }\n  \n}\n\n// .mat-expansion-panel {\n//   .title-section{\n//     transition: all 0,5s ease-in-out;\n//     //position: inherit;\n//     left: 0;\n//     top: 0;\n//   }\n// }\n// .mat-expanded {\n//   .title-section {\n//     position: absolute;\n//     left: 90px;\n//     top: 90px;\n//   }   \n// }\n\n.title-section {\n  display: flex;\n  flex-direction: row;\n  gap: 16px;\n}"],
+  "mappings": ";AAAA;AACE,WAAA;;AAGF,CAAA;AACE,SAAA;AACA,UAAA;AACA,iBAAA;;AAGF,OAAA,CAAA,SAAA,EAAA;AACE,GAPF;AAQI,mBAAA;;;AAqBJ,CAAA;AACE,WAAA;AACA,kBAAA;AACA,OAAA;;",
   "names": []
 }

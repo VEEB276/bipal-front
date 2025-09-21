@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["src/app/modules/auth/components/container-auth/container-auth.component.scss"],
-  "sourcesContent": [".mat-card-container{\n    margin-top: 2rem;\n    padding: 2rem;\n    width: 60vw;\n    background-color: rgba($color: #eeeeee, $alpha: 8.0);\n    border-radius: 1.7rem;\n}\n.img-perfiles{\n    border-radius: 1.7rem 1.7rem 0rem ;\n    width: 100%;\n}"],
-  "mappings": ";AAAA,CAAA;AACI,cAAA;AACA,WAAA;AACA,SAAA;AACA,oBAAA;AACA,iBAAA;;AAEJ,CAAA;AACI,iBAAA,OAAA,OAAA;AACA,SAAA;;",
+  "sourcesContent": [".mat-card-container{\n    margin-top: 2rem;\n    padding: 2rem;\n    background-color: rgba($color: #eeeeee, $alpha: 8.0);\n    border-radius: 1.7rem;\n    max-width: 860px;\n}\n.img-perfiles{\n    border-radius: 1.7rem 1.7rem 0rem ;\n    width: 100%;\n}"],
+  "mappings": ";AAAA,CAAA;AACI,cAAA;AACA,WAAA;AACA,oBAAA;AACA,iBAAA;AACA,aAAA;;AAEJ,CAAA;AACI,iBAAA,OAAA,OAAA;AACA,SAAA;;",
   "names": []
 }

@@ -18,7 +18,7 @@ import {
   ɵɵelementStart,
   ɵɵprojection,
   ɵɵprojectionDef
-} from "./chunk-52XVDXSC.js";
+} from "./chunk-IXVPDR65.js";
 
 // node_modules/.pnpm/@angular+material@19.2.18_@angular+cdk@19.2.19_@angular+common@19.2.14_@angular+core@19_102b8bfb5e382f9d0615b5538deb6474/node_modules/@angular/material/fesm2022/card.mjs
 var _c0 = ["*"];
@@ -450,4 +450,4 @@ export {
   MatCardHeader,
   MatCardModule
 };
-//# sourceMappingURL=chunk-GZ4RBFNB.js.map
+//# sourceMappingURL=chunk-BYQETCUD.js.map

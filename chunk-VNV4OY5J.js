@@ -26,6 +26,9 @@ import {
   EventEmitter,
   FocusMonitor,
   FocusTrapFactory,
+  HttpClient,
+  HttpHeaders,
+  HttpParams,
   Inject,
   Injectable,
   InjectionToken,
@@ -77,6 +80,7 @@ import {
   assertNotInReactiveContext,
   auditTime,
   booleanAttribute,
+  catchError,
   coerceArray,
   coerceCssPixelValue,
   coerceElement,
@@ -88,6 +92,7 @@ import {
   effect,
   filter,
   forwardRef,
+  from,
   getRtlScrollAxisType,
   hasModifierKey,
   inject,
@@ -113,6 +118,8 @@ import {
   take,
   takeUntil,
   takeWhile,
+  tap,
+  throwError,
   untracked,
   withLatestFrom,
   ɵsetClassDebugInfo,
@@ -156,7 +163,7 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵviewQuery
-} from "./chunk-52XVDXSC.js";
+} from "./chunk-IXVPDR65.js";
 import {
   __async,
   __commonJS,
@@ -493,14 +500,14 @@ var require_PostgrestTransformBuilder = __commonJS({
        * @param options.foreignTable - Deprecated, use `options.referencedTable`
        * instead
        */
-      range(from, to, {
+      range(from2, to, {
         foreignTable,
         referencedTable = foreignTable
       } = {}) {
         const keyOffset = typeof referencedTable === "undefined" ? "offset" : `${referencedTable}.offset`;
         const keyLimit = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
-        this.url.searchParams.set(keyOffset, `${from}`);
-        this.url.searchParams.set(keyLimit, `${to - from + 1}`);
+        this.url.searchParams.set(keyOffset, `${from2}`);
+        this.url.searchParams.set(keyLimit, `${to - from2 + 1}`);
         return this;
       }
       /**
@@ -1629,7 +1636,7 @@ var ACTIVE_RUNTIME_CHECKS = new InjectionToken("@ngrx/store Internal Runtime Che
 var _ACTION_TYPE_UNIQUENESS_CHECK = new InjectionToken("@ngrx/store Check if Action types are unique");
 var ROOT_STORE_PROVIDER = new InjectionToken("@ngrx/store Root Store Provider");
 var FEATURE_STATE_PROVIDER = new InjectionToken("@ngrx/store Feature State Provider");
-function combineReducers(reducers, initialState = {}) {
+function combineReducers(reducers, initialState2 = {}) {
   const reducerKeys = Object.keys(reducers);
   const finalReducers = {};
   for (let i = 0; i < reducerKeys.length; i++) {
@@ -1640,14 +1647,14 @@ function combineReducers(reducers, initialState = {}) {
   }
   const finalReducerKeys = Object.keys(finalReducers);
   return function combination(state, action) {
-    state = state === void 0 ? initialState : state;
+    state = state === void 0 ? initialState2 : state;
     let hasChanged = false;
     const nextState = {};
     for (let i = 0; i < finalReducerKeys.length; i++) {
       const key = finalReducerKeys[i];
-      const reducer = finalReducers[key];
+      const reducer2 = finalReducers[key];
       const previousStateForKey = state[key];
-      const nextStateForKey = reducer(previousStateForKey, action);
+      const nextStateForKey = reducer2(previousStateForKey, action);
       nextState[key] = nextStateForKey;
       hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
     }
@@ -1673,21 +1680,21 @@ function createReducerFactory(reducerFactory, metaReducers) {
   if (Array.isArray(metaReducers) && metaReducers.length > 0) {
     reducerFactory = compose.apply(null, [...metaReducers, reducerFactory]);
   }
-  return (reducers, initialState) => {
-    const reducer = reducerFactory(reducers);
+  return (reducers, initialState2) => {
+    const reducer2 = reducerFactory(reducers);
     return (state, action) => {
-      state = state === void 0 ? initialState : state;
-      return reducer(state, action);
+      state = state === void 0 ? initialState2 : state;
+      return reducer2(state, action);
     };
   };
 }
 function createFeatureReducerFactory(metaReducers) {
   const reducerFactory = Array.isArray(metaReducers) && metaReducers.length > 0 ? compose(...metaReducers) : (r) => r;
-  return (reducer, initialState) => {
-    reducer = reducerFactory(reducer);
+  return (reducer2, initialState2) => {
+    reducer2 = reducerFactory(reducer2);
     return (state, action) => {
-      state = state === void 0 ? initialState : state;
-      return reducer(state, action);
+      state = state === void 0 ? initialState2 : state;
+      return reducer2(state, action);
     };
   };
 }
@@ -1700,10 +1707,10 @@ var ReducerManager = class _ReducerManager extends BehaviorSubject {
   get currentReducers() {
     return this.reducers;
   }
-  constructor(dispatcher, initialState, reducers, reducerFactory) {
-    super(reducerFactory(reducers, initialState));
+  constructor(dispatcher, initialState2, reducers, reducerFactory) {
+    super(reducerFactory(reducers, initialState2));
     this.dispatcher = dispatcher;
-    this.initialState = initialState;
+    this.initialState = initialState2;
     this.reducers = reducers;
     this.reducerFactory = reducerFactory;
   }
@@ -1715,11 +1722,11 @@ var ReducerManager = class _ReducerManager extends BehaviorSubject {
       reducers: reducers2,
       reducerFactory,
       metaReducers,
-      initialState,
+      initialState: initialState2,
       key
     }) => {
-      const reducer = typeof reducers2 === "function" ? createFeatureReducerFactory(metaReducers)(reducers2, initialState) : createReducerFactory(reducerFactory, metaReducers)(reducers2, initialState);
-      reducerDict[key] = reducer;
+      const reducer2 = typeof reducers2 === "function" ? createFeatureReducerFactory(metaReducers)(reducers2, initialState2) : createReducerFactory(reducerFactory, metaReducers)(reducers2, initialState2);
+      reducerDict[key] = reducer2;
       return reducerDict;
     }, {});
     this.addReducers(reducers);
@@ -1730,9 +1737,9 @@ var ReducerManager = class _ReducerManager extends BehaviorSubject {
   removeFeatures(features) {
     this.removeReducers(features.map((p) => p.key));
   }
-  addReducer(key, reducer) {
+  addReducer(key, reducer2) {
     this.addReducers({
-      [key]: reducer
+      [key]: reducer2
     });
   }
   addReducers(reducers) {
@@ -1833,12 +1840,12 @@ var State = class _State extends BehaviorSubject {
   static {
     this.INIT = INIT;
   }
-  constructor(actions$, reducer$, scannedActions, initialState) {
-    super(initialState);
+  constructor(actions$, reducer$, scannedActions, initialState2) {
+    super(initialState2);
     const actionsOnQueue$ = actions$.pipe(observeOn(queueScheduler));
     const withLatestReducer$ = actionsOnQueue$.pipe(withLatestFrom(reducer$));
     const seed = {
-      state: initialState
+      state: initialState2
     };
     const stateAndAction$ = withLatestReducer$.pipe(scan(reduceState, seed));
     this.stateSubscription = stateAndAction$.subscribe(({
@@ -1888,12 +1895,12 @@ var State = class _State extends BehaviorSubject {
 })();
 function reduceState(stateActionPair = {
   state: void 0
-}, [action, reducer]) {
+}, [action, reducer2]) {
   const {
     state
   } = stateActionPair;
   return {
-    state: reducer(state, action),
+    state: reducer2(state, action),
     action
   };
 }
@@ -1961,8 +1968,8 @@ var Store = class _Store extends Observable {
   complete() {
     this.actionsObserver.complete();
   }
-  addReducer(key, reducer) {
-    this.reducerManager.addReducer(key, reducer);
+  addReducer(key, reducer2) {
+    this.reducerManager.addReducer(key, reducer2);
   }
   removeReducer(key) {
     this.reducerManager.removeReducer(key);
@@ -2190,29 +2197,29 @@ function extractArgsFromSelectorsDictionary(selectorsDictionary) {
 function createFeature(featureConfig) {
   const {
     name,
-    reducer,
+    reducer: reducer2,
     extraSelectors: extraSelectorsFactory
   } = featureConfig;
   const featureSelector = createFeatureSelector(name);
-  const nestedSelectors = createNestedSelectors(featureSelector, reducer);
+  const nestedSelectors = createNestedSelectors(featureSelector, reducer2);
   const baseSelectors = __spreadValues({
     [`select${capitalize(name)}State`]: featureSelector
   }, nestedSelectors);
   const extraSelectors = extraSelectorsFactory ? extraSelectorsFactory(baseSelectors) : {};
   return __spreadValues(__spreadValues({
     name,
-    reducer
+    reducer: reducer2
   }, baseSelectors), extraSelectors);
 }
-function createNestedSelectors(featureSelector, reducer) {
-  const initialState = getInitialState(reducer);
-  const nestedKeys = isPlainObject(initialState) ? Object.keys(initialState) : [];
+function createNestedSelectors(featureSelector, reducer2) {
+  const initialState2 = getInitialState(reducer2);
+  const nestedKeys = isPlainObject(initialState2) ? Object.keys(initialState2) : [];
   return nestedKeys.reduce((nestedSelectors, nestedKey) => __spreadProps(__spreadValues({}, nestedSelectors), {
     [`select${capitalize(nestedKey)}`]: createSelector(featureSelector, (parentState) => parentState?.[nestedKey])
   }), {});
 }
-function getInitialState(reducer) {
-  return reducer(void 0, {
+function getInitialState(reducer2) {
+  return reducer2(void 0, {
     type: "@ngrx/feature/init"
   });
 }
@@ -2234,15 +2241,15 @@ function _createFeatureStore(configs, featureStores) {
   });
 }
 function _createFeatureReducers(reducerCollection) {
-  return reducerCollection.map((reducer) => {
-    return reducer instanceof InjectionToken ? inject(reducer) : reducer;
+  return reducerCollection.map((reducer2) => {
+    return reducer2 instanceof InjectionToken ? inject(reducer2) : reducer2;
   });
 }
-function _initialStateFactory(initialState) {
-  if (typeof initialState === "function") {
-    return initialState();
+function _initialStateFactory(initialState2) {
+  if (typeof initialState2 === "function") {
+    return initialState2();
   }
-  return initialState;
+  return initialState2;
 }
 function _concatMetaReducers(metaReducers, userProvidedMetaReducers) {
   return metaReducers.concat(userProvidedMetaReducers);
@@ -2257,10 +2264,10 @@ function _provideForRootGuard() {
   }
   return "guarded";
 }
-function immutabilityCheckMetaReducer(reducer, checks) {
+function immutabilityCheckMetaReducer(reducer2, checks) {
   return function(state, action) {
     const act = checks.action(action) ? freeze(action) : action;
-    const nextState = reducer(state, act);
+    const nextState = reducer2(state, act);
     return checks.state() ? freeze(nextState) : nextState;
   };
 }
@@ -2280,13 +2287,13 @@ function freeze(target) {
   });
   return target;
 }
-function serializationCheckMetaReducer(reducer, checks) {
+function serializationCheckMetaReducer(reducer2, checks) {
   return function(state, action) {
     if (checks.action(action)) {
       const unserializableAction = getUnserializable(action);
       throwIfUnserializable(unserializableAction, "action");
     }
-    const nextState = reducer(state, action);
+    const nextState = reducer2(state, action);
     if (checks.state()) {
       const unserializableState = getUnserializable(nextState);
       throwIfUnserializable(unserializableState, "state");
@@ -2332,12 +2339,12 @@ function throwIfUnserializable(unserializable, context) {
   error.unserializablePath = unserializablePath;
   throw error;
 }
-function inNgZoneAssertMetaReducer(reducer, checks) {
+function inNgZoneAssertMetaReducer(reducer2, checks) {
   return function(state, action) {
     if (checks.action(action) && !NgZone.isInAngularZone()) {
       throw new Error(`Action '${action.type}' running outside NgZone. ${RUNTIME_CHECK_URL}#strictactionwithinngzone`);
     }
-    return reducer(state, action);
+    return reducer2(state, action);
   };
 }
 function createActiveRuntimeChecks(runtimeChecks) {
@@ -2364,19 +2371,19 @@ function createSerializationCheckMetaReducer({
   strictActionSerializability,
   strictStateSerializability
 }) {
-  return (reducer) => strictActionSerializability || strictStateSerializability ? serializationCheckMetaReducer(reducer, {
+  return (reducer2) => strictActionSerializability || strictStateSerializability ? serializationCheckMetaReducer(reducer2, {
     action: (action) => strictActionSerializability && !ignoreNgrxAction(action),
     state: () => strictStateSerializability
-  }) : reducer;
+  }) : reducer2;
 }
 function createImmutabilityCheckMetaReducer({
   strictActionImmutability,
   strictStateImmutability
 }) {
-  return (reducer) => strictActionImmutability || strictStateImmutability ? immutabilityCheckMetaReducer(reducer, {
+  return (reducer2) => strictActionImmutability || strictStateImmutability ? immutabilityCheckMetaReducer(reducer2, {
     action: (action) => strictActionImmutability && !ignoreNgrxAction(action),
     state: () => strictStateImmutability
-  }) : reducer;
+  }) : reducer2;
 }
 function ignoreNgrxAction(action) {
   return action.type.startsWith("@ngrx");
@@ -2384,9 +2391,9 @@ function ignoreNgrxAction(action) {
 function createInNgZoneCheckMetaReducer({
   strictActionWithinNgZone
 }) {
-  return (reducer) => strictActionWithinNgZone ? inNgZoneAssertMetaReducer(reducer, {
+  return (reducer2) => strictActionWithinNgZone ? inNgZoneAssertMetaReducer(reducer2, {
     action: (action) => strictActionWithinNgZone && !ignoreNgrxAction(action)
-  }) : reducer;
+  }) : reducer2;
 }
 function provideRuntimeChecks(runtimeChecks) {
   return [{
@@ -2695,14 +2702,14 @@ var StoreModule = class _StoreModule {
   }], null, null);
 })();
 function on(...args) {
-  const reducer = args.pop();
+  const reducer2 = args.pop();
   const types = args.map((creator) => creator.type);
   return {
-    reducer,
+    reducer: reducer2,
     types
   };
 }
-function createReducer(initialState, ...ons) {
+function createReducer(initialState2, ...ons) {
   const map2 = /* @__PURE__ */ new Map();
   for (const on2 of ons) {
     for (const type of on2.types) {
@@ -2715,9 +2722,9 @@ function createReducer(initialState, ...ons) {
       }
     }
   }
-  return function(state = initialState, action) {
-    const reducer = map2.get(action.type);
-    return reducer ? reducer(state, action) : state;
+  return function(state = initialState2, action) {
+    const reducer2 = map2.get(action.type);
+    return reducer2 ? reducer2(state, action) : state;
   };
 }
 
@@ -11648,36 +11655,36 @@ var CdkScrollable = class _CdkScrollable {
    * in an RTL context.
    * @param from The edge to measure from.
    */
-  measureScrollOffset(from) {
+  measureScrollOffset(from2) {
     const LEFT = "left";
     const RIGHT = "right";
     const el = this.elementRef.nativeElement;
-    if (from == "top") {
+    if (from2 == "top") {
       return el.scrollTop;
     }
-    if (from == "bottom") {
+    if (from2 == "bottom") {
       return el.scrollHeight - el.clientHeight - el.scrollTop;
     }
     const isRtl = this.dir && this.dir.value == "rtl";
-    if (from == "start") {
-      from = isRtl ? RIGHT : LEFT;
-    } else if (from == "end") {
-      from = isRtl ? LEFT : RIGHT;
+    if (from2 == "start") {
+      from2 = isRtl ? RIGHT : LEFT;
+    } else if (from2 == "end") {
+      from2 = isRtl ? LEFT : RIGHT;
     }
     if (isRtl && getRtlScrollAxisType() == RtlScrollAxisType.INVERTED) {
-      if (from == LEFT) {
+      if (from2 == LEFT) {
         return el.scrollWidth - el.clientWidth - el.scrollLeft;
       } else {
         return el.scrollLeft;
       }
     } else if (isRtl && getRtlScrollAxisType() == RtlScrollAxisType.NEGATED) {
-      if (from == LEFT) {
+      if (from2 == LEFT) {
         return el.scrollLeft + el.scrollWidth - el.clientWidth;
       } else {
         return -el.scrollLeft;
       }
     } else {
-      if (from == LEFT) {
+      if (from2 == LEFT) {
         return el.scrollLeft;
       } else {
         return el.scrollWidth - el.clientWidth - el.scrollLeft;
@@ -12012,8 +12019,8 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
   getRenderedRange() {
     return this._renderedRange;
   }
-  measureBoundingClientRectWithScrollOffset(from) {
-    return this.getElementRef().nativeElement.getBoundingClientRect()[from];
+  measureBoundingClientRectWithScrollOffset(from2) {
+    return this.getElementRef().nativeElement.getBoundingClientRect()[from2];
   }
   /**
    * Sets the total size of all content (in pixels), including content that is not currently
@@ -12105,30 +12112,30 @@ var CdkVirtualScrollViewport = class _CdkVirtualScrollViewport extends CdkVirtua
    * @param from The edge to measure the offset from. Defaults to 'top' in vertical mode and 'start'
    *     in horizontal mode.
    */
-  measureScrollOffset(from) {
+  measureScrollOffset(from2) {
     let measureScrollOffset;
     if (this.scrollable == this) {
       measureScrollOffset = (_from) => super.measureScrollOffset(_from);
     } else {
       measureScrollOffset = (_from) => this.scrollable.measureScrollOffset(_from);
     }
-    return Math.max(0, measureScrollOffset(from ?? (this.orientation === "horizontal" ? "start" : "top")) - this.measureViewportOffset());
+    return Math.max(0, measureScrollOffset(from2 ?? (this.orientation === "horizontal" ? "start" : "top")) - this.measureViewportOffset());
   }
   /**
    * Measures the offset of the viewport from the scrolling container
    * @param from The edge to measure from.
    */
-  measureViewportOffset(from) {
+  measureViewportOffset(from2) {
     let fromRect;
     const LEFT = "left";
     const RIGHT = "right";
     const isRtl = this.dir?.value == "rtl";
-    if (from == "start") {
+    if (from2 == "start") {
       fromRect = isRtl ? RIGHT : LEFT;
-    } else if (from == "end") {
+    } else if (from2 == "end") {
       fromRect = isRtl ? LEFT : RIGHT;
-    } else if (from) {
-      fromRect = from;
+    } else if (from2) {
+      fromRect = from2;
     } else {
       fromRect = this.orientation === "horizontal" ? "left" : "top";
     }
@@ -12574,8 +12581,8 @@ var CdkVirtualScrollableElement = class _CdkVirtualScrollableElement extends Cdk
   constructor() {
     super();
   }
-  measureBoundingClientRectWithScrollOffset(from) {
-    return this.getElementRef().nativeElement.getBoundingClientRect()[from] - this.measureScrollOffset(from);
+  measureBoundingClientRectWithScrollOffset(from2) {
+    return this.getElementRef().nativeElement.getBoundingClientRect()[from2] - this.measureScrollOffset(from2);
   }
   static \u0275fac = function CdkVirtualScrollableElement_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CdkVirtualScrollableElement)();
@@ -12612,8 +12619,8 @@ var CdkVirtualScrollableWindow = class _CdkVirtualScrollableWindow extends CdkVi
     this.elementRef = new ElementRef(document2.documentElement);
     this._scrollElement = document2;
   }
-  measureBoundingClientRectWithScrollOffset(from) {
-    return this.getElementRef().nativeElement.getBoundingClientRect()[from];
+  measureBoundingClientRectWithScrollOffset(from2) {
+    return this.getElementRef().nativeElement.getBoundingClientRect()[from2];
   }
   static \u0275fac = function CdkVirtualScrollableWindow_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CdkVirtualScrollableWindow)();
@@ -16436,6 +16443,11 @@ var AuthService = class _AuthService {
         this._recoveryMode = false;
         return;
       }
+      if (event === "USER_UPDATED") {
+        console.log("User updated, refreshing local session");
+        this._session = session;
+        return;
+      }
     });
   }
   getSession() {
@@ -16465,6 +16477,22 @@ var AuthService = class _AuthService {
   }
   profile() {
     return this.supabase.auth.getUser();
+  }
+  /**
+   * Recarga el usuario desde Supabase y actualiza la sesión en memoria
+   * para reflejar cambios de metadata hechos por el backend (por ejemplo, idPersona).
+   */
+  reloadUser() {
+    return this.profile().then(({ data, error }) => {
+      if (error) {
+        console.error("No se pudo recargar el usuario:", error.message);
+        return null;
+      }
+      if (this._session && data.user) {
+        this._session.user = data.user;
+      }
+      return data.user ?? null;
+    });
   }
   signIn(user, password) {
     this.loadingService.show();
@@ -16511,7 +16539,7 @@ var AuthService = class _AuthService {
       if (error) {
         const code = error?.code ?? error?.status ?? "";
         if (code === "over_email_send_rate_limit" || code === 429 || code === "email_rate_limit_exceeded") {
-          this.notificationService.showError("Se ha superado el l\xEDmite de env\xEDo de correos. Por favor, int\xE9ntelo en 1 minuto.");
+          this.notificationService.showError("Se ha superado el l\xEDmite de env\xEDo de correos. Por favor, int\xE9ntelo en 5 minuto.");
         } else {
           this.notificationService.showError(`Error al enviar c\xF3digo: ${error.message}`);
         }
@@ -16708,35 +16736,6 @@ var AuthService = class _AuthService {
         this.supabase.auth.setSession(data.session);
       this.notificationService.showSuccess("C\xF3digo verificado. Contin\xFAa para crear una nueva contrase\xF1a.");
       return { error: null, verified: true };
-    }).finally(() => this.loadingService.hide());
-  }
-  /**
-   * Actualiza la metadata del usuario autenticado agregando el idPersona
-   * retornado por el backend al crear la información personal.
-   *
-   * @param idPersona ID de la persona creada en el backend
-   * @returns Promise con posible error
-   */
-  updatePersonaId(idPersona) {
-    this.loadingService.show();
-    if (!this._session) {
-      const error = new Error("No hay sesi\xF3n activa para actualizar metadata.");
-      this.notificationService.showError(error.message);
-      this.loadingService.hide();
-      return Promise.resolve({ error });
-    }
-    return this.supabase.auth.updateUser({
-      data: {
-        // Se agrega / sobreescribe idPersona. Supabase hace merge de metadata existente.
-        idPersona
-      }
-    }).then(({ error }) => {
-      if (error) {
-        this.notificationService.showError(`Error al actualizar metadata: ${error.message}`);
-        return { error };
-      }
-      console.log("Metadata actualizada (idPersona agregado).");
-      return { error: null };
     }).finally(() => this.loadingService.hide());
   }
   static \u0275fac = function AuthService_Factory(__ngFactoryType__) {
@@ -18724,12 +18723,270 @@ var ConfirmDialogService = class _ConfirmDialogService {
   }], null, null);
 })();
 
+// src/app/modules/hojadevida/store/feature/hojavida.actions.ts
+var HojavidaActions = createActionGroup({
+  source: "Hojavida",
+  events: {
+    "Load Persona": props(),
+    "Load Persona Success": props(),
+    "Load Persona Failure": props(),
+    "Clear Persona": emptyProps(),
+    "Update Persona In State": props()
+  }
+});
+
+// src/app/modules/hojadevida/store/feature/hojavida.reducer.ts
+var HOJAVIDA_FEATURE_KEY = "hojavida";
+var initialState = {
+  persona: null,
+  loadingPersona: false,
+  errorPersona: null
+};
+var reducer = createReducer(initialState, on(HojavidaActions.loadPersona, (state) => __spreadProps(__spreadValues({}, state), {
+  loadingPersona: true,
+  errorPersona: null
+})), on(HojavidaActions.loadPersonaSuccess, (state, { persona }) => __spreadProps(__spreadValues({}, state), {
+  persona,
+  loadingPersona: false
+})), on(HojavidaActions.loadPersonaFailure, (state, { error }) => __spreadProps(__spreadValues({}, state), {
+  loadingPersona: false,
+  errorPersona: error
+})), on(HojavidaActions.clearPersona, () => initialState), on(HojavidaActions.updatePersonaInState, (state, { persona }) => __spreadProps(__spreadValues({}, state), {
+  persona
+})));
+var hojavidaFeature = createFeature({
+  name: HOJAVIDA_FEATURE_KEY,
+  reducer
+});
+var selectIdPersona = createSelector(hojavidaFeature.selectHojavidaState, (state) => state.persona?.id);
+var selectIdHojaVida = createSelector(hojavidaFeature.selectHojavidaState, (state) => state.persona?.idHojaVida);
+var { name: hojavidaFeatureKey, reducer: hojavidaReducer, selectHojavidaState, selectPersona, selectLoadingPersona, selectErrorPersona } = hojavidaFeature;
+
+// src/app/modules/hojadevida/services/informacion-personal.service.ts
+var InformacionPersonalService = class _InformacionPersonalService {
+  http;
+  apiUrl = `${environment.hojaDeVidaApiUrl}/persona`;
+  httpOptions = {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  };
+  auth = inject(AuthService);
+  store = inject(Store);
+  constructor(http) {
+    this.http = http;
+  }
+  /**
+   * Obtiene la información personal de una persona por ID
+   * @param id ID de la persona
+   * @returns Observable con los datos de la persona
+   */
+  obtenerInformacionPersonal(id) {
+    return this.http.get(`${this.apiUrl}/find-by-id-persona/${id}`).pipe(catchError(this.handleError));
+  }
+  /**
+   * Obtiene toda la información personal disponible
+   * @returns Observable con lista de personas
+   */
+  // TODO: Endpoint no implementado en backend (listar todas las personas)
+  obtenerTodasLasPersonas() {
+    return this.http.get(this.apiUrl).pipe(catchError(this.handleError));
+  }
+  /**
+   * Crea una nueva persona con su información personal
+   * @param persona Datos de la persona a crear
+   * @returns Observable con la persona creada
+   */
+  crearInformacionPersonal(persona) {
+    return this.http.post(`${this.apiUrl}/create-persona`, persona, this.httpOptions).pipe(tap((resp) => {
+      setTimeout(() => {
+        this.auth.reloadUser().then();
+      }, 100);
+      this.store.dispatch(HojavidaActions.loadPersonaSuccess({ persona: resp }));
+    }), catchError(this.handleError));
+  }
+  /**
+   * Ejecuta la migración buscando por número de documento. Si existe una persona previa,
+   * el backend actualizará el idPersona en Supabase. Devuelve true si migró, false si no encontró.
+   * No lanza error en caso de 404; otros códigos se propagan con el manejador estándar.
+   */
+  migrarUsuarioPorNumeroDocumento(numeroDocumento) {
+    const url = `${this.apiUrl}/migracion-usuario?numero-documento=${encodeURIComponent(numeroDocumento)}`;
+    return this.http.post(url, null, this.httpOptions).pipe(map(() => true), catchError((err) => {
+      if (err?.status === 404) {
+        return new Observable((subscriber) => {
+          subscriber.next(false);
+          subscriber.complete();
+        });
+      }
+      return this.handleError(err);
+    }));
+  }
+  /**
+   * Actualiza la información personal de una persona existente
+   * @param persona Datos actualizados de la persona
+   * @returns Observable con la persona actualizada
+   */
+  actualizarInformacionPersonal(persona) {
+    return this.http.put(`${this.apiUrl}/actualizar-persona`, persona, this.httpOptions).pipe(catchError(this.handleError));
+  }
+  /**
+   * Elimina la información personal de una persona
+   * @param id ID de la persona a eliminar
+   * @returns Observable vacío
+   */
+  // TODO: Endpoint eliminar persona no existe aún en backend
+  eliminarInformacionPersonal(id) {
+    return this.http.delete(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
+  }
+  /**
+   * Busca personas por numero de documento.
+   * @param numeroDocumento Número de documento para buscar
+   * @returns Observable con la persona encontrada
+   */
+  // TODO: Endpoint buscar por documento no existe aún en backend
+  buscarPorDocumento(numeroDocumento) {
+    return this.http.get(`${this.apiUrl}/find?numero-documento=${numeroDocumento}`).pipe(catchError(this.handleError));
+  }
+  /**
+   * Valida si un número de documento ya existe
+   * @param numeroDocumento Número de documento a validar
+   * @returns Observable con booleano indicando si existe
+   */
+  // TODO: Endpoint validar documento no existe aún en backend
+  validarDocumentoExistente(numeroDocumento) {
+    return this.http.get(`${this.apiUrl}/validar-documento/${numeroDocumento}`).pipe(catchError(this.handleError));
+  }
+  /**
+   * Valida si un correo electrónico ya existe
+   * @param correoElectronico Correo electrónico a validar
+   * @returns Observable con booleano indicando si existe
+   */
+  // TODO: Endpoint validar correo no existe aún en backend
+  validarCorreoExistente(correoElectronico) {
+    return this.http.get(`${this.apiUrl}/validar-correo/${encodeURIComponent(correoElectronico)}`).pipe(catchError(this.handleError));
+  }
+  // Métodos agregados según endpoints existentes en PersonaController
+  /**
+   * Obtiene todos los tipos de documento
+   * Endpoint backend: GET /api/persona/search-all-tipo-documento
+   */
+  obtenerTiposDocumento() {
+    return this.http.get(`${this.apiUrl}/search-all-tipo-documento`).pipe(catchError(this.handleError));
+  }
+  /**
+   * Obtiene todos los géneros
+   * Endpoint backend: GET /api/persona/search-all-sexo
+   */
+  obtenerGeneros() {
+    return this.http.get(`${this.apiUrl}/search-all-sexo`).pipe(catchError(this.handleError));
+  }
+  /**
+   * Obtiene todos los enfoques diferenciales
+   * Endpoint backend: GET /api/persona/search-all-enfoque-diferencial
+   */
+  obtenerEnfoquesDiferenciales() {
+    return this.http.get(`${this.apiUrl}/search-all-enfoque-diferencial`).pipe(catchError(this.handleError));
+  }
+  /**
+   * Busca departamentos y municipios opcionalmente filtrados
+   * Endpoint backend: GET /api/persona/search-all-departamento-municipio?query=...
+   * @param query texto a filtrar (opcional)
+   */
+  buscarDepartamentosMunicipios(query) {
+    let params = new HttpParams();
+    if (query) {
+      params = params.set("query", query);
+    }
+    return this.http.get(`${this.apiUrl}/search-all-departamento-municipio`, {
+      params
+    }).pipe(catchError(this.handleError));
+  }
+  /**
+   * Maneja errores HTTP
+   * @param error Error HTTP
+   * @returns Observable con error formateado
+   */
+  handleError(error) {
+    let errorMessage = "Ha ocurrido un error inesperado";
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      switch (error.status) {
+        case 400:
+          errorMessage = "Datos inv\xE1lidos. Por favor, revise la informaci\xF3n ingresada.";
+          break;
+        case 401:
+          errorMessage = "No tiene autorizaci\xF3n para realizar esta acci\xF3n.";
+          break;
+        case 404:
+          errorMessage = "La informaci\xF3n solicitada no fue encontrada.";
+          break;
+        case 409:
+          errorMessage = "Ya existe un registro con estos datos.";
+          break;
+        case 500:
+          errorMessage = "Error interno del servidor. Intente m\xE1s tarde.";
+          break;
+        default:
+          errorMessage = `Error ${error.status}: ${error.message}`;
+      }
+    }
+    console.error("Error en InformacionPersonalService:", error);
+    return throwError(() => new Error(errorMessage));
+  }
+  static \u0275fac = function InformacionPersonalService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _InformacionPersonalService)(\u0275\u0275inject(HttpClient));
+  };
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _InformacionPersonalService, factory: _InformacionPersonalService.\u0275fac, providedIn: "root" });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(InformacionPersonalService, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], () => [{ type: HttpClient }], null);
+})();
+
+// src/app/modules/hojadevida/store/persona.guard.ts
+var personaPrefetchGuard = () => {
+  const auth = inject(AuthService);
+  const servicio = inject(InformacionPersonalService);
+  const store = inject(Store);
+  const notify = inject(NotificationService);
+  const prefetchConId = (id) => {
+    const person = store.selectSignal(selectPersona)();
+    const alreadyLoaded = !!person && person.id === id;
+    if (alreadyLoaded)
+      return of(true);
+    store.dispatch(HojavidaActions.loadPersona({ id }));
+    return servicio.obtenerInformacionPersonal(id).pipe(
+      tap({
+        next: (persona) => store.dispatch(HojavidaActions.loadPersonaSuccess({ persona })),
+        error: (err) => store.dispatch(HojavidaActions.loadPersonaFailure({
+          error: err.message || "Error cargando persona"
+        }))
+      }),
+      catchError(() => {
+        notify.showError("No fue posible cargar la informaci\xF3n personal, por favor contacte al administrador.");
+        return from(auth.signOut()).pipe(map(() => false));
+      }),
+      // En caso de error, deslogear
+      map(() => true)
+    );
+  };
+  const idPersona = auth.session?.user.user_metadata?.idPersona;
+  console.log("PersonaGuard, idPersona from metadata:", idPersona);
+  if (idPersona) {
+    return prefetchConId(idPersona);
+  }
+  return from(auth.ensureSessionLoaded().then(() => auth.reloadUser()).then(() => auth.session?.user.user_metadata?.idPersona)).pipe(switchMap((id) => id ? prefetchConId(id) : of(true)));
+};
+
 export {
   toSignal,
   createAction,
-  props,
-  createActionGroup,
-  emptyProps,
   INIT,
   ActionsSubject,
   INITIAL_STATE,
@@ -18741,14 +18998,10 @@ export {
   ScannedActionsSubject,
   StateObservable,
   Store,
-  createSelector,
-  createFeature,
   provideState,
   provideStore,
   StoreRootModule,
   StoreFeatureModule,
-  on,
-  createReducer,
   Breakpoints,
   ScrollDispatcher,
   CdkScrollable,
@@ -18769,7 +19022,15 @@ export {
   MatSnackBarModule,
   NotificationService,
   AuthService,
-  ConfirmDialogService
+  ConfirmDialogService,
+  HojavidaActions,
+  HOJAVIDA_FEATURE_KEY,
+  selectIdPersona,
+  selectIdHojaVida,
+  hojavidaReducer,
+  selectPersona,
+  personaPrefetchGuard,
+  InformacionPersonalService
 };
 /*! Bundled license information:
 
@@ -18780,4 +19041,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-JOCNUMAS.js.map
+//# sourceMappingURL=chunk-VNV4OY5J.js.map

@@ -1,17 +1,15 @@
 import {
   HOJAVIDA_FEATURE_KEY,
   HojavidaActions,
-  hojavidaReducer,
-  personaPrefetchGuard
-} from "./chunk-GHTUVULG.js";
-import {
   Store,
+  hojavidaReducer,
+  personaPrefetchGuard,
   provideState
-} from "./chunk-JOCNUMAS.js";
+} from "./chunk-VNV4OY5J.js";
 import "./chunk-EGGHZP6O.js";
 import {
   inject
-} from "./chunk-52XVDXSC.js";
+} from "./chunk-IXVPDR65.js";
 import "./chunk-UGR6JUJC.js";
 
 // src/app/modules/hojadevida/guard/desactivate-hoja-vida-form.guard.ts
@@ -36,15 +34,15 @@ var HOJA_DE_VIDA_ROUTES = [
       {
         path: "personal",
         canActivate: [personaPrefetchGuard],
-        loadComponent: () => import("./chunk-GKAORRDS.js").then((c) => c.SectionContainerHvComponent)
+        loadComponent: () => import("./chunk-WXWSHAQT.js").then((c) => c.SectionContainerHvComponent)
       },
       {
         path: "terminos-condiciones",
-        loadComponent: () => import("./chunk-2FCTFI4L.js").then((c) => c.TerminosCondicionesComponent)
+        loadComponent: () => import("./chunk-CYJYMGV7.js").then((c) => c.TerminosCondicionesComponent)
       },
       {
         path: "eliminar-datos",
-        loadComponent: () => import("./chunk-AVVVCPVG.js").then((c) => c.EliminarDatosComponent)
+        loadComponent: () => import("./chunk-LHH3KCFV.js").then((c) => c.EliminarDatosComponent)
       }
     ]
   },
@@ -58,4 +56,4 @@ var HOJA_DE_VIDA_ROUTES = [
 export {
   HOJA_DE_VIDA_ROUTES
 };
-//# sourceMappingURL=chunk-PC2JELJK.js.map
+//# sourceMappingURL=chunk-Q2FR4QRL.js.map

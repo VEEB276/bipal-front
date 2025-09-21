@@ -29,7 +29,7 @@ import {
   _ErrorStateTracker,
   _countGroupLabelsBeforeOption,
   _getOptionScrollPosition
-} from "./chunk-TCL6Q7SY.js";
+} from "./chunk-RGSNZBFZ.js";
 import {
   ControlContainer,
   DefaultValueAccessor,
@@ -57,21 +57,14 @@ import {
   SelectionModel,
   Validators,
   ɵNgNoValidate
-} from "./chunk-DKQR6YDV.js";
+} from "./chunk-TRD36DVC.js";
 import {
   MatCard,
   MatCardContent,
   MatCardHeader,
   MatCardModule,
   MatCardTitle
-} from "./chunk-GZ4RBFNB.js";
-import {
-  HojavidaActions,
-  InformacionPersonalService,
-  selectIdHojaVida,
-  selectIdPersona,
-  selectPersona
-} from "./chunk-GHTUVULG.js";
+} from "./chunk-BYQETCUD.js";
 import {
   AuthService,
   Breakpoints,
@@ -82,6 +75,8 @@ import {
   ComponentPortal,
   ConfirmDialogService,
   FlexibleConnectedPositionStrategy,
+  HojavidaActions,
+  InformacionPersonalService,
   MatSnackBarModule,
   NotificationService,
   Overlay,
@@ -91,8 +86,11 @@ import {
   Store,
   TemplatePortal,
   ViewportRuler,
-  environment
-} from "./chunk-JOCNUMAS.js";
+  environment,
+  selectIdHojaVida,
+  selectIdPersona,
+  selectPersona
+} from "./chunk-VNV4OY5J.js";
 import "./chunk-EGGHZP6O.js";
 import {
   A,
@@ -252,7 +250,7 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-52XVDXSC.js";
+} from "./chunk-IXVPDR65.js";
 import {
   __commonJS,
   __require,
@@ -19005,7 +19003,7 @@ var SectionContainerHvComponent = class _SectionContainerHvComponent {
     PerfilAcademicoComponent,
     OtrosEstudiosComponent,
     ExperienciaComponent
-  ], styles: ["\n\n[_nghost-%COMP%] {\n  display: block;\n}\n.image-banner[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  margin-bottom: -50px;\n}\n.title-section[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: row;\n  gap: 16px;\n}\n/*# sourceMappingURL=section-container-hv.component.css.map */"] });
+  ], styles: ["\n\n[_nghost-%COMP%] {\n  display: block;\n}\n.image-banner[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  margin-bottom: -50px;\n}\n@media (max-width: 768px) {\n  .image-banner[_ngcontent-%COMP%] {\n    margin-bottom: 0;\n  }\n}\n.title-section[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: row;\n  gap: 16px;\n}\n/*# sourceMappingURL=section-container-hv.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SectionContainerHvComponent, [{
@@ -19021,7 +19019,7 @@ var SectionContainerHvComponent = class _SectionContainerHvComponent {
       PerfilAcademicoComponent,
       OtrosEstudiosComponent,
       ExperienciaComponent
-    ], template: '<img\n  src="assets/img/banco_info_perfiles.svg"\n  alt="Banco informacion de perfiles"\n  class="image-banner"\n/>\n\n<mat-accordion class="accordion" multi>\n  <!-- Secci\xF3n de Informaci\xF3n Personal ------------------------------------------------------------------------------->\n  <mat-expansion-panel>\n    <mat-expansion-panel-header>\n      <mat-panel-title class="title-section">\n        <mat-icon>person</mat-icon>\n        Datos Personales\n      </mat-panel-title>\n    </mat-expansion-panel-header>\n    <app-info-personal></app-info-personal>\n  </mat-expansion-panel>\n\n  <mat-expansion-panel [disabled]="!isCreated()">\n    <mat-expansion-panel-header>\n      <mat-panel-title class="title-section">\n        <mat-icon>school</mat-icon>\n        Perfiles academicos\n      </mat-panel-title>\n    </mat-expansion-panel-header>\n\n    <ng-template matExpansionPanelContent>\n      <app-perfil-academico></app-perfil-academico>\n    </ng-template>\n  </mat-expansion-panel>\n\n\n  <!-- Secci\xF3n de Otros Estudios -------------------------------------------------------------------------------------->\n  <mat-expansion-panel [disabled]="!isCreated()">\n    <mat-expansion-panel-header>\n      <mat-panel-title class="title-section">\n        <mat-icon>menu_book</mat-icon>\n        Otros Estudios\n      </mat-panel-title>\n    </mat-expansion-panel-header>\n\n    <ng-template matExpansionPanelContent>\n      <app-otros-estudios></app-otros-estudios>\n    </ng-template>\n  </mat-expansion-panel>\n\n  <!-- Secci\xF3n de Experiencia --------------------------------------------------------------------------------------->\n  <mat-expansion-panel [disabled]="!isCreated()">\n    <mat-expansion-panel-header>\n      <mat-panel-title class="title-section">\n        <mat-icon>work</mat-icon>\n        Experiencia\n      </mat-panel-title>\n    </mat-expansion-panel-header>\n\n    <ng-template matExpansionPanelContent>\n      <app-experiencia></app-experiencia>\n    </ng-template>\n  </mat-expansion-panel>\n</mat-accordion>', styles: ["/* src/app/modules/hojadevida/section-container-hv/section-container-hv.component.scss */\n:host {\n  display: block;\n}\n.image-banner {\n  width: 100%;\n  height: auto;\n  margin-bottom: -50px;\n}\n.title-section {\n  display: flex;\n  flex-direction: row;\n  gap: 16px;\n}\n/*# sourceMappingURL=section-container-hv.component.css.map */\n"] }]
+    ], template: '<img\n  src="assets/img/banco_info_perfiles.svg"\n  alt="Banco informacion de perfiles"\n  class="image-banner"\n/>\n\n<mat-accordion class="accordion" multi>\n  <!-- Secci\xF3n de Informaci\xF3n Personal ------------------------------------------------------------------------------->\n  <mat-expansion-panel>\n    <mat-expansion-panel-header>\n      <mat-panel-title class="title-section">\n        <mat-icon>person</mat-icon>\n        Datos Personales\n      </mat-panel-title>\n    </mat-expansion-panel-header>\n    <app-info-personal></app-info-personal>\n  </mat-expansion-panel>\n\n  <mat-expansion-panel [disabled]="!isCreated()">\n    <mat-expansion-panel-header>\n      <mat-panel-title class="title-section">\n        <mat-icon>school</mat-icon>\n        Perfiles academicos\n      </mat-panel-title>\n    </mat-expansion-panel-header>\n\n    <ng-template matExpansionPanelContent>\n      <app-perfil-academico></app-perfil-academico>\n    </ng-template>\n  </mat-expansion-panel>\n\n\n  <!-- Secci\xF3n de Otros Estudios -------------------------------------------------------------------------------------->\n  <mat-expansion-panel [disabled]="!isCreated()">\n    <mat-expansion-panel-header>\n      <mat-panel-title class="title-section">\n        <mat-icon>menu_book</mat-icon>\n        Otros Estudios\n      </mat-panel-title>\n    </mat-expansion-panel-header>\n\n    <ng-template matExpansionPanelContent>\n      <app-otros-estudios></app-otros-estudios>\n    </ng-template>\n  </mat-expansion-panel>\n\n  <!-- Secci\xF3n de Experiencia --------------------------------------------------------------------------------------->\n  <mat-expansion-panel [disabled]="!isCreated()">\n    <mat-expansion-panel-header>\n      <mat-panel-title class="title-section">\n        <mat-icon>work</mat-icon>\n        Experiencia\n      </mat-panel-title>\n    </mat-expansion-panel-header>\n\n    <ng-template matExpansionPanelContent>\n      <app-experiencia></app-experiencia>\n    </ng-template>\n  </mat-expansion-panel>\n</mat-accordion>', styles: ["/* src/app/modules/hojadevida/section-container-hv/section-container-hv.component.scss */\n:host {\n  display: block;\n}\n.image-banner {\n  width: 100%;\n  height: auto;\n  margin-bottom: -50px;\n}\n@media (max-width: 768px) {\n  .image-banner {\n    margin-bottom: 0;\n  }\n}\n.title-section {\n  display: flex;\n  flex-direction: row;\n  gap: 16px;\n}\n/*# sourceMappingURL=section-container-hv.component.css.map */\n"] }]
   }], null, null);
 })();
 (() => {
@@ -19039,4 +19037,4 @@ moment/moment.js:
   (*! license : MIT *)
   (*! momentjs.com *)
 */
-//# sourceMappingURL=chunk-GKAORRDS.js.map
+//# sourceMappingURL=chunk-WXWSHAQT.js.map
