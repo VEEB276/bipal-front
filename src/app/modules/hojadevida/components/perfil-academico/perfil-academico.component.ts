@@ -187,35 +187,17 @@ export class PerfilAcademicoComponent implements OnInit {
 
   onSubmit(): void {
     if (!this.perfilForm.valid) {
-      this.markFormGroupTouched(this.perfilForm);
+      this.perfilForm.markAllAsTouched();
       return;
     }
     const payload: EstudioHvCreateDto[] = this.estudiosArray.controls.map(
       (ctrl) => ctrl.value
     );
     // pendiente: cuando backend exponga actualización por lote, aquí decidir create vs update
-    this.estudiosService.crearEstudios(payload).subscribe({
-      next: (resp) => console.log("Estudios guardados", resp),
-      error: (err) => console.error("Error guardando estudios", err),
-    });
-  }
-
-  private markFormGroupTouched(formGroup: FormGroup): void {
-    Object.keys(formGroup.controls).forEach((key) => {
-      const control = formGroup.get(key);
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      } else if (control instanceof FormArray) {
-        control.controls.forEach((arrayControl) => {
-          if (arrayControl instanceof FormGroup) {
-            this.markFormGroupTouched(arrayControl);
-          } else {
-            arrayControl.markAsTouched();
-          }
-        });
-      } else {
-        control?.markAsTouched();
-      }
+    this.estudiosService.crearEstudios(payload).subscribe((resp) => {
+      if (resp) this.patchFormEstudios(resp);
+      // Forzar CD si algún control queda con estado sucio que no dispara automáticamente
+      this.cdr.markForCheck();
     });
   }
 
