@@ -76,6 +76,12 @@ export class AuthService {
         this._session = session as AuthSession | null;
         return;
       }
+
+      if (event === "TOKEN_REFRESHED") {
+        // Token de acceso renovado: actualizar sesión interna
+        this._session = session as AuthSession | null;
+        return;
+      }
     });
   }
 
@@ -118,16 +124,42 @@ export class AuthService {
    * para reflejar cambios de metadata hechos por el backend (por ejemplo, idPersona).
    */
   reloadUser(): Promise<User | null> {
-    return this.profile().then(({ data, error }) => {
+    return this.refreshSession().then(() => {
+      return this.profile().then(({ data, error }) => {
+        if (error) {
+          console.error("No se pudo recargar el usuario:", error.message);
+          return null;
+        }
+        if (this._session && data.user) {
+          // Actualizar el usuario cacheado en la sesión local
+          (this._session as any).user = data.user;
+        }
+        return data.user ?? null;
+      });
+    });
+  }
+
+  /**
+   * Fuerza la renovación del access_token usando el refresh_token actual.
+   * Útil cuando el backend actualiza metadata que el backend leerá desde el JWT.
+   */
+  refreshSession(): Promise<AuthSession | null> {
+    return this.supabase.auth.refreshSession().then(({ data, error }) => {
       if (error) {
-        console.error('No se pudo recargar el usuario:', error.message);
-        return null;
+        console.warn("No se pudo refrescar la sesión:", error.message);
+        return this._session;
       }
-      if (this._session && data.user) {
-        // Actualizar el usuario cacheado en la sesión local
-        (this._session as any).user = data.user;
+      if (data?.session) {
+        this._session = data.session;
+        // Persistir la sesión renovada para futuras peticiones/interceptores
+        this.supabase.auth.setSession(data.session);
+        // Si el método también retornó user, sincronizarlo en memoria
+        const user = data?.user;
+        if (user && this._session) {
+          (this._session as any).user = user;
+        }
       }
-      return data.user ?? null;
+      return this._session;
     });
   }
 
@@ -162,7 +194,7 @@ export class AuthService {
       })
       .catch(() => {
         this.notificationService.showError(
-          "Ha ocurrio un problema, porfavor revise su conexion a internet."
+          "Usuario no existe o porfavor revise su conexion a internet."
         );
         return null;
       })
@@ -198,8 +230,12 @@ export class AuthService {
       .then((resp) => {
         const error = resp.error ?? resp.data.error;
         if (error) {
-          const code = (error as any)?.code ?? (error as any)?.status ?? '';
-          if (code === 'over_email_send_rate_limit' || code === 429 || code === 'email_rate_limit_exceeded') {
+          const code = (error as any)?.code ?? (error as any)?.status ?? "";
+          if (
+            code === "over_email_send_rate_limit" ||
+            code === 429 ||
+            code === "email_rate_limit_exceeded"
+          ) {
             this.notificationService.showError(
               "Se ha superado el límite de envío de correos. Por favor, inténtelo en 5 minuto."
             );
