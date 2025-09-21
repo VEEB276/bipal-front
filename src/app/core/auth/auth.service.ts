@@ -201,7 +201,7 @@ export class AuthService {
           const code = (error as any)?.code ?? (error as any)?.status ?? '';
           if (code === 'over_email_send_rate_limit' || code === 429 || code === 'email_rate_limit_exceeded') {
             this.notificationService.showError(
-              "Se ha superado el límite de envío de correos. Por favor, inténtelo en 1 minuto."
+              "Se ha superado el límite de envío de correos. Por favor, inténtelo en 5 minuto."
             );
           } else {
             this.notificationService.showError(

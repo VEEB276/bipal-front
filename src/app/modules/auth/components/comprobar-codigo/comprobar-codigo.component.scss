@@ -12,7 +12,13 @@
 }
 .squares-for-code{
     display: flex;   
-    gap: 12px
+    gap: 8px;
+    .squares {
+        width: 2.5rem;
+        ::ng-deep .mat-mdc-text-field-wrapper{
+            height: 2.5rem;
+        }
+    }
 }
 .container-code{
     display: flex;
