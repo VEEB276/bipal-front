@@ -69,6 +69,13 @@ export class AuthService {
         this._recoveryMode = false;
         return;
       }
+
+      // Si el usuario se actualiza (ej. metadata desde backend), refrescamos cache local
+      if (event === "USER_UPDATED") {
+        console.log("User updated, refreshing local session");
+        this._session = session as AuthSession | null;
+        return;
+      }
     });
   }
 
@@ -104,6 +111,24 @@ export class AuthService {
 
   profile() {
     return this.supabase.auth.getUser();
+  }
+
+  /**
+   * Recarga el usuario desde Supabase y actualiza la sesión en memoria
+   * para reflejar cambios de metadata hechos por el backend (por ejemplo, idPersona).
+   */
+  reloadUser(): Promise<User | null> {
+    return this.profile().then(({ data, error }) => {
+      if (error) {
+        console.error('No se pudo recargar el usuario:', error.message);
+        return null;
+      }
+      if (this._session && data.user) {
+        // Actualizar el usuario cacheado en la sesión local
+        (this._session as any).user = data.user;
+      }
+      return data.user ?? null;
+    });
   }
 
   signIn(
@@ -467,43 +492,6 @@ export class AuthService {
           "Código verificado. Continúa para crear una nueva contraseña."
         );
         return { error: null, verified: true };
-      })
-      .finally(() => this.loadingService.hide());
-  }
-
-  /**
-   * Actualiza la metadata del usuario autenticado agregando el idPersona
-   * retornado por el backend al crear la información personal.
-   *
-   * @param idPersona ID de la persona creada en el backend
-   * @returns Promise con posible error
-   */
-  updatePersonaId(idPersona: number): Promise<{ error: Error | null }> {
-    this.loadingService.show();
-
-    if (!this._session) {
-      const error = new Error("No hay sesión activa para actualizar metadata.");
-      this.notificationService.showError(error.message);
-      this.loadingService.hide();
-      return Promise.resolve({ error });
-    }
-
-    return this.supabase.auth
-      .updateUser({
-        data: {
-          // Se agrega / sobreescribe idPersona. Supabase hace merge de metadata existente.
-          idPersona,
-        },
-      })
-      .then(({ error }) => {
-        if (error) {
-          this.notificationService.showError(
-            `Error al actualizar metadata: ${error.message}`
-          );
-          return { error };
-        }
-        console.log("Metadata actualizada (idPersona agregado).");
-        return { error: null };
       })
       .finally(() => this.loadingService.hide());
   }

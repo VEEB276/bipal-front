@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
+import { catchError, map, tap } from "rxjs/operators";
 import { environment } from "../../../../environments/environment";
 import { PersonaDto, PersonaCreateDto, PersonaUpdateDto, TipoDocumentoDto, GeneroDto, EnfoqueDiferencialDto } from "../models";
 import { AuthService } from "../../../core/auth/auth.service";
@@ -63,11 +63,37 @@ export class InformacionPersonalService {
       )
       .pipe(
         tap((resp) => {
-          // aqui solo se deberia actualizar el id de la persona en la sesion getSession()
-          this.auth.updatePersonaId(resp.id).then(() => this.auth.getSession());
+          // Recargar el usuario para reflejar idPersona actualizado en metadata
+          setTimeout(() => {
+            this.auth.reloadUser().then();
+          }, 100);
           this.store.dispatch(HojavidaActions.loadPersonaSuccess({ persona: resp }));
         }),
         catchError(this.handleError)
+      );
+  }
+
+  /**
+   * Ejecuta la migración buscando por número de documento. Si existe una persona previa,
+   * el backend actualizará el idPersona en Supabase. Devuelve true si migró, false si no encontró.
+   * No lanza error en caso de 404; otros códigos se propagan con el manejador estándar.
+   */
+  migrarUsuarioPorNumeroDocumento(numeroDocumento: string): Observable<boolean> {
+    const url = `${this.apiUrl}/migracion-usuario?numero-documento=${encodeURIComponent(numeroDocumento)}`;
+    return this.http
+      .post<void>(url, null, this.httpOptions)
+      .pipe(
+        map(() => true),
+        catchError((err) => {
+          if (err?.status === 404) {
+            // No hay persona previa; no es un error para el flujo
+            return new Observable<boolean>((subscriber) => {
+              subscriber.next(false);
+              subscriber.complete();
+            });
+          }
+          return this.handleError(err);
+        })
       );
   }
 
