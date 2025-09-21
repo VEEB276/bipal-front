@@ -16980,31 +16980,14 @@ var PerfilAcademicoComponent = class _PerfilAcademicoComponent {
   }
   onSubmit() {
     if (!this.perfilForm.valid) {
-      this.markFormGroupTouched(this.perfilForm);
+      this.perfilForm.markAllAsTouched();
       return;
     }
     const payload = this.estudiosArray.controls.map((ctrl) => ctrl.value);
-    this.estudiosService.crearEstudios(payload).subscribe({
-      next: (resp) => console.log("Estudios guardados", resp),
-      error: (err) => console.error("Error guardando estudios", err)
-    });
-  }
-  markFormGroupTouched(formGroup) {
-    Object.keys(formGroup.controls).forEach((key) => {
-      const control = formGroup.get(key);
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      } else if (control instanceof FormArray) {
-        control.controls.forEach((arrayControl) => {
-          if (arrayControl instanceof FormGroup) {
-            this.markFormGroupTouched(arrayControl);
-          } else {
-            arrayControl.markAsTouched();
-          }
-        });
-      } else {
-        control?.markAsTouched();
-      }
+    this.estudiosService.crearEstudios(payload).subscribe((resp) => {
+      if (resp)
+        this.patchFormEstudios(resp);
+      this.cdr.markForCheck();
     });
   }
   // Métodos auxiliares para obtener controles específicos
@@ -19037,4 +19020,4 @@ moment/moment.js:
   (*! license : MIT *)
   (*! momentjs.com *)
 */
-//# sourceMappingURL=chunk-FXNPNPL5.js.map
+//# sourceMappingURL=chunk-GMITBBMM.js.map

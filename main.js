@@ -7179,7 +7179,7 @@ var routes = [
     path: "hoja-de-vida",
     component: LayoutComponent,
     canActivateChild: [hojaDeVidaCanActivateChild],
-    loadChildren: () => import("./chunk-KO5CQOBY.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
+    loadChildren: () => import("./chunk-W2UI2SSW.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
   }
 ];
 

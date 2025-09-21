@@ -34,7 +34,7 @@ var HOJA_DE_VIDA_ROUTES = [
       {
         path: "personal",
         canActivate: [personaPrefetchGuard],
-        loadComponent: () => import("./chunk-FXNPNPL5.js").then((c) => c.SectionContainerHvComponent)
+        loadComponent: () => import("./chunk-GMITBBMM.js").then((c) => c.SectionContainerHvComponent)
       },
       {
         path: "terminos-condiciones",
@@ -56,4 +56,4 @@ var HOJA_DE_VIDA_ROUTES = [
 export {
   HOJA_DE_VIDA_ROUTES
 };
-//# sourceMappingURL=chunk-KO5CQOBY.js.map
+//# sourceMappingURL=chunk-W2UI2SSW.js.map
