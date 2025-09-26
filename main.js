@@ -4,7 +4,7 @@ import {
   MatListItemTitle,
   MatListModule,
   MatNavList
-} from "./chunk-NM6ZVESP.js";
+} from "./chunk-PNDT26PH.js";
 import {
   HttpGetLoadingService,
   LoadingComponent,
@@ -25,7 +25,7 @@ import {
   MatSuffix,
   TopGetLoadingBarComponent,
   _MatInternalFormField
-} from "./chunk-KZXU2P5S.js";
+} from "./chunk-IY2GGB4J.js";
 import {
   CheckboxRequiredValidator,
   DefaultValueAccessor,
@@ -42,11 +42,10 @@ import {
   NG_VALUE_ACCESSOR,
   NgControlStatus,
   NgControlStatusGroup,
-  PatternValidator,
   ReactiveFormsModule,
   Validators,
   ɵNgNoValidate
-} from "./chunk-TPOMRMWK.js";
+} from "./chunk-ONJQGQZH.js";
 import {
   MatCard,
   MatCardActions,
@@ -5520,7 +5519,7 @@ var RegistrarseComponent = class _RegistrarseComponent {
   static \u0275fac = function RegistrarseComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _RegistrarseComponent)(\u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(HttpClient));
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RegistrarseComponent, selectors: [["app-registrarse"]], decls: 33, vars: 6, consts: [[1, "register-form", 3, "formGroup"], [1, "wid-100"], ["matPrefix", "", 1, "prefix-icon"], ["matInput", "", "placeholder", " N\xFAmero de documento sin puntos ni comas", "formControlName", "documentNumber", "inputmode", "numeric", "pattern", "\\\\d*", 3, "input", "paste"], ["matInput", "", "placeholder", "ejemplo@gmail.com", "formControlName", "email"], [3, "change"], ["routerLink", "/terminos-condiciones"], [1, "align-center"], ["mat-flat-button", "", "type", "submit", 1, "mar-05rem", 3, "click", "disabled"]], template: function RegistrarseComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RegistrarseComponent, selectors: [["app-registrarse"]], decls: 33, vars: 6, consts: [[1, "register-form", 3, "formGroup"], [1, "wid-100"], ["matPrefix", "", 1, "prefix-icon"], ["matInput", "", "placeholder", " N\xFAmero de documento sin puntos ni comas", "formControlName", "documentNumber", "inputmode", "numeric", 3, "input", "paste"], ["matInput", "", "placeholder", "ejemplo@gmail.com", "formControlName", "email"], [3, "change"], ["routerLink", "/terminos-condiciones"], [1, "align-center"], ["mat-flat-button", "", "type", "submit", 1, "mar-05rem", 3, "click", "disabled"]], template: function RegistrarseComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "form", 0)(1, "h2");
       \u0275\u0275text(2, "Registrarme");
@@ -5603,7 +5602,6 @@ var RegistrarseComponent = class _RegistrarseComponent {
     DefaultValueAccessor,
     NgControlStatus,
     NgControlStatusGroup,
-    PatternValidator,
     FormGroupDirective,
     FormControlName,
     MatCheckbox
@@ -5631,7 +5629,6 @@ var RegistrarseComponent = class _RegistrarseComponent {
       placeholder=" N\xFAmero de documento sin puntos ni comas"
       formControlName="documentNumber"
       inputmode="numeric"
-      pattern="\\\\d*"
       (input)="onDocumentInput($event)"
       (paste)="onDocumentPaste($event)"
     />
@@ -7188,7 +7185,7 @@ var routes = [
     data: {
       backButton: true
     },
-    loadComponent: () => import("./chunk-WUAPKPEO.js").then((m) => m.TerminosCondicionesComponent)
+    loadComponent: () => import("./chunk-SGNSDAXC.js").then((m) => m.TerminosCondicionesComponent)
   },
   {
     path: "auth",
@@ -7221,7 +7218,7 @@ var routes = [
     path: "hoja-de-vida",
     component: LayoutComponent,
     canActivateChild: [hojaDeVidaCanActivateChild],
-    loadChildren: () => import("./chunk-DT64EZGH.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
+    loadChildren: () => import("./chunk-RHNA4VRV.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
   }
 ];
 

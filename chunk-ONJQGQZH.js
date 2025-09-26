@@ -7262,7 +7262,6 @@ export {
   MinValidator,
   CheckboxRequiredValidator,
   MaxLengthValidator,
-  PatternValidator,
   FormArray,
   FormBuilder,
   FormsModule,
@@ -7279,4 +7278,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-TPOMRMWK.js.map
+//# sourceMappingURL=chunk-ONJQGQZH.js.map

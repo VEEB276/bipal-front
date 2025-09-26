@@ -34,11 +34,11 @@ var HOJA_DE_VIDA_ROUTES = [
       {
         path: "personal",
         canActivate: [personaPrefetchGuard],
-        loadComponent: () => import("./chunk-TJNGS7RQ.js").then((c) => c.SectionContainerHvComponent)
+        loadComponent: () => import("./chunk-ZXO2IY7S.js").then((c) => c.SectionContainerHvComponent)
       },
       {
         path: "terminos-condiciones",
-        loadComponent: () => import("./chunk-WUAPKPEO.js").then((c) => c.TerminosCondicionesComponent)
+        loadComponent: () => import("./chunk-SGNSDAXC.js").then((c) => c.TerminosCondicionesComponent)
       },
       {
         path: "eliminar-datos",
@@ -56,4 +56,4 @@ var HOJA_DE_VIDA_ROUTES = [
 export {
   HOJA_DE_VIDA_ROUTES
 };
-//# sourceMappingURL=chunk-DT64EZGH.js.map
+//# sourceMappingURL=chunk-RHNA4VRV.js.map
