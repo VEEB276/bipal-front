@@ -5,7 +5,7 @@ import {
   MatCardHeader,
   MatCardModule,
   MatCardTitle
-} from "./chunk-BYQETCUD.js";
+} from "./chunk-XU2DUK2U.js";
 import {
   AuthService,
   ConfirmDialogService,
@@ -13,7 +13,7 @@ import {
   Store,
   environment,
   selectIdPersona
-} from "./chunk-FGT3NZXF.js";
+} from "./chunk-RWPPG3FS.js";
 import "./chunk-EGGHZP6O.js";
 import {
   CommonModule,
@@ -36,7 +36,7 @@ import {
   ɵɵelementStart,
   ɵɵlistener,
   ɵɵtext
-} from "./chunk-IXVPDR65.js";
+} from "./chunk-NCZTTRTX.js";
 import "./chunk-UGR6JUJC.js";
 
 // src/app/modules/hojadevida/pages/eliminar-datos/services/eliminar-datos.service.ts
@@ -119,4 +119,4 @@ var EliminarDatosComponent = class _EliminarDatosComponent {
 export {
   EliminarDatosComponent
 };
-//# sourceMappingURL=chunk-CERP4WZU.js.map
+//# sourceMappingURL=chunk-CEYYNCMU.js.map

@@ -5,11 +5,11 @@ import {
   hojavidaReducer,
   personaPrefetchGuard,
   provideState
-} from "./chunk-FGT3NZXF.js";
+} from "./chunk-RWPPG3FS.js";
 import "./chunk-EGGHZP6O.js";
 import {
   inject
-} from "./chunk-IXVPDR65.js";
+} from "./chunk-NCZTTRTX.js";
 import "./chunk-UGR6JUJC.js";
 
 // src/app/modules/hojadevida/guard/desactivate-hoja-vida-form.guard.ts
@@ -34,15 +34,15 @@ var HOJA_DE_VIDA_ROUTES = [
       {
         path: "personal",
         canActivate: [personaPrefetchGuard],
-        loadComponent: () => import("./chunk-GMITBBMM.js").then((c) => c.SectionContainerHvComponent)
+        loadComponent: () => import("./chunk-FBAFSZEO.js").then((c) => c.SectionContainerHvComponent)
       },
       {
         path: "terminos-condiciones",
-        loadComponent: () => import("./chunk-CYJYMGV7.js").then((c) => c.TerminosCondicionesComponent)
+        loadComponent: () => import("./chunk-SGNSDAXC.js").then((c) => c.TerminosCondicionesComponent)
       },
       {
         path: "eliminar-datos",
-        loadComponent: () => import("./chunk-CERP4WZU.js").then((c) => c.EliminarDatosComponent)
+        loadComponent: () => import("./chunk-CEYYNCMU.js").then((c) => c.EliminarDatosComponent)
       }
     ]
   },
@@ -56,4 +56,4 @@ var HOJA_DE_VIDA_ROUTES = [
 export {
   HOJA_DE_VIDA_ROUTES
 };
-//# sourceMappingURL=chunk-W2UI2SSW.js.map
+//# sourceMappingURL=chunk-LDQCAM62.js.map

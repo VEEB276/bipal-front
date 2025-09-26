@@ -45657,6 +45657,7 @@ export {
   bootstrapApplication,
   HttpHeaders,
   HttpParams,
+  HttpResponse,
   HttpClient,
   provideHttpClient,
   withInterceptors,
@@ -45775,4 +45776,4 @@ export {
    * found in the LICENSE file at https://angular.dev/license
    *)
 */
-//# sourceMappingURL=chunk-IXVPDR65.js.map
+//# sourceMappingURL=chunk-NCZTTRTX.js.map

@@ -1,8 +1,8 @@
-import "./chunk-AULEXFFY.js";
+import "./chunk-PNDT26PH.js";
 import {
   MatDivider,
   MatDividerModule
-} from "./chunk-TRD36DVC.js";
+} from "./chunk-ONJQGQZH.js";
 import {
   ActivatedRoute,
   Component,
@@ -20,7 +20,7 @@ import {
   ɵɵelementStart,
   ɵɵtemplate,
   ɵɵtext
-} from "./chunk-IXVPDR65.js";
+} from "./chunk-NCZTTRTX.js";
 import "./chunk-UGR6JUJC.js";
 
 // src/app/modules/hojadevida/pages/terminos-condiciones/terminos-condiciones.component.ts
@@ -137,4 +137,4 @@ var TerminosCondicionesComponent = class _TerminosCondicionesComponent {
 export {
   TerminosCondicionesComponent
 };
-//# sourceMappingURL=chunk-CYJYMGV7.js.map
+//# sourceMappingURL=chunk-SGNSDAXC.js.map

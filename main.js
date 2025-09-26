@@ -4,13 +4,10 @@ import {
   MatListItemTitle,
   MatListModule,
   MatNavList
-} from "./chunk-AULEXFFY.js";
+} from "./chunk-PNDT26PH.js";
 import {
-  DateAdapter,
   HttpGetLoadingService,
   LoadingComponent,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
   MatAccordion,
   MatError,
   MatExpansionModule,
@@ -26,10 +23,9 @@ import {
   MatLabel,
   MatPrefix,
   MatSuffix,
-  NativeDateAdapter,
   TopGetLoadingBarComponent,
   _MatInternalFormField
-} from "./chunk-K7O4JYQB.js";
+} from "./chunk-BXUHSUVD.js";
 import {
   CheckboxRequiredValidator,
   DefaultValueAccessor,
@@ -49,7 +45,7 @@ import {
   ReactiveFormsModule,
   Validators,
   ɵNgNoValidate
-} from "./chunk-TRD36DVC.js";
+} from "./chunk-ONJQGQZH.js";
 import {
   MatCard,
   MatCardActions,
@@ -57,7 +53,7 @@ import {
   MatCardHeader,
   MatCardModule,
   MatCardTitle
-} from "./chunk-BYQETCUD.js";
+} from "./chunk-XU2DUK2U.js";
 import {
   ActionsSubject,
   AuthService,
@@ -88,7 +84,7 @@ import {
   environment,
   provideStore,
   toSignal
-} from "./chunk-FGT3NZXF.js";
+} from "./chunk-RWPPG3FS.js";
 import "./chunk-EGGHZP6O.js";
 import {
   A11yModule,
@@ -114,6 +110,7 @@ import {
   FocusTrapFactory,
   HostAttributeToken,
   HttpClient,
+  HttpResponse,
   Inject,
   Injectable,
   InjectionToken,
@@ -253,7 +250,7 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵviewQuery
-} from "./chunk-IXVPDR65.js";
+} from "./chunk-NCZTTRTX.js";
 import {
   __async,
   __spreadProps,
@@ -6682,26 +6679,35 @@ var ContainerAuthComponent = class _ContainerAuthComponent {
   static \u0275fac = function ContainerAuthComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _ContainerAuthComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ContainerAuthComponent, selectors: [["app-container-auth"]], ngContentSelectors: _c05, decls: 6, vars: 0, consts: [[1, "mat-card-container"], ["src", "assets/img/banco_info_perfiles.svg", 1, "img-perfiles"]], template: function ContainerAuthComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _ContainerAuthComponent, selectors: [["app-container-auth"]], ngContentSelectors: _c05, decls: 10, vars: 0, consts: [[1, "mat-card-container"], ["src", "assets/img/banco_info_perfiles.svg", 1, "img-perfiles"], ["mat-button", "", 3, "click"]], template: function ContainerAuthComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef();
       \u0275\u0275elementStart(0, "div")(1, "mat-card", 0);
       \u0275\u0275element(2, "img", 1);
       \u0275\u0275elementStart(3, "div");
       \u0275\u0275element(4, "br");
-      \u0275\u0275projection(5);
+      \u0275\u0275elementStart(5, "button", 2);
+      \u0275\u0275listener("click", function ContainerAuthComponent_Template_button_click_5_listener() {
+        return ctx.volver();
+      });
+      \u0275\u0275elementStart(6, "mat-icon");
+      \u0275\u0275text(7, "arrow_back");
+      \u0275\u0275elementEnd();
+      \u0275\u0275text(8, " volver ");
+      \u0275\u0275elementEnd();
+      \u0275\u0275projection(9);
       \u0275\u0275elementEnd()()();
     }
-  }, dependencies: [MatCard, MatButtonModule], styles: ["\n\n.mat-card-container[_ngcontent-%COMP%] {\n  margin-top: 2rem;\n  padding: 2rem;\n  background-color: #eeeeee;\n  border-radius: 1.7rem;\n  max-width: 860px;\n}\n.img-perfiles[_ngcontent-%COMP%] {\n  border-radius: 1.7rem 1.7rem 0rem;\n  width: 100%;\n}\n/*# sourceMappingURL=container-auth.component.css.map */"] });
+  }, dependencies: [MatCard, MatButtonModule, MatButton, MatIconModule, MatIcon], styles: ["\n\n.mat-card-container[_ngcontent-%COMP%] {\n  margin-top: 2rem;\n  padding: 2rem;\n  background-color: #eeeeee;\n  border-radius: 1.7rem;\n  max-width: 860px;\n}\n.img-perfiles[_ngcontent-%COMP%] {\n  border-radius: 1.7rem 1.7rem 0rem;\n  width: 100%;\n}\n/*# sourceMappingURL=container-auth.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ContainerAuthComponent, [{
     type: Component,
-    args: [{ selector: "app-container-auth", imports: [MatCard, MatButtonModule], template: '<div>\n    <mat-card class="mat-card-container">\n        <img src="assets/img/banco_info_perfiles.svg" class="img-perfiles" />\n        <div>\n            <br>\n            <!-- contenido aqui, ojito con el height porque esta a la\n            <br> fuerza y no depende del tama\xF1o de los componentes que van a qui adentro xd -->\n            <!-- @if (comprobarCodigoP) {\n                <button mat-button (click)="volver()">\n                    <mat-icon>arrow_back</mat-icon>\n                    volver</button>\n                <app-comprobar-codigo [email]="emailUser()"  (next)="verificarCodigoValido($event)"> </app-comprobar-codigo>\n\n            }\n            @else{\n                <app-crear-clave></app-crear-clave>\n            } -->\n            <ng-content></ng-content>\n        </div>\n    </mat-card>\n</div>\n', styles: ["/* src/app/modules/auth/components/container-auth/container-auth.component.scss */\n.mat-card-container {\n  margin-top: 2rem;\n  padding: 2rem;\n  background-color: #eeeeee;\n  border-radius: 1.7rem;\n  max-width: 860px;\n}\n.img-perfiles {\n  border-radius: 1.7rem 1.7rem 0rem;\n  width: 100%;\n}\n/*# sourceMappingURL=container-auth.component.css.map */\n"] }]
+    args: [{ selector: "app-container-auth", imports: [MatCard, MatButtonModule, MatIconModule], template: '<div>\n  <mat-card class="mat-card-container">\n    <img src="assets/img/banco_info_perfiles.svg" class="img-perfiles" />\n    <div>\n      <br />\n      <button mat-button (click)="volver()">\n        <mat-icon>arrow_back</mat-icon>\n        volver\n      </button>\n      <!-- contenido aqui, ojito con el height porque esta a la\n            <br> fuerza y no depende del tama\xF1o de los componentes que van a qui adentro xd -->\n      <!-- @if (comprobarCodigoP) {\n                <app-comprobar-codigo [email]="emailUser()"  (next)="verificarCodigoValido($event)"> </app-comprobar-codigo>\n\n            }\n            @else{\n                <app-crear-clave></app-crear-clave>\n            } -->\n      <ng-content></ng-content>\n    </div>\n  </mat-card>\n</div>\n', styles: ["/* src/app/modules/auth/components/container-auth/container-auth.component.scss */\n.mat-card-container {\n  margin-top: 2rem;\n  padding: 2rem;\n  background-color: #eeeeee;\n  border-radius: 1.7rem;\n  max-width: 860px;\n}\n.img-perfiles {\n  border-radius: 1.7rem 1.7rem 0rem;\n  width: 100%;\n}\n/*# sourceMappingURL=container-auth.component.css.map */\n"] }]
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ContainerAuthComponent, { className: "ContainerAuthComponent", filePath: "src/app/modules/auth/components/container-auth/container-auth.component.ts", lineNumber: 12 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ContainerAuthComponent, { className: "ContainerAuthComponent", filePath: "src/app/modules/auth/components/container-auth/container-auth.component.ts", lineNumber: 13 });
 })();
 
 // src/app/modules/auth/components/comprobar-codigo/comprobar-codigo.component.ts
@@ -7146,7 +7152,7 @@ var routes = [
     data: {
       backButton: true
     },
-    loadComponent: () => import("./chunk-CYJYMGV7.js").then((m) => m.TerminosCondicionesComponent)
+    loadComponent: () => import("./chunk-SGNSDAXC.js").then((m) => m.TerminosCondicionesComponent)
   },
   {
     path: "auth",
@@ -7179,7 +7185,7 @@ var routes = [
     path: "hoja-de-vida",
     component: LayoutComponent,
     canActivateChild: [hojaDeVidaCanActivateChild],
-    loadChildren: () => import("./chunk-W2UI2SSW.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
+    loadChildren: () => import("./chunk-LDQCAM62.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
   }
 ];
 
@@ -8627,6 +8633,37 @@ var authInterceptor = (req, next) => {
   return next(req);
 };
 
+// src/app/core/interceptor/date-parse.interceptor.ts
+var dateParseInterceptor = (req, next) => {
+  return next(req).pipe(map((event) => {
+    if (event instanceof HttpResponse && event.body) {
+      event = event.clone({ body: parseDatesInObject(event.body) });
+    }
+    return event;
+  }));
+};
+function parseDatesInObject(obj) {
+  if (!obj)
+    return obj;
+  if (typeof obj === "string" && /^\d{4}-\d{2}-\d{2}$/.test(obj)) {
+    const [y, m, d] = obj.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  }
+  if (Array.isArray(obj)) {
+    return obj.map((item) => parseDatesInObject(item));
+  }
+  if (typeof obj === "object" && obj !== null) {
+    const result = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        result[key] = parseDatesInObject(obj[key]);
+      }
+    }
+    return result;
+  }
+  return obj;
+}
+
 // src/app/core/interceptor/loading.interceptor.ts
 var getLoadingInterceptor = (req, next) => {
   if (req.method !== "GET" || req.headers.has("x-disable-get-loading")) {
@@ -8637,73 +8674,22 @@ var getLoadingInterceptor = (req, next) => {
   return next(req).pipe(finalize(() => svc.hide()));
 };
 
-// src/app/core/date/custom-date-adapter.ts
-var EsCoDateAdapter = class _EsCoDateAdapter extends NativeDateAdapter {
-  parse(value) {
-    if (typeof value === "string") {
-      const parts = value.trim().split("/");
-      if (parts.length === 3) {
-        const day = Number(parts[0]);
-        const month = Number(parts[1]) - 1;
-        const year = Number(parts[2]);
-        if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-          const date = new Date(year, month, day);
-          if (date && date.getMonth() === month) {
-            return date;
-          }
-        }
-      }
-    }
-    return value instanceof Date ? value : null;
-  }
-  format(date, displayFormat) {
-    if (!date)
-      return "";
-    const day = this._to2digit(date.getDate());
-    const month = this._to2digit(date.getMonth() + 1);
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
-  _to2digit(n) {
-    return ("00" + n).slice(-2);
-  }
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275EsCoDateAdapter_BaseFactory;
-    return function EsCoDateAdapter_Factory(__ngFactoryType__) {
-      return (\u0275EsCoDateAdapter_BaseFactory || (\u0275EsCoDateAdapter_BaseFactory = \u0275\u0275getInheritedFactory(_EsCoDateAdapter)))(__ngFactoryType__ || _EsCoDateAdapter);
-    };
-  })();
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _EsCoDateAdapter, factory: _EsCoDateAdapter.\u0275fac });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(EsCoDateAdapter, [{
-    type: Injectable
-  }], null, null);
-})();
-
-// src/app/core/date/date-formats.ts
-var ES_CO_DATE_FORMATS = {
-  parse: { dateInput: "DD/MM/YYYY" },
-  display: {
-    dateInput: "DD/MM/YYYY",
-    monthYearLabel: "MMM YYYY",
-    dateA11yLabel: "DD/MM/YYYY",
-    monthYearA11yLabel: "MMMM YYYY"
-  }
-};
-
 // src/app/app.config.ts
 var appConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor, getLoadingInterceptor])),
+    provideHttpClient(withInterceptors([
+      authInterceptor,
+      dateParseInterceptor,
+      getLoadingInterceptor
+    ])),
     provideStore({}),
     provideEffects([]),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
-    { provide: MAT_DATE_LOCALE, useValue: "es-CO" },
-    { provide: DateAdapter, useClass: EsCoDateAdapter },
-    { provide: MAT_DATE_FORMATS, useValue: ES_CO_DATE_FORMATS },
+    // ...provideCustomDateAdapter(),
+    // provideNativeDateAdapter(ES_CO_DATE_FORMATS),
+    // provideMomentDateAdapter(MY_DATE_FORMATS)
     ...I18N_PROVIDERS
   ]
 };
