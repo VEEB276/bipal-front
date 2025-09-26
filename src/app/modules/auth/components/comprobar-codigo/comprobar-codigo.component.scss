@@ -15,8 +15,11 @@
     gap: 8px;
     .squares {
         width: 2.5rem;
+        height: 5rem;
         ::ng-deep .mat-mdc-text-field-wrapper{
             height: 2.5rem;
+            font-size: 2rem;
+            padding: 0;
         }
     }
 }

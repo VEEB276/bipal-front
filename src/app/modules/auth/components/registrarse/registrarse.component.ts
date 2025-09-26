@@ -112,6 +112,37 @@ export class RegistrarseComponent {
     }
   }
 
+  // Keep only digits when the user types
+  onDocumentInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const sanitized = input.value.replace(/\D+/g, "");
+    if (sanitized !== input.value) {
+      // update the native input and the form control without emitting another input event
+      input.value = sanitized;
+      this.registerForm.controls["documentNumber"].setValue(sanitized, {
+        emitEvent: false,
+      });
+    }
+  }
+
+  // Handle paste: filter out non-digits
+  onDocumentPaste(event: ClipboardEvent) {
+    const paste = event.clipboardData?.getData("text") ?? "";
+    const sanitized = paste.replace(/\D+/g, "");
+    if (sanitized !== paste) {
+      event.preventDefault();
+      // insert sanitized value at cursor position
+      const input = event.target as HTMLInputElement;
+      const start = input.selectionStart ?? input.value.length;
+      const end = input.selectionEnd ?? input.value.length;
+      const newValue = input.value.slice(0, start) + sanitized + input.value.slice(end);
+      input.value = newValue.replace(/\D+/g, "");
+      this.registerForm.controls["documentNumber"].setValue(input.value, {
+        emitEvent: false,
+      });
+    }
+  }
+
   private startCooldown(seconds: number) {
     this.isCooldown = true;
     this.cooldownSeconds = seconds;

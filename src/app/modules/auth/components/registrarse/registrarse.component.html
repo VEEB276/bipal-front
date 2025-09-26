@@ -8,6 +8,10 @@
       matInput
       placeholder=" Número de documento sin puntos ni comas"
       formControlName="documentNumber"
+      inputmode="numeric"
+      pattern="\\d*"
+      (input)="onDocumentInput($event)"
+      (paste)="onDocumentPaste($event)"
     />
     @if (registerForm.controls['documentNumber'].hasError('required')) {
     <mat-error

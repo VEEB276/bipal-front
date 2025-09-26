@@ -20,6 +20,8 @@ export class AuthService {
   _session: AuthSession | null = null;
   private _sessionLoadingPromise: Promise<AuthSession | null> | null = null;
   private _recoveryMode = false;
+  // Sesión temporal devuelta por verifyOtp (no persistida)
+  private _transientSession: AuthSession | null = null;
 
   //inyeccion de depdencias
   private readonly router = inject(Router);
@@ -284,32 +286,34 @@ export class AuthService {
           return { error, verified: false };
         }
 
-        // Guardar sesión temporal para el siguiente paso
-        this._session = data.session;
-        // Persistir sesión para que sobreviva a recargas durante el onboarding
-        if (data.session) {
-          this.supabase.auth.setSession(data.session);
+        // Guardar sesión temporal (no persistente) para el siguiente paso
+        this._transientSession = data.session ?? null;
+        // Actualizar metadata para reflejar avance del onboarding usando sesión temporal
+        if (this._transientSession) {
+          return this.withTransientSession(this._transientSession, () =>
+            this.supabase.auth.updateUser({
+              data: {
+                onboarding_step: "otp_verified",
+              },
+            })
+          )
+            .then(({ error: updateError }) => {
+              if (updateError) {
+                // No es crítico, solo avisamos
+                this.notificationService.showError(
+                  `Código verificado pero fallo: ${updateError.message}`
+                );
+              } else {
+                this.notificationService.showSuccess(
+                  "Código verificado exitosamente"
+                );
+              }
+              return { error: updateError ?? error, verified: true };
+            });
         }
-        // Actualizar metadata para reflejar avance del onboarding
-        return this.supabase.auth
-          .updateUser({
-            data: {
-              onboarding_step: "otp_verified",
-            },
-          })
-          .then(({ error: updateError }) => {
-            if (updateError) {
-              // No es crítico, solo avisamos
-              this.notificationService.showError(
-                `Código verificado pero fallo: ${updateError.message}`
-              );
-            } else {
-              this.notificationService.showSuccess(
-                "Código verificado exitosamente"
-              );
-            }
-            return { error: updateError ?? error, verified: true };
-          });
+        // No hay sesión (muy raro), pero igualmente devolvemos verificación
+        this.notificationService.showSuccess("Código verificado exitosamente");
+        return { error: null as any, verified: true };
       })
       .finally(() => {
         this.loadingService.hide();
@@ -330,23 +334,27 @@ export class AuthService {
     password: string
   ): Promise<{ user: User | null; error: Error | null }> {
     this.loadingService.show();
-    // Asegurar que haya sesión activa (puede venir de verifyEmailCode o de storage tras reload)
-    return this.ensureSessionLoaded()
-      .then((session) => {
-        if (!session) {
-          const err = new Error(
-            "Sesión no encontrada. Verifique el código antes de crear la contraseña."
-          );
-          this.notificationService.showError(err.message);
-          throw err;
-        }
-        return this.supabase.auth.updateUser({
+    // Intentar usar sesión persistente; si no existe, usar sesión transitoria guardada por verify
+    const tryAction = async () => {
+      const session = this._session ?? this._transientSession ?? (await this.ensureSessionLoaded());
+      if (!session) {
+        const err = new Error(
+          "Sesión no encontrada. Verifique el código antes de crear la contraseña."
+        );
+        this.notificationService.showError(err.message);
+        throw err;
+      }
+      return this.withTransientSession(session, () =>
+        this.supabase.auth.updateUser({
           password,
           data: {
             onboarding_step: "completed",
           },
-        });
-      })
+        })
+      );
+    };
+
+    return tryAction()
       .then(({ data, error }) => {
         if (error) {
           this.notificationService.showError(
@@ -360,6 +368,8 @@ export class AuthService {
             "Cuenta completada exitosamente"
           );
         }
+        // Limpiar sesión transitoria después de completar el flujo
+        this._transientSession = null;
         return { user: data?.user ?? null, error: null };
       })
       .catch((err) => {
@@ -461,17 +471,18 @@ export class AuthService {
     password: string
   ): Promise<{ error: Error | null }> {
     this.loadingService.show();
-    return this.ensureSessionLoaded()
-      .then((session) => {
-        if (!session) {
-          const err = new Error(
-            "No hay sesión activa para actualizar la contraseña."
-          );
-          this.notificationService.showError(err.message);
-          throw err;
-        }
-        return this.supabase.auth.updateUser({ password });
-      })
+    // Preferir sesión persistente; si no existe, usar la transitoria
+    const doUpdate = async () => {
+      const session = this._session ?? this._transientSession ?? (await this.ensureSessionLoaded());
+      if (!session) {
+        const err = new Error("No hay sesión activa para actualizar la contraseña.");
+        this.notificationService.showError(err.message);
+        throw err;
+      }
+      return this.withTransientSession(session, () => this.supabase.auth.updateUser({ password }));
+    };
+
+    return doUpdate()
       .then(async ({ error }) => {
         if (error) {
           this.notificationService.showError(
@@ -494,6 +505,8 @@ export class AuthService {
         this.notificationService.showSuccess(
           "Se ha cambiado la clave con exito, ya puede ingresar con la nueva contraseña."
         );
+        // Limpiar sesión transitoria
+        this._transientSession = null;
         return { error: null };
       })
       .catch((e: unknown) => {
@@ -521,14 +534,44 @@ export class AuthService {
           );
           return { error, verified: false };
         }
-        // Guardar y persistir sesión de recovery
-        this._session = data.session;
-        if (data.session) this.supabase.auth.setSession(data.session);
+        // Guardar sesión temporal (no persistente) para permitir reset de contraseña
+        this._transientSession = data.session ?? null;
         this.notificationService.showSuccess(
           "Código verificado. Continúa para crear una nueva contraseña."
         );
         return { error: null, verified: true };
       })
       .finally(() => this.loadingService.hide());
+  }
+
+  /**
+   * Ejecuta una acción que requiere que el cliente supabase tenga la sesión activa.
+   * Se establece la sesión proporcionada temporalmente en el cliente, se ejecuta la
+   * acción y se restaura la sesión previa (o se limpia) para evitar persistencia accidental.
+   */
+  private async withTransientSession<T>(session: AuthSession | null, action: () => Promise<T>): Promise<T> {
+    const previous = this._session;
+    try {
+      if (session) {
+        // Establecer temporalmente en el cliente (esto escribe en storage)
+        await this.supabase.auth.setSession(session as any);
+        this._session = session;
+      }
+      const result = await action();
+      return result;
+    } finally {
+      // Restaurar sesión anterior (o limpiar) para evitar que la session temporal persista
+      try {
+        if (previous) {
+          await this.supabase.auth.setSession(previous as any);
+          this._session = previous;
+        } else {
+          await this.supabase.auth.setSession(null);
+          this._session = null;
+        }
+      } catch (e) {
+        console.warn('Error restoring session after transient action', (e as Error).message);
+      }
+    }
   }
 }
