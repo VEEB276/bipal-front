@@ -24,6 +24,7 @@ import { selectIdHojaVida, selectIdPersona } from "../../store";
 import { SkeletonBannerComponent } from "../../../../core/components";
 import { ConfirmDialogService } from "../../../../core/services";
 import { ScrollFirstInvalidDirective } from "../../../../core/directives";
+import { HOJA_DE_VIDA_PROVIDERS } from '../../../../shared/providers/custom.provider';
 
 @Component({
   selector: "app-otros-estudios",
@@ -39,6 +40,9 @@ import { ScrollFirstInvalidDirective } from "../../../../core/directives";
     MatDividerModule,
     ScrollFirstInvalidDirective,
     SkeletonBannerComponent,
+  ],
+  providers: [
+    ...HOJA_DE_VIDA_PROVIDERS
   ],
   templateUrl: "./otros-estudios.component.html",
   styleUrls: ["./otros-estudios.component.scss"],
@@ -130,7 +134,7 @@ export class OtrosEstudiosComponent implements OnInit {
     this.confirm
       .open({
         title: "Confirmar eliminación",
-        message: `¿Deseas eliminar el estudio ${label}?`,
+        message: `¿Deseas eliminar el estudio <strong>${label}</strong>?`,
         type: "delete",
       })
       .subscribe((ok) => {

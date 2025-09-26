@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, ErrorStateMatcher } from '@angular/material/core';
 import { ExperienciaHvDto, TipoExperienciaOption } from './interfaces/experiencia.interface';
 import { ExperienciaService } from './services/experiencia.service';
 import { Store } from '@ngrx/store';
@@ -18,6 +18,7 @@ import { selectIdHojaVida, selectIdPersona } from '../../store';
 import { SkeletonBannerComponent } from '../../../../core/components';
 import { ScrollFirstInvalidDirective } from '../../../../core/directives';
 import { ConfirmDialogService } from '../../../../core/services';
+import { HOJA_DE_VIDA_PROVIDERS } from '../../../../shared/providers/custom.provider';
 
 @Component({
   selector: 'app-experiencia',
@@ -38,7 +39,10 @@ import { ConfirmDialogService } from '../../../../core/services';
     ScrollFirstInvalidDirective
   ],
   templateUrl: './experiencia.component.html',
-  styleUrls: ['./experiencia.component.scss']
+  styleUrls: ['./experiencia.component.scss'],
+  providers: [
+    ...HOJA_DE_VIDA_PROVIDERS
+  ]
 })
 export class ExperienciaComponent implements OnInit {
   experienciaForm: FormGroup;
@@ -116,7 +120,7 @@ export class ExperienciaComponent implements OnInit {
     const label = (cargo || empresa) ? `"${cargo || empresa}"` : 'seleccionado';
     this.confirm.open({
       title: 'Confirmar eliminación',
-      message: `¿Deseas eliminar el registro de experiencia ${label}?`,
+      message: `¿Deseas eliminar el registro de experiencia <strong>${label}</strong>?`,
       type: 'delete'
     }).subscribe(ok => {
       if (!ok) return;

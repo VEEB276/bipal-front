@@ -3,7 +3,7 @@
 }
 
 .info-personal-container {
-  padding: 1.5rem;
+  padding: 1.5rem 0;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -41,9 +41,6 @@
 
 // Responsive breakpoints
 @media (max-width: 768px) {
-  .info-personal-container {
-    padding: 16px;
-  }
   
   .personal-info-form {
     .form-row {

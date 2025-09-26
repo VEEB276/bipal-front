@@ -1,24 +1,55 @@
 import { Injectable } from '@angular/core';
 import { NativeDateAdapter } from '@angular/material/core';
+import moment from 'moment';
 
 @Injectable()
 export class EsCoDateAdapter extends NativeDateAdapter {
   override parse(value: any): Date | null {
+    console.log('🔍 EsCoDateAdapter.parse called with:', value, typeof value);
+    
+    if (value == null || value === '') return null;
+    
+    if (value instanceof Date && !isNaN(value.getTime())) {
+      console.log('✅ Already a valid Date:', value);
+      return value;
+    }
+
     if (typeof value === 'string') {
-      const parts = value.trim().split('/');
-      if (parts.length === 3) {
-        const day = Number(parts[0]);
-        const month = Number(parts[1]) - 1;
-        const year = Number(parts[2]);
-        if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-          const date = new Date(year, month, day);
-            if (date && date.getMonth() === month) {
-              return date;
-            }
+      const trimmed = value.trim();
+      
+      // DD/MM/YYYY (entrada manual del usuario)
+      const ddmmyyyy = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+      let match = ddmmyyyy.exec(trimmed);
+      if (match) {
+        const day = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10) - 1;
+        const year = parseInt(match[3], 10);
+        const date = new Date(year, month, day);
+        if (date.getFullYear() === year && date.getMonth() === month && date.getDate() === day) {
+          console.log('✅ Parsed DD/MM/YYYY:', trimmed, '→', date);
+          return date;
         }
       }
+      
+      // YYYY-MM-DD (backend)
+      const yyyymmdd = /^(\d{4})-(\d{2})-(\d{2})$/;
+      match = yyyymmdd.exec(trimmed);
+      if (match) {
+        const year = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10) - 1;
+        const day = parseInt(match[3], 10);
+        const date = new Date(year, month, day);
+        if (date.getFullYear() === year && date.getMonth() === month && date.getDate() === day) {
+          console.log('✅ Parsed YYYY-MM-DD:', trimmed, '→', date);
+          return date;
+        }
+      }
+      
+      console.log('❌ Could not parse string:', trimmed);
     }
-    return value instanceof Date ? value : null;
+    
+    console.log('❌ Invalid value type or value:', value);
+    return null;
   }
 
   override format(date: Date, displayFormat: Object): string {

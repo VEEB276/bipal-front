@@ -34,6 +34,8 @@ import { forkJoin, tap } from "rxjs";
 import { ConfirmDialogService } from "../../../../core/services";
 import { SkeletonBannerComponent } from "../../../../core/components";
 import { ScrollFirstInvalidDirective } from "../../../../core/directives";
+import { HOJA_DE_VIDA_PROVIDERS } from '../../../../shared/providers/custom.provider';
+
 
 @Component({
   selector: "app-perfil-academico",
@@ -51,6 +53,7 @@ import { ScrollFirstInvalidDirective } from "../../../../core/directives";
     ScrollFirstInvalidDirective,
     SkeletonBannerComponent,
   ],
+  providers: [...HOJA_DE_VIDA_PROVIDERS],
   templateUrl: "./perfil-academico.component.html",
   styleUrls: ["./perfil-academico.component.scss"],
 })
@@ -97,8 +100,8 @@ export class PerfilAcademicoComponent implements OnInit {
     });
   }
 
-  get estudiosArray(): FormArray {
-    return this.perfilForm.get("estudios") as FormArray;
+  get estudiosArray() {
+    return this.perfilForm.get("estudios") as FormArray<FormGroup>;
   }
 
   createEstudioFormGroup(): FormGroup {

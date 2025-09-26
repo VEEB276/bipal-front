@@ -1,6 +1,6 @@
 <div class="info-personal-container">
   <!-- Form Content -->
-  <form [formGroup]="personaForm" (ngSubmit)="onSubmit()" class="personal-info-form">
+  <form [formGroup]="personaForm" class="personal-info-form">
     
     <!-- Nombres Row --------------------------------------------------------------------------------------->
     <div class="form-row">
@@ -95,14 +95,13 @@
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Fecha de Expedición del Documento</mat-label>
+        <mat-label>Fecha de Expedición</mat-label>
         <input matInput [matDatepicker]="expedicionPicker" formControlName="fechaExpedicionDoc" [max]="now" [min]="control('fechaNacimiento')?.value || null" placeholder="DD/MM/YYYY">
         <mat-datepicker-toggle matSuffix [for]="expedicionPicker"></mat-datepicker-toggle>
         <mat-datepicker #expedicionPicker></mat-datepicker>
-        <mat-icon matPrefix>date_range</mat-icon>
         @if (control('fechaExpedicionDoc')?.invalid && control('fechaExpedicionDoc')?.touched) {
           <mat-error>
-            @if (control('fechaExpedicionDoc')?.errors?.['required']) { <span>La fecha de expedición es requerida</span> }
+            @if (control('fechaExpedicionDoc')?.errors?.['required']) { <span>La fecha de expedición del documento es requerida</span> }
             @if (control('fechaExpedicionDoc')?.errors?.['matDatepickerMin']) { <span>No puede ser anterior a la fecha de nacimiento</span> }
           </mat-error>
         }
@@ -260,8 +259,7 @@
 
     <!-- Action Buttons -->
     <div class="form-actions">
-      <button mat-flat-button color="primary" type="submit" 
-             >
+      <button mat-flat-button color="primary" type="button" (click)="onSubmit()">
         <mat-icon>save</mat-icon>
         {{ isEditMode ? 'Actualizar' : 'Guardar' }}
       </button>

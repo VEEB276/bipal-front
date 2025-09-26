@@ -2,10 +2,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatCard } from "@angular/material/card";
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'app-container-auth',
-  imports: [MatCard, MatButtonModule,],
+  imports: [MatCard, MatButtonModule, MatIconModule],
   templateUrl: './container-auth.component.html',
   styleUrl: './container-auth.component.scss'
 })

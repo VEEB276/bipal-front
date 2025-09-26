@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  inject,
-} from "@angular/core";
+import { Component, LOCALE_ID, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
   FormBuilder,
@@ -16,7 +12,12 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatIconModule } from "@angular/material/icon";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatNativeDateModule } from "@angular/material/core";
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+} from "@angular/material/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { Observable } from "rxjs";
@@ -35,6 +36,8 @@ import { AuthService } from "../../../../core/auth/auth.service";
 import { Store } from "@ngrx/store";
 import { HojavidaActions, selectPersona } from "../../store";
 import moment from "moment";
+import { EsCoDateAdapter } from "../../../../core/date/custom-date-adapter";
+import { ES_CO_DATE_FORMATS } from "../../../../core/date/date-formats";
 
 @Component({
   selector: "app-info-personal",
@@ -50,6 +53,15 @@ import moment from "moment";
     MatButtonModule,
     MatSnackBarModule,
     AutocompleteSelectComponent,
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: "es-CO" },
+    {
+      provide: DateAdapter,
+      useClass: EsCoDateAdapter,
+      deps: [MAT_DATE_LOCALE],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: ES_CO_DATE_FORMATS },
   ],
   templateUrl: "./info-personal.component.html",
   styleUrl: "./info-personal.component.scss",
@@ -90,7 +102,11 @@ export class InfoPersonalComponent implements OnInit {
       const ctrlExp = this.control("fechaExpedicionDoc");
       // Si la expedición quedó por debajo del nuevo mínimo, la limpiamos para forzar selección válida
       const nacimientoVal = this.control("fechaNacimiento")?.value;
-      if (nacimientoVal && ctrlExp?.value && new Date(ctrlExp.value) < new Date(nacimientoVal)) {
+      if (
+        nacimientoVal &&
+        ctrlExp?.value &&
+        new Date(ctrlExp.value) < new Date(nacimientoVal)
+      ) {
         ctrlExp.markAsTouched();
       }
     });
@@ -134,7 +150,11 @@ export class InfoPersonalComponent implements OnInit {
       // Información personal básica
       primerNombre: [
         "",
-        [Validators.required, Validators.maxLength(255), Validators.pattern(namePattern)],
+        [
+          Validators.required,
+          Validators.maxLength(255),
+          Validators.pattern(namePattern),
+        ],
       ],
       segundoNombre: [
         "",
@@ -142,7 +162,11 @@ export class InfoPersonalComponent implements OnInit {
       ],
       primerApellido: [
         "",
-        [Validators.required, Validators.maxLength(255), Validators.pattern(namePattern)],
+        [
+          Validators.required,
+          Validators.maxLength(255),
+          Validators.pattern(namePattern),
+        ],
       ],
       segundoApellido: [
         "",
@@ -195,7 +219,11 @@ export class InfoPersonalComponent implements OnInit {
       // informacion de Contacto adicional
       nombreContacto: [
         "",
-        [Validators.required, Validators.maxLength(255), Validators.pattern(namePattern)],
+        [
+          Validators.required,
+          Validators.maxLength(255),
+          Validators.pattern(namePattern),
+        ],
       ],
       telefonoContacto: [
         "",
@@ -210,7 +238,6 @@ export class InfoPersonalComponent implements OnInit {
         [Validators.required, Validators.email, Validators.maxLength(127)],
       ],
     });
-
   }
 
   fetchCiudadDepartamento = (text: string): Observable<any[]> => {

@@ -5,6 +5,7 @@ import { catchError, map, tap } from "rxjs/operators";
 import { environment } from "../../../../environments/environment";
 import { PersonaDto, PersonaCreateDto, PersonaUpdateDto, TipoDocumentoDto, GeneroDto, EnfoqueDiferencialDto } from "../models";
 import { AuthService } from "../../../core/auth/auth.service";
+import moment from 'moment';
 import { Store } from "@ngrx/store";
 import { HojavidaActions } from "../store";
 
@@ -55,10 +56,11 @@ export class InformacionPersonalService {
    */
   crearInformacionPersonal(persona: PersonaCreateDto): Observable<PersonaDto> {
     // Endpoint backend: POST /api/persona/create-persona
+    const payload = this.serializePersonaDates(persona);
     return this.http
       .post<PersonaDto>(
         `${this.apiUrl}/create-persona`,
-        persona,
+        payload,
         this.httpOptions
       )
       .pipe(
@@ -106,13 +108,36 @@ export class InformacionPersonalService {
     persona: PersonaUpdateDto
   ): Observable<PersonaDto> {
     // Endpoint backend: PUT /api/persona/actualizar-persona (id enviado en el body)
+    const payload = this.serializePersonaDates(persona as any);
     return this.http
       .put<PersonaDto>(
         `${this.apiUrl}/actualizar-persona`,
-        persona,
+        payload,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Serializa campos de fecha al formato YYYY-MM-DD esperado por el backend.
+   * Mantiene valores string si ya vienen serializados.
+   */
+  private serializePersonaDates(persona: any) {
+    if (!persona) return persona;
+    const copy = { ...persona };
+    if (copy.fechaExpedicionDoc) {
+      copy.fechaExpedicionDoc = this.formatFecha(copy.fechaExpedicionDoc);
+    }
+    if (copy.fechaNacimiento) {
+      copy.fechaNacimiento = this.formatFecha(copy.fechaNacimiento);
+    }
+    return copy;
+  }
+
+  private formatFecha(f: Date | string | null) {
+    if (!f) return null;
+    if (typeof f === 'string') return f;
+    return moment(f).format('YYYY-MM-DD');
   }
 
   /**

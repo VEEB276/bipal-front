@@ -58,8 +58,24 @@
                 </mat-error>
               </mat-form-field>
             </div>
+            <!-- Segunda Fila: Institución Educativa (full width) -->
+            <div class="form-row">
+              <mat-form-field appearance="fill" class="form-field full-width">
+                <mat-label>Institución Educativa donde cursó el estudio</mat-label>
+                <input
+                  matInput
+                  formControlName="nombreInstitucion"
+                  placeholder="Nombre de la institución"
+                />
+                <mat-icon matPrefix>location_city</mat-icon>
+                <mat-error *ngIf="getEstudioControl(i, 'nombreInstitucion')?.invalid && getEstudioControl(i, 'nombreInstitucion')?.touched">
+                  <span *ngIf="getEstudioControl(i, 'nombreInstitucion')?.errors?.['required']">La institución educativa es requerida</span>
+                  <span *ngIf="getEstudioControl(i, 'nombreInstitucion')?.errors?.['maxlength']">Máximo 255 caracteres</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
 
-            <!-- Segunda Fila: Graduado, Número de Horas, Institución -->
+            <!-- Tercera Fila: Graduado, Número de Horas -->
             <div class="form-row">
               <mat-form-field appearance="fill" class="form-field">
                 <mat-label>Graduado</mat-label>
@@ -113,20 +129,6 @@
                     *ngIf="getEstudioControl(i, 'numeroHoras')?.errors?.['max']"
                     >Máximo 9999 horas</span
                   >
-                </mat-error>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill" class="form-field">
-                <mat-label>Institución Educativa donde cursó el estudio</mat-label>
-                <input
-                  matInput
-                  formControlName="nombreInstitucion"
-                  placeholder="Nombre de la institución"
-                />
-                <mat-icon matPrefix>location_city</mat-icon>
-                <mat-error *ngIf="getEstudioControl(i, 'nombreInstitucion')?.invalid && getEstudioControl(i, 'nombreInstitucion')?.touched">
-                  <span *ngIf="getEstudioControl(i, 'nombreInstitucion')?.errors?.['required']">La institución educativa es requerida</span>
-                  <span *ngIf="getEstudioControl(i, 'nombreInstitucion')?.errors?.['maxlength']">Máximo 255 caracteres</span>
                 </mat-error>
               </mat-form-field>
             </div>
