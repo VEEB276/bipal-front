@@ -20135,6 +20135,8 @@ var AuthService = class _AuthService {
   _session = null;
   _sessionLoadingPromise = null;
   _recoveryMode = false;
+  // Sesión temporal devuelta por verifyOtp (no persistida)
+  _transientSession = null;
   //inyeccion de depdencias
   router = inject(Router);
   loadingService = inject(LoadingService);
@@ -20322,22 +20324,23 @@ var AuthService = class _AuthService {
         this.notificationService.showError(`Error al verificar el c\xF3digo: ${error.message}`);
         return { error, verified: false };
       }
-      this._session = data.session;
-      if (data.session) {
-        this.supabase.auth.setSession(data.session);
+      this._transientSession = data.session ?? null;
+      if (this._transientSession) {
+        return this.withTransientSession(this._transientSession, () => this.supabase.auth.updateUser({
+          data: {
+            onboarding_step: "otp_verified"
+          }
+        })).then(({ error: updateError }) => {
+          if (updateError) {
+            this.notificationService.showError(`C\xF3digo verificado pero fallo: ${updateError.message}`);
+          } else {
+            this.notificationService.showSuccess("C\xF3digo verificado exitosamente");
+          }
+          return { error: updateError ?? error, verified: true };
+        });
       }
-      return this.supabase.auth.updateUser({
-        data: {
-          onboarding_step: "otp_verified"
-        }
-      }).then(({ error: updateError }) => {
-        if (updateError) {
-          this.notificationService.showError(`C\xF3digo verificado pero fallo: ${updateError.message}`);
-        } else {
-          this.notificationService.showSuccess("C\xF3digo verificado exitosamente");
-        }
-        return { error: updateError ?? error, verified: true };
-      });
+      this.notificationService.showSuccess("C\xF3digo verificado exitosamente");
+      return { error: null, verified: true };
     }).finally(() => {
       this.loadingService.hide();
     });
@@ -20354,19 +20357,21 @@ var AuthService = class _AuthService {
    */
   createUserAccount(password) {
     this.loadingService.show();
-    return this.ensureSessionLoaded().then((session) => {
+    const tryAction = () => __async(this, null, function* () {
+      const session = this._session ?? this._transientSession ?? (yield this.ensureSessionLoaded());
       if (!session) {
         const err = new Error("Sesi\xF3n no encontrada. Verifique el c\xF3digo antes de crear la contrase\xF1a.");
         this.notificationService.showError(err.message);
         throw err;
       }
-      return this.supabase.auth.updateUser({
+      return this.withTransientSession(session, () => this.supabase.auth.updateUser({
         password,
         data: {
           onboarding_step: "completed"
         }
-      });
-    }).then(({ data, error }) => {
+      }));
+    });
+    return tryAction().then(({ data, error }) => {
       if (error) {
         this.notificationService.showError(`Error al establecer la contrase\xF1a: ${error.message}`);
         return { user: null, error };
@@ -20374,6 +20379,7 @@ var AuthService = class _AuthService {
       if (data?.user) {
         this.notificationService.showSuccess("Cuenta completada exitosamente");
       }
+      this._transientSession = null;
       return { user: data?.user ?? null, error: null };
     }).catch((err) => {
       return { user: null, error: err };
@@ -20446,14 +20452,16 @@ var AuthService = class _AuthService {
    */
   resetPasswordWithNewPassword(password) {
     this.loadingService.show();
-    return this.ensureSessionLoaded().then((session) => {
+    const doUpdate = () => __async(this, null, function* () {
+      const session = this._session ?? this._transientSession ?? (yield this.ensureSessionLoaded());
       if (!session) {
         const err = new Error("No hay sesi\xF3n activa para actualizar la contrase\xF1a.");
         this.notificationService.showError(err.message);
         throw err;
       }
-      return this.supabase.auth.updateUser({ password });
-    }).then((_0) => __async(this, [_0], function* ({ error }) {
+      return this.withTransientSession(session, () => this.supabase.auth.updateUser({ password }));
+    });
+    return doUpdate().then((_0) => __async(this, [_0], function* ({ error }) {
       if (error) {
         this.notificationService.showError(`No se pudo actualizar la contrase\xF1a: ${error.message}`);
         return { error };
@@ -20465,6 +20473,7 @@ var AuthService = class _AuthService {
         console.warn("Error al cerrar sesi\xF3n tras cambio de contrase\xF1a:", e.message);
       }
       this.notificationService.showSuccess("Se ha cambiado la clave con exito, ya puede ingresar con la nueva contrase\xF1a.");
+      this._transientSession = null;
       return { error: null };
     })).catch((e) => {
       const err = e;
@@ -20482,12 +20491,40 @@ var AuthService = class _AuthService {
         this.notificationService.showError(`C\xF3digo inv\xE1lido o expirado: ${error.message}`);
         return { error, verified: false };
       }
-      this._session = data.session;
-      if (data.session)
-        this.supabase.auth.setSession(data.session);
+      this._transientSession = data.session ?? null;
       this.notificationService.showSuccess("C\xF3digo verificado. Contin\xFAa para crear una nueva contrase\xF1a.");
       return { error: null, verified: true };
     }).finally(() => this.loadingService.hide());
+  }
+  /**
+   * Ejecuta una acción que requiere que el cliente supabase tenga la sesión activa.
+   * Se establece la sesión proporcionada temporalmente en el cliente, se ejecuta la
+   * acción y se restaura la sesión previa (o se limpia) para evitar persistencia accidental.
+   */
+  withTransientSession(session, action) {
+    return __async(this, null, function* () {
+      const previous = this._session;
+      try {
+        if (session) {
+          yield this.supabase.auth.setSession(session);
+          this._session = session;
+        }
+        const result = yield action();
+        return result;
+      } finally {
+        try {
+          if (previous) {
+            yield this.supabase.auth.setSession(previous);
+            this._session = previous;
+          } else {
+            yield this.supabase.auth.setSession(null);
+            this._session = null;
+          }
+        } catch (e) {
+          console.warn("Error restoring session after transient action", e.message);
+        }
+      }
+    });
   }
   static \u0275fac = function AuthService_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _AuthService)();
@@ -22826,4 +22863,4 @@ moment/moment.js:
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-RWPPG3FS.js.map
+//# sourceMappingURL=chunk-LXHKEQQO.js.map

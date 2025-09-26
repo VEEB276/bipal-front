@@ -1,8 +1,8 @@
-import "./chunk-PNDT26PH.js";
+import "./chunk-NM6ZVESP.js";
 import {
   MatDivider,
   MatDividerModule
-} from "./chunk-ONJQGQZH.js";
+} from "./chunk-TPOMRMWK.js";
 import {
   ActivatedRoute,
   Component,
@@ -137,4 +137,4 @@ var TerminosCondicionesComponent = class _TerminosCondicionesComponent {
 export {
   TerminosCondicionesComponent
 };
-//# sourceMappingURL=chunk-SGNSDAXC.js.map
+//# sourceMappingURL=chunk-WUAPKPEO.js.map

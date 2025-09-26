@@ -4,7 +4,7 @@ import {
   MatListItemTitle,
   MatListModule,
   MatNavList
-} from "./chunk-PNDT26PH.js";
+} from "./chunk-NM6ZVESP.js";
 import {
   HttpGetLoadingService,
   LoadingComponent,
@@ -25,7 +25,7 @@ import {
   MatSuffix,
   TopGetLoadingBarComponent,
   _MatInternalFormField
-} from "./chunk-BXUHSUVD.js";
+} from "./chunk-KZXU2P5S.js";
 import {
   CheckboxRequiredValidator,
   DefaultValueAccessor,
@@ -42,10 +42,11 @@ import {
   NG_VALUE_ACCESSOR,
   NgControlStatus,
   NgControlStatusGroup,
+  PatternValidator,
   ReactiveFormsModule,
   Validators,
   ɵNgNoValidate
-} from "./chunk-ONJQGQZH.js";
+} from "./chunk-TPOMRMWK.js";
 import {
   MatCard,
   MatCardActions,
@@ -84,7 +85,7 @@ import {
   environment,
   provideStore,
   toSignal
-} from "./chunk-RWPPG3FS.js";
+} from "./chunk-LXHKEQQO.js";
 import "./chunk-EGGHZP6O.js";
 import {
   A11yModule,
@@ -5474,6 +5475,33 @@ var RegistrarseComponent = class _RegistrarseComponent {
       this.consultarEstadoCodigo();
     }
   }
+  // Keep only digits when the user types
+  onDocumentInput(event) {
+    const input2 = event.target;
+    const sanitized = input2.value.replace(/\D+/g, "");
+    if (sanitized !== input2.value) {
+      input2.value = sanitized;
+      this.registerForm.controls["documentNumber"].setValue(sanitized, {
+        emitEvent: false
+      });
+    }
+  }
+  // Handle paste: filter out non-digits
+  onDocumentPaste(event) {
+    const paste = event.clipboardData?.getData("text") ?? "";
+    const sanitized = paste.replace(/\D+/g, "");
+    if (sanitized !== paste) {
+      event.preventDefault();
+      const input2 = event.target;
+      const start = input2.selectionStart ?? input2.value.length;
+      const end = input2.selectionEnd ?? input2.value.length;
+      const newValue = input2.value.slice(0, start) + sanitized + input2.value.slice(end);
+      input2.value = newValue.replace(/\D+/g, "");
+      this.registerForm.controls["documentNumber"].setValue(input2.value, {
+        emitEvent: false
+      });
+    }
+  }
   startCooldown(seconds) {
     this.isCooldown = true;
     this.cooldownSeconds = seconds;
@@ -5492,7 +5520,7 @@ var RegistrarseComponent = class _RegistrarseComponent {
   static \u0275fac = function RegistrarseComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _RegistrarseComponent)(\u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(HttpClient));
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RegistrarseComponent, selectors: [["app-registrarse"]], decls: 33, vars: 6, consts: [[1, "register-form", 3, "formGroup"], [1, "wid-100"], ["matPrefix", "", 1, "prefix-icon"], ["matInput", "", "placeholder", " N\xFAmero de documento sin puntos ni comas", "formControlName", "documentNumber"], ["matInput", "", "placeholder", "ejemplo@gmail.com", "formControlName", "email"], [3, "change"], ["routerLink", "/terminos-condiciones"], [1, "align-center"], ["mat-flat-button", "", "type", "submit", 1, "mar-05rem", 3, "click", "disabled"]], template: function RegistrarseComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RegistrarseComponent, selectors: [["app-registrarse"]], decls: 33, vars: 6, consts: [[1, "register-form", 3, "formGroup"], [1, "wid-100"], ["matPrefix", "", 1, "prefix-icon"], ["matInput", "", "placeholder", " N\xFAmero de documento sin puntos ni comas", "formControlName", "documentNumber", "inputmode", "numeric", "pattern", "\\\\d*", 3, "input", "paste"], ["matInput", "", "placeholder", "ejemplo@gmail.com", "formControlName", "email"], [3, "change"], ["routerLink", "/terminos-condiciones"], [1, "align-center"], ["mat-flat-button", "", "type", "submit", 1, "mar-05rem", 3, "click", "disabled"]], template: function RegistrarseComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "form", 0)(1, "h2");
       \u0275\u0275text(2, "Registrarme");
@@ -5503,7 +5531,13 @@ var RegistrarseComponent = class _RegistrarseComponent {
       \u0275\u0275elementStart(6, "mat-icon", 2);
       \u0275\u0275text(7, "badge");
       \u0275\u0275elementEnd();
-      \u0275\u0275element(8, "input", 3);
+      \u0275\u0275elementStart(8, "input", 3);
+      \u0275\u0275listener("input", function RegistrarseComponent_Template_input_input_8_listener($event) {
+        return ctx.onDocumentInput($event);
+      })("paste", function RegistrarseComponent_Template_input_paste_8_listener($event) {
+        return ctx.onDocumentPaste($event);
+      });
+      \u0275\u0275elementEnd();
       \u0275\u0275template(9, RegistrarseComponent_Conditional_9_Template, 4, 0, "mat-error")(10, RegistrarseComponent_Conditional_10_Template, 2, 0, "mat-error");
       \u0275\u0275elementEnd();
       \u0275\u0275elementStart(11, "mat-form-field", 1)(12, "mat-label");
@@ -5569,6 +5603,7 @@ var RegistrarseComponent = class _RegistrarseComponent {
     DefaultValueAccessor,
     NgControlStatus,
     NgControlStatusGroup,
+    PatternValidator,
     FormGroupDirective,
     FormControlName,
     MatCheckbox
@@ -5595,6 +5630,10 @@ var RegistrarseComponent = class _RegistrarseComponent {
       matInput
       placeholder=" N\xFAmero de documento sin puntos ni comas"
       formControlName="documentNumber"
+      inputmode="numeric"
+      pattern="\\\\d*"
+      (input)="onDocumentInput($event)"
+      (paste)="onDocumentPaste($event)"
     />
     @if (registerForm.controls['documentNumber'].hasError('required')) {
     <mat-error
@@ -6420,7 +6459,7 @@ var ResetPaswordComponentComponent = class _ResetPaswordComponentComponent {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.passwordFormComponent = _t.first);
     }
-  }, decls: 13, vars: 3, consts: [[1, "container-reset"], ["mat-flat-button", "", 1, "mar-05rem", 3, "click", "disabled"], [4, "ngIf"], [1, "info-warning", 2, "margin-top", "1rem"], ["mat-stroked-button", "", "color", "primary", 3, "click"]], template: function ResetPaswordComponentComponent_Template(rf, ctx) {
+  }, decls: 10, vars: 3, consts: [[1, "container-reset"], ["mat-flat-button", "", 1, "mar-05rem", 3, "click", "disabled"], [4, "ngIf"], ["mat-stroked-button", "", "color", "primary", 3, "click"]], template: function ResetPaswordComponentComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 0)(1, "h2");
       \u0275\u0275text(2, "Restablecer contrase\xF1a");
@@ -6433,14 +6472,11 @@ var ResetPaswordComponentComponent = class _ResetPaswordComponentComponent {
       \u0275\u0275template(5, ResetPaswordComponentComponent_span_5_Template, 2, 0, "span", 2)(6, ResetPaswordComponentComponent_span_6_Template, 2, 0, "span", 2);
       \u0275\u0275elementEnd();
       \u0275\u0275element(7, "mat-divider");
-      \u0275\u0275elementStart(8, "div", 3)(9, "p");
-      \u0275\u0275text(10, " Importante: si cierra esta p\xE1gina o la recargas sin cambiar su contrase\xF1a, la sesi\xF3n permanecer\xE1 activa y podr\xE1 ingresar al sistema autenticado autom\xE1ticamente. ");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(11, "button", 4);
-      \u0275\u0275listener("click", function ResetPaswordComponentComponent_Template_button_click_11_listener() {
+      \u0275\u0275elementStart(8, "button", 3);
+      \u0275\u0275listener("click", function ResetPaswordComponentComponent_Template_button_click_8_listener() {
         return ctx.cancelRecovery();
       });
-      \u0275\u0275text(12, " No cambiar clave ");
+      \u0275\u0275text(9, " No cambiar clave ");
       \u0275\u0275elementEnd()();
     }
     if (rf & 2) {
@@ -6475,7 +6511,7 @@ var ResetPaswordComponentComponent = class _ResetPaswordComponentComponent {
       MatButtonModule,
       NgIf,
       PasswordFormComponent
-    ], template: '<div class="container-reset">\n  <h2>Restablecer contrase\xF1a</h2>\n\n  <app-password-form></app-password-form>\n\n  <button\n    mat-flat-button\n    class="mar-05rem"\n    [disabled]="!codeForm?.valid || isSubmitting"\n    (click)="onSubmit()"\n  >\n    <span *ngIf="!isSubmitting">Cambiar contrase\xF1a</span>\n    <span *ngIf="isSubmitting">Cambiando contrase\xF1a...</span>\n  </button>\n\n  <mat-divider></mat-divider>\n\n  <div class="info-warning" style="margin-top: 1rem">\n    <p>\n      Importante: si cierra esta p\xE1gina o la recargas sin cambiar su contrase\xF1a,\n      la sesi\xF3n permanecer\xE1 activa y podr\xE1 ingresar al sistema autenticado\n      autom\xE1ticamente.\n    </p>\n  </div>\n  <button mat-stroked-button color="primary" (click)="cancelRecovery()">\n    No cambiar clave\n  </button>\n</div>\n', styles: ["/* src/app/modules/auth/pages/reset-password/reset-pasword-component.component.scss */\n:host {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  margin-top: 2rem;\n}\n.container-reset {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  background-color: rgba(207, 210, 210, 0.5);\n  border-radius: 1.7rem;\n  padding: 2rem;\n  margin: 0 2rem;\n  width: 100%;\n  max-width: 500px;\n}\n@media (max-width: 768px) {\n  .container-reset {\n    margin: 1rem;\n    padding: 1rem;\n    border-radius: 1rem;\n  }\n}\n.wid-100 {\n  width: 100%;\n}\n@media (max-width: 768px) {\n  .wid-100 ::ng-deep .mat-mdc-form-field {\n    font-size: 14px;\n  }\n  .wid-100 input {\n    font-size: 14px;\n  }\n}\n.non-space {\n  padding: 0;\n  margin: 0;\n}\n.mar-05rem {\n  margin: 0.8rem;\n}\n@media (max-width: 768px) {\n  .mar-05rem {\n    margin: 0.5rem;\n    width: 100%;\n  }\n}\n.main-color {\n  color: #2d5f00;\n}\n.password-requirements {\n  width: 100%;\n  max-width: 300px;\n  margin: 1rem auto;\n  padding: 0 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.password-requirements .requirements-title {\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.5rem;\n  text-align: center;\n}\n.password-requirements ul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  width: fit-content;\n}\n.password-requirements ul li {\n  display: flex;\n  align-items: center;\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.3rem;\n}\n.password-requirements ul li mat-icon {\n  font-size: 1rem;\n  height: 1rem;\n  width: 1rem;\n  margin-right: 0.5rem;\n}\n.password-requirements ul li.valid {\n  color: #2d5f00;\n}\n.password-requirements ul li.valid mat-icon {\n  color: #2d5f00;\n}\n@media (max-width: 768px) {\n  .password-requirements {\n    padding: 0 0.5rem;\n  }\n  .password-requirements .requirements-title {\n    font-size: 0.8rem;\n  }\n  .password-requirements ul li {\n    font-size: 0.8rem;\n  }\n  .password-requirements ul li mat-icon {\n    font-size: 0.9rem;\n    height: 0.9rem;\n    width: 0.9rem;\n  }\n}\n::-ms-reveal {\n  display: none;\n}\ninput::-webkit-credentials-auto-fill-button {\n  visibility: hidden;\n  position: absolute;\n  right: 0;\n}\ninput[type=password]::-ms-reveal,\ninput[type=password]::-ms-clear {\n  display: none;\n}\n/*# sourceMappingURL=reset-pasword-component.component.css.map */\n"] }]
+    ], template: '<div class="container-reset">\n  <h2>Restablecer contrase\xF1a</h2>\n\n  <app-password-form></app-password-form>\n\n  <button\n    mat-flat-button\n    class="mar-05rem"\n    [disabled]="!codeForm?.valid || isSubmitting"\n    (click)="onSubmit()"\n  >\n    <span *ngIf="!isSubmitting">Cambiar contrase\xF1a</span>\n    <span *ngIf="isSubmitting">Cambiando contrase\xF1a...</span>\n  </button>\n\n  <mat-divider></mat-divider>\n\n  <button mat-stroked-button color="primary" (click)="cancelRecovery()">\n    No cambiar clave\n  </button>\n</div>\n', styles: ["/* src/app/modules/auth/pages/reset-password/reset-pasword-component.component.scss */\n:host {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  margin-top: 2rem;\n}\n.container-reset {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  background-color: rgba(207, 210, 210, 0.5);\n  border-radius: 1.7rem;\n  padding: 2rem;\n  margin: 0 2rem;\n  width: 100%;\n  max-width: 500px;\n}\n@media (max-width: 768px) {\n  .container-reset {\n    margin: 1rem;\n    padding: 1rem;\n    border-radius: 1rem;\n  }\n}\n.wid-100 {\n  width: 100%;\n}\n@media (max-width: 768px) {\n  .wid-100 ::ng-deep .mat-mdc-form-field {\n    font-size: 14px;\n  }\n  .wid-100 input {\n    font-size: 14px;\n  }\n}\n.non-space {\n  padding: 0;\n  margin: 0;\n}\n.mar-05rem {\n  margin: 0.8rem;\n}\n@media (max-width: 768px) {\n  .mar-05rem {\n    margin: 0.5rem;\n    width: 100%;\n  }\n}\n.main-color {\n  color: #2d5f00;\n}\n.password-requirements {\n  width: 100%;\n  max-width: 300px;\n  margin: 1rem auto;\n  padding: 0 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.password-requirements .requirements-title {\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.5rem;\n  text-align: center;\n}\n.password-requirements ul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  width: fit-content;\n}\n.password-requirements ul li {\n  display: flex;\n  align-items: center;\n  color: rgba(0, 0, 0, 0.6);\n  font-size: 0.9rem;\n  margin-bottom: 0.3rem;\n}\n.password-requirements ul li mat-icon {\n  font-size: 1rem;\n  height: 1rem;\n  width: 1rem;\n  margin-right: 0.5rem;\n}\n.password-requirements ul li.valid {\n  color: #2d5f00;\n}\n.password-requirements ul li.valid mat-icon {\n  color: #2d5f00;\n}\n@media (max-width: 768px) {\n  .password-requirements {\n    padding: 0 0.5rem;\n  }\n  .password-requirements .requirements-title {\n    font-size: 0.8rem;\n  }\n  .password-requirements ul li {\n    font-size: 0.8rem;\n  }\n  .password-requirements ul li mat-icon {\n    font-size: 0.9rem;\n    height: 0.9rem;\n    width: 0.9rem;\n  }\n}\n::-ms-reveal {\n  display: none;\n}\ninput::-webkit-credentials-auto-fill-button {\n  visibility: hidden;\n  position: absolute;\n  right: 0;\n}\ninput[type=password]::-ms-reveal,\ninput[type=password]::-ms-clear {\n  display: none;\n}\n/*# sourceMappingURL=reset-pasword-component.component.css.map */\n"] }]
   }], null, { passwordFormComponent: [{
     type: ViewChild,
     args: [PasswordFormComponent]
@@ -6948,7 +6984,7 @@ var ComprobarCodigoComponent = class _ComprobarCodigoComponent {
     MaxLengthValidator,
     FormControlDirective,
     ContainerAuthComponent
-  ], styles: ["\n\n[_nghost-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n}\n.card-container[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  padding: 2rem;\n}\n.squares-for-code[_ngcontent-%COMP%] {\n  display: flex;\n  gap: 8px;\n}\n.squares-for-code[_ngcontent-%COMP%]   .squares[_ngcontent-%COMP%] {\n  width: 2.5rem;\n}\n.squares-for-code[_ngcontent-%COMP%]   .squares[_ngcontent-%COMP%]     .mat-mdc-text-field-wrapper {\n  height: 2.5rem;\n}\n.container-code[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n/*# sourceMappingURL=comprobar-codigo.component.css.map */"] });
+  ], styles: ["\n\n[_nghost-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n}\n.card-container[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  padding: 2rem;\n}\n.squares-for-code[_ngcontent-%COMP%] {\n  display: flex;\n  gap: 8px;\n}\n.squares-for-code[_ngcontent-%COMP%]   .squares[_ngcontent-%COMP%] {\n  width: 2.5rem;\n  height: 5rem;\n}\n.squares-for-code[_ngcontent-%COMP%]   .squares[_ngcontent-%COMP%]     .mat-mdc-text-field-wrapper {\n  height: 2.5rem;\n  font-size: 2rem;\n  padding: 0;\n}\n.container-code[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n/*# sourceMappingURL=comprobar-codigo.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ComprobarCodigoComponent, [{
@@ -7015,7 +7051,7 @@ var ComprobarCodigoComponent = class _ComprobarCodigoComponent {
   </button>
 </mat-card>
 </app-container-auth>
-`, styles: ["/* src/app/modules/auth/components/comprobar-codigo/comprobar-codigo.component.scss */\n:host {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n}\n.card-container {\n  display: flex;\n  align-items: center;\n  padding: 2rem;\n}\n.squares-for-code {\n  display: flex;\n  gap: 8px;\n}\n.squares-for-code .squares {\n  width: 2.5rem;\n}\n.squares-for-code .squares ::ng-deep .mat-mdc-text-field-wrapper {\n  height: 2.5rem;\n}\n.container-code {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n/*# sourceMappingURL=comprobar-codigo.component.css.map */\n"] }]
+`, styles: ["/* src/app/modules/auth/components/comprobar-codigo/comprobar-codigo.component.scss */\n:host {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n}\n.card-container {\n  display: flex;\n  align-items: center;\n  padding: 2rem;\n}\n.squares-for-code {\n  display: flex;\n  gap: 8px;\n}\n.squares-for-code .squares {\n  width: 2.5rem;\n  height: 5rem;\n}\n.squares-for-code .squares ::ng-deep .mat-mdc-text-field-wrapper {\n  height: 2.5rem;\n  font-size: 2rem;\n  padding: 0;\n}\n.container-code {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n/*# sourceMappingURL=comprobar-codigo.component.css.map */\n"] }]
   }], () => [{ type: FormBuilder }, { type: ActivatedRoute }, { type: Router }, { type: AuthService }], { origin: [{
     type: Input
   }] });
@@ -7152,7 +7188,7 @@ var routes = [
     data: {
       backButton: true
     },
-    loadComponent: () => import("./chunk-SGNSDAXC.js").then((m) => m.TerminosCondicionesComponent)
+    loadComponent: () => import("./chunk-WUAPKPEO.js").then((m) => m.TerminosCondicionesComponent)
   },
   {
     path: "auth",
@@ -7185,7 +7221,7 @@ var routes = [
     path: "hoja-de-vida",
     component: LayoutComponent,
     canActivateChild: [hojaDeVidaCanActivateChild],
-    loadChildren: () => import("./chunk-LDQCAM62.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
+    loadChildren: () => import("./chunk-DT64EZGH.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
   }
 ];
 
