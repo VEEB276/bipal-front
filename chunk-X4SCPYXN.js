@@ -10994,7 +10994,7 @@ var InfoPersonalComponent = class _InfoPersonalComponent {
         }
         if (p?.lugarNacimiento) {
           this.fetchCiudadDepartamento(p.lugarNacimiento).subscribe((data) => {
-            this.textLugarNacimiento = data[0]?.nombreCompleto || "";
+            this.personaForm.controls.textLugarNacimiento.setValue(data[0]?.nombreCompleto || "");
           });
         }
       });
@@ -11046,6 +11046,7 @@ var InfoPersonalComponent = class _InfoPersonalComponent {
       // Información personal
       fechaNacimiento: ["", [Validators.required]],
       lugarNacimiento: ["", [Validators.required, Validators.maxLength(255)]],
+      textLugarNacimiento: [""],
       departamentoResidencia: [
         "",
         [Validators.required, Validators.maxLength(255)]
@@ -11215,7 +11216,7 @@ var InfoPersonalComponent = class _InfoPersonalComponent {
       deps: [MAT_DATE_LOCALE]
     },
     { provide: MAT_DATE_FORMATS, useValue: ES_CO_DATE_FORMATS }
-  ])], decls: 143, vars: 30, consts: [["nacimientoPicker", ""], ["expedicionPicker", ""], [1, "info-personal-container"], [1, "personal-info-form", 3, "formGroup"], [1, "form-row"], ["appearance", "fill", 1, "form-field"], ["matInput", "", "formControlName", "primerNombre", "placeholder", "Primer Nombre", 3, "input"], ["matPrefix", ""], ["matInput", "", "formControlName", "segundoNombre", "placeholder", "Segundo Nombre", 3, "input"], ["matInput", "", "formControlName", "primerApellido", "placeholder", "Primer Apellido", 3, "input"], ["matInput", "", "formControlName", "segundoApellido", "placeholder", "Segundo Apellido", 3, "input"], ["matInput", "", "formControlName", "fechaNacimiento", "placeholder", "DD/MM/YYYY", 3, "matDatepicker", "max"], ["matSuffix", "", 3, "for"], ["formControlName", "idTipoDocumento"], [3, "value"], [4, "ngIf"], ["matInput", "", "formControlName", "numeroDocumento", "placeholder", "Ejm: 1234567890"], ["matInput", "", "formControlName", "fechaExpedicionDoc", "placeholder", "DD/MM/YYYY", 3, "matDatepicker", "max", "min"], ["required", "", "fieldText", "nombreCompleto", "fieldValue", "departamento", "label", "Lugar de Nacimiento", "placeholder", "Ingrese y seleccione el lugar de nacimiento", 1, "form-field", 3, "optionSelected", "textValue", "control", "fetchFn"], ["required", "", "fieldText", "nombreCompleto", "fieldValue", "nombreCompleto", "label", "Lugar de Residencia", "placeholder", "Ingrese y seleccione el lugar de residencia", 1, "form-field", 3, "optionSelected", "textCtrl", "fetchFn"], ["appearance", "fill", 1, "form-field", "address-field"], ["matInput", "", "formControlName", "direccionResidencia", "placeholder", "Direcci\xF3n completa"], ["matInput", "", "formControlName", "telefono", "placeholder", "Ej: 300********", "type", "tel", 3, "input"], ["matInput", "", "formControlName", "correo", "placeholder", "ejemplo@correo.com", "type", "email", 3, "blur"], ["formControlName", "idGenero"], ["formControlName", "idEnfoqueDiferencial"], [1, "header-section"], ["matInput", "", "formControlName", "nombreContacto", "placeholder", "Nombre completo del contacto", 3, "input"], ["matInput", "", "formControlName", "telefonoContacto", "placeholder", "Ej: 607******* / 300********", "type", "tel", 3, "input"], ["matInput", "", "formControlName", "correoContacto", "placeholder", "contacto@correo.com", "type", "email"], [1, "form-actions"], ["mat-flat-button", "", "color", "primary", "type", "button", 3, "click"]], template: function InfoPersonalComponent_Template(rf, ctx) {
+  ])], decls: 143, vars: 30, consts: [["nacimientoPicker", ""], ["expedicionPicker", ""], [1, "info-personal-container"], [1, "personal-info-form", 3, "formGroup"], [1, "form-row"], ["appearance", "fill", 1, "form-field"], ["matInput", "", "formControlName", "primerNombre", "placeholder", "Primer Nombre", 3, "input"], ["matPrefix", ""], ["matInput", "", "formControlName", "segundoNombre", "placeholder", "Segundo Nombre", 3, "input"], ["matInput", "", "formControlName", "primerApellido", "placeholder", "Primer Apellido", 3, "input"], ["matInput", "", "formControlName", "segundoApellido", "placeholder", "Segundo Apellido", 3, "input"], ["matInput", "", "formControlName", "fechaNacimiento", "placeholder", "DD/MM/YYYY", 3, "matDatepicker", "max"], ["matSuffix", "", 3, "for"], ["formControlName", "idTipoDocumento"], [3, "value"], [4, "ngIf"], ["matInput", "", "formControlName", "numeroDocumento", "placeholder", "Ejm: 1234567890"], ["matInput", "", "formControlName", "fechaExpedicionDoc", "placeholder", "DD/MM/YYYY", 3, "matDatepicker", "max", "min"], ["required", "", "fieldText", "nombreCompleto", "fieldValue", "municipio", "label", "Lugar de Nacimiento", "placeholder", "Ingrese y seleccione el lugar de nacimiento", 1, "form-field", 3, "optionSelected", "textCtrl", "control", "fetchFn"], ["required", "", "fieldText", "nombreCompleto", "fieldValue", "nombreCompleto", "label", "Lugar de Residencia", "placeholder", "Ingrese y seleccione el lugar de residencia", 1, "form-field", 3, "optionSelected", "textCtrl", "fetchFn"], ["appearance", "fill", 1, "form-field", "address-field"], ["matInput", "", "formControlName", "direccionResidencia", "placeholder", "Direcci\xF3n completa"], ["matInput", "", "formControlName", "telefono", "placeholder", "Ej: 300********", "type", "tel", 3, "input"], ["matInput", "", "formControlName", "correo", "placeholder", "ejemplo@correo.com", "type", "email", 3, "blur"], ["formControlName", "idGenero"], ["formControlName", "idEnfoqueDiferencial"], [1, "header-section"], ["matInput", "", "formControlName", "nombreContacto", "placeholder", "Nombre completo del contacto", 3, "input"], ["matInput", "", "formControlName", "telefonoContacto", "placeholder", "Ej: 607******* / 300********", "type", "tel", 3, "input"], ["matInput", "", "formControlName", "correoContacto", "placeholder", "contacto@correo.com", "type", "email"], [1, "form-actions"], ["mat-flat-button", "", "color", "primary", "type", "button", 3, "click"]], template: function InfoPersonalComponent_Template(rf, ctx) {
     if (rf & 1) {
       const _r1 = \u0275\u0275getCurrentView();
       \u0275\u0275elementStart(0, "div", 2)(1, "form", 3)(2, "div", 4)(3, "mat-form-field", 5)(4, "mat-label");
@@ -11482,7 +11483,7 @@ var InfoPersonalComponent = class _InfoPersonalComponent {
       \u0275\u0275advance(3);
       \u0275\u0275conditional(((tmp_18_0 = ctx.control("fechaExpedicionDoc")) == null ? null : tmp_18_0.invalid) && ((tmp_18_0 = ctx.control("fechaExpedicionDoc")) == null ? null : tmp_18_0.touched) ? 65 : -1);
       \u0275\u0275advance(2);
-      \u0275\u0275property("textValue", ctx.textLugarNacimiento)("control", ctx.control("lugarNacimiento"))("fetchFn", ctx.fetchCiudadDepartamento);
+      \u0275\u0275property("textCtrl", ctx.control("textLugarNacimiento"))("control", ctx.control("lugarNacimiento"))("fetchFn", ctx.fetchCiudadDepartamento);
       \u0275\u0275advance();
       \u0275\u0275property("textCtrl", ctx.control("lugarResidencia"))("fetchFn", ctx.fetchCiudadDepartamento);
       \u0275\u0275advance(8);
@@ -11681,12 +11682,12 @@ var InfoPersonalComponent = class _InfoPersonalComponent {
       <!--lugar de nacimiento-->
       <app-autocomplete-select
         class="form-field"
-        [textValue]="textLugarNacimiento"
+        [textCtrl]="control('textLugarNacimiento')"
         [control]="control('lugarNacimiento')"
         required
         [fetchFn]="fetchCiudadDepartamento"
         fieldText="nombreCompleto"
-        fieldValue="departamento"
+        fieldValue="municipio"
         label="Lugar de Nacimiento"
         placeholder="Ingrese y seleccione el lugar de nacimiento"
         (optionSelected)="onLugarNacimientoSelected($event)">
@@ -16470,4 +16471,4 @@ var SectionContainerHvComponent = class _SectionContainerHvComponent {
 export {
   SectionContainerHvComponent
 };
-//# sourceMappingURL=chunk-ZXO2IY7S.js.map
+//# sourceMappingURL=chunk-X4SCPYXN.js.map

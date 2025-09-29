@@ -7218,7 +7218,7 @@ var routes = [
     path: "hoja-de-vida",
     component: LayoutComponent,
     canActivateChild: [hojaDeVidaCanActivateChild],
-    loadChildren: () => import("./chunk-RHNA4VRV.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
+    loadChildren: () => import("./chunk-OMTK4JNT.js").then((m) => m.HOJA_DE_VIDA_ROUTES)
   }
 ];
 
@@ -8649,7 +8649,7 @@ var authInterceptor = (req, next) => {
   const loadingService = inject(LoadingService);
   const auth = inject(AuthService);
   const userId = auth.session?.user?.id;
-  if (userId) {
+  if (userId && auth.session?.access_token) {
     req = req.clone({
       setHeaders: {
         "user-id": userId,
