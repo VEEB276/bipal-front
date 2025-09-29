@@ -14,7 +14,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   // Si existe sesión de Supabase agregamos header user-id
   const userId = auth.session?.user?.id;
-  if (userId) {
+  if (userId && auth.session?.access_token) {
     req = req.clone({
       setHeaders: {
         "user-id": userId,

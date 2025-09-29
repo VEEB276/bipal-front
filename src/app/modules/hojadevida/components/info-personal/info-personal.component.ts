@@ -124,7 +124,7 @@ export class InfoPersonalComponent implements OnInit {
         // DB por el municipio
         if (p?.lugarNacimiento) {
           this.fetchCiudadDepartamento(p.lugarNacimiento).subscribe((data) => {
-            this.textLugarNacimiento = data[0]?.nombreCompleto || "";
+            this.personaForm.controls.textLugarNacimiento.setValue(data[0]?.nombreCompleto || "");
           });
         }
       });
@@ -187,6 +187,7 @@ export class InfoPersonalComponent implements OnInit {
       // Información personal
       fechaNacimiento: ["", [Validators.required]],
       lugarNacimiento: ["", [Validators.required, Validators.maxLength(255)]],
+      textLugarNacimiento: [""],
       departamentoResidencia: [
         "",
         [Validators.required, Validators.maxLength(255)],

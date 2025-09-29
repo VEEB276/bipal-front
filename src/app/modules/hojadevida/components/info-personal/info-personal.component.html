@@ -114,12 +114,12 @@
       <!--lugar de nacimiento-->
       <app-autocomplete-select
         class="form-field"
-        [textValue]="textLugarNacimiento"
+        [textCtrl]="control('textLugarNacimiento')"
         [control]="control('lugarNacimiento')"
         required
         [fetchFn]="fetchCiudadDepartamento"
         fieldText="nombreCompleto"
-        fieldValue="departamento"
+        fieldValue="municipio"
         label="Lugar de Nacimiento"
         placeholder="Ingrese y seleccione el lugar de nacimiento"
         (optionSelected)="onLugarNacimientoSelected($event)">
